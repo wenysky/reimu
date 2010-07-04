@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{56FFEA62-B784-4BE3-923B-9F12118BDFD3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NConvert.cvc20beta_dnt21202</RootNamespace>
+    <AssemblyName>NConvert.cvc20beta_dnt21202</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\NConvert\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConvertAttachments.cs" />
+    <Compile Include="ConvertForumLinks.cs" />
+    <Compile Include="ConvertForums.cs" />
+    <Compile Include="ConvertPms.cs" />
+    <Compile Include="ConvertPolls.cs" />
+    <Compile Include="ConvertPosts.cs" />
+    <Compile Include="ConvertTopic.cs" />
+    <Compile Include="ConvertTopicTypes.cs" />
+    <Compile Include="ConvertUsers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Main.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj">
+      <Project>{5CB1FF30-C7C4-4FAB-B295-6330D2BF988F}</Project>
+      <Name>NatsuHime.Tools.TinyData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NConvert\NConvert.csproj">
+      <Project>{57BB47B2-5FEF-45EB-A13F-D22E69C1112E}</Project>
+      <Name>NConvert</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
