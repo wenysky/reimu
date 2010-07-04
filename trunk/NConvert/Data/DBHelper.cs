@@ -9,6 +9,7 @@ using System;
 using System.Data;
 using System.Data.Common;
 using System.Configuration;
+using MySql.Data.MySqlClient;
 
 namespace Yuwen.Tools.Data
 {
@@ -45,7 +46,14 @@ namespace Yuwen.Tools.Data
         /// <param name="databasetype">数据库的类型</param>
         public DBHelper(string connectionstring, string databasetype)
         {
-            MyFactory = DbProviderFactories.GetFactory(databasetype);
+            if (databasetype == "MySql.Data.MySqlClient")
+            {
+                MyFactory = new MySqlClientFactory();
+            }
+            else
+            {
+                MyFactory = DbProviderFactories.GetFactory(databasetype);
+            }
             MyConnection = MyFactory.CreateConnection();
             MyConnection.ConnectionString = (databasetype.ToString() == "System.Data.OleDb") ? ("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + GetDataPath(connectionstring) + ";") : (connectionstring);
             MyCommand = MyConnection.CreateCommand();
