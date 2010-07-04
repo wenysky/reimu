@@ -60,6 +60,10 @@
             this.label12 = new System.Windows.Forms.Label();
             this.tbxTargetDbTablePrefix = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.plSrcDBSetting_acc = new System.Windows.Forms.Panel();
+            this.btnBrowerAccessDBFile = new System.Windows.Forms.Button();
+            this.tbxSrcAccessDBPath = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -89,17 +93,13 @@
             this.ckbxConvertForums = new System.Windows.Forms.CheckBox();
             this.ckbxConvertUsers = new System.Windows.Forms.CheckBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.label21 = new System.Windows.Forms.Label();
-            this.tbxSrcAccessDBPath = new System.Windows.Forms.TextBox();
-            this.plSrcDBSetting_acc = new System.Windows.Forms.Panel();
-            this.btnBrowerAccessDBFile = new System.Windows.Forms.Button();
             this.plSrcDBSetting_sql.SuspendLayout();
             this.plTargetDBSetting.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.plSrcDBSetting_acc.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.plSrcDBSetting_acc.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnConvertStart
@@ -170,7 +170,7 @@
             this.tbxSrcPassword.PasswordChar = '*';
             this.tbxSrcPassword.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcPassword.TabIndex = 7;
-            this.tbxSrcPassword.Text = "itca";
+            this.tbxSrcPassword.Text = "123321";
             // 
             // tbxSrcLoginID
             // 
@@ -178,7 +178,7 @@
             this.tbxSrcLoginID.Name = "tbxSrcLoginID";
             this.tbxSrcLoginID.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcLoginID.TabIndex = 6;
-            this.tbxSrcLoginID.Text = "sa";
+            this.tbxSrcLoginID.Text = "web";
             // 
             // tbxSrcDBName
             // 
@@ -186,7 +186,7 @@
             this.tbxSrcDBName.Name = "tbxSrcDBName";
             this.tbxSrcDBName.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcDBName.TabIndex = 5;
-            this.tbxSrcDBName.Text = "go167bbs";
+            this.tbxSrcDBName.Text = "lybbsnew";
             // 
             // tbxSrcAddress
             // 
@@ -254,7 +254,7 @@
             this.tbxTargetPassword.PasswordChar = '*';
             this.tbxTargetPassword.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetPassword.TabIndex = 7;
-            this.tbxTargetPassword.Text = "123";
+            this.tbxTargetPassword.Text = "7788945";
             // 
             // tbxTargetLoginID
             // 
@@ -270,7 +270,7 @@
             this.tbxTargetDBName.Name = "tbxTargetDBName";
             this.tbxTargetDBName.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetDBName.TabIndex = 5;
-            this.tbxTargetDBName.Text = "dnt25_dadach";
+            this.tbxTargetDBName.Text = "dnt31";
             // 
             // tbxTargetAddress
             // 
@@ -278,7 +278,7 @@
             this.tbxTargetAddress.Name = "tbxTargetAddress";
             this.tbxTargetAddress.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetAddress.TabIndex = 4;
-            this.tbxTargetAddress.Text = "10.0.2.200\\SQL2005";
+            this.tbxTargetAddress.Text = "10.0.1.45";
             // 
             // tbxMessage
             // 
@@ -378,7 +378,7 @@
             this.tbxSrcDbTablePrefix.Name = "tbxSrcDbTablePrefix";
             this.tbxSrcDbTablePrefix.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcDbTablePrefix.TabIndex = 12;
-            this.tbxSrcDbTablePrefix.Text = "MSOTEC_";
+            this.tbxSrcDbTablePrefix.Text = "lybbs_";
             // 
             // label12
             // 
@@ -411,6 +411,44 @@
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "源数据库信息";
+            // 
+            // plSrcDBSetting_acc
+            // 
+            this.plSrcDBSetting_acc.Controls.Add(this.btnBrowerAccessDBFile);
+            this.plSrcDBSetting_acc.Controls.Add(this.tbxSrcAccessDBPath);
+            this.plSrcDBSetting_acc.Controls.Add(this.label21);
+            this.plSrcDBSetting_acc.Location = new System.Drawing.Point(16, 56);
+            this.plSrcDBSetting_acc.Name = "plSrcDBSetting_acc";
+            this.plSrcDBSetting_acc.Size = new System.Drawing.Size(222, 98);
+            this.plSrcDBSetting_acc.TabIndex = 12;
+            this.plSrcDBSetting_acc.Visible = false;
+            // 
+            // btnBrowerAccessDBFile
+            // 
+            this.btnBrowerAccessDBFile.Location = new System.Drawing.Point(131, 70);
+            this.btnBrowerAccessDBFile.Name = "btnBrowerAccessDBFile";
+            this.btnBrowerAccessDBFile.Size = new System.Drawing.Size(88, 23);
+            this.btnBrowerAccessDBFile.TabIndex = 13;
+            this.btnBrowerAccessDBFile.Text = "浏览文件...";
+            this.btnBrowerAccessDBFile.UseVisualStyleBackColor = true;
+            this.btnBrowerAccessDBFile.Click += new System.EventHandler(this.btnBrowerAccessDBFile_Click);
+            // 
+            // tbxSrcAccessDBPath
+            // 
+            this.tbxSrcAccessDBPath.Location = new System.Drawing.Point(5, 26);
+            this.tbxSrcAccessDBPath.Name = "tbxSrcAccessDBPath";
+            this.tbxSrcAccessDBPath.Size = new System.Drawing.Size(214, 21);
+            this.tbxSrcAccessDBPath.TabIndex = 12;
+            this.tbxSrcAccessDBPath.Text = "D:\\database\\dbconvert\\angelsu\\db.mdb";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(3, 11);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(89, 12);
+            this.label21.TabIndex = 8;
+            this.label21.Text = "数据库文件地址";
             // 
             // groupBox2
             // 
@@ -723,44 +761,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(3, 11);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(89, 12);
-            this.label21.TabIndex = 8;
-            this.label21.Text = "数据库文件地址";
-            // 
-            // tbxSrcAccessDBPath
-            // 
-            this.tbxSrcAccessDBPath.Location = new System.Drawing.Point(5, 26);
-            this.tbxSrcAccessDBPath.Name = "tbxSrcAccessDBPath";
-            this.tbxSrcAccessDBPath.Size = new System.Drawing.Size(214, 21);
-            this.tbxSrcAccessDBPath.TabIndex = 12;
-            this.tbxSrcAccessDBPath.Text = "D:\\database\\dbconvert\\angelsu\\db.mdb";
-            // 
-            // plSrcDBSetting_acc
-            // 
-            this.plSrcDBSetting_acc.Controls.Add(this.btnBrowerAccessDBFile);
-            this.plSrcDBSetting_acc.Controls.Add(this.tbxSrcAccessDBPath);
-            this.plSrcDBSetting_acc.Controls.Add(this.label21);
-            this.plSrcDBSetting_acc.Location = new System.Drawing.Point(16, 56);
-            this.plSrcDBSetting_acc.Name = "plSrcDBSetting_acc";
-            this.plSrcDBSetting_acc.Size = new System.Drawing.Size(222, 98);
-            this.plSrcDBSetting_acc.TabIndex = 12;
-            this.plSrcDBSetting_acc.Visible = false;
-            // 
-            // btnBrowerAccessDBFile
-            // 
-            this.btnBrowerAccessDBFile.Location = new System.Drawing.Point(131, 70);
-            this.btnBrowerAccessDBFile.Name = "btnBrowerAccessDBFile";
-            this.btnBrowerAccessDBFile.Size = new System.Drawing.Size(88, 23);
-            this.btnBrowerAccessDBFile.TabIndex = 13;
-            this.btnBrowerAccessDBFile.Text = "浏览文件...";
-            this.btnBrowerAccessDBFile.UseVisualStyleBackColor = true;
-            this.btnBrowerAccessDBFile.Click += new System.EventHandler(this.btnBrowerAccessDBFile_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -792,14 +792,14 @@
             this.plTargetDBSetting.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.plSrcDBSetting_acc.ResumeLayout(false);
+            this.plSrcDBSetting_acc.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.plSrcDBSetting_acc.ResumeLayout(false);
-            this.plSrcDBSetting_acc.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

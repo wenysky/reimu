@@ -58,6 +58,10 @@ namespace NConvert.Entity
 
         private int m_identify = 0;
 
+        private System.Byte m_special = 0;
+
+
+
 
 
         /// <summary> tid </summary>
@@ -409,6 +413,15 @@ namespace NConvert.Entity
             {
                 this.m_identify = value;
             }
+        }
+
+        /// <summary>
+        /// 特殊主题
+        /// </summary>
+        public System.Byte special
+        {
+            get { return m_special; }
+            set { m_special = value; }
         }
     }
 }

@@ -166,6 +166,11 @@ namespace NConvert
                 srcDbConn = cic.SrcDbFilePath;
                 srcDbTypeNamespace = "System.Data.OleDb";
             }
+            else if (cic.SrcDbType.ToLower() == "mysql")
+            {
+                srcDbConn = string.Format(@"Data Source={0};Port=3306;Initial Catalog={1};User ID={2};Password={3};Allow Zero Datetime=true;charset=utf8;", cic.SrcDbAddress, cic.SrcDbName, cic.SrcDbUsername, cic.SrcDbUserpassword);
+                srcDbTypeNamespace = "MySql.Data.MySqlClient";
+            }
             else
             {
                 srcDbConn = string.Format("Data Source={0};Initial Catalog={1};User ID={2};Password={3};", cic.SrcDbAddress, cic.SrcDbName, cic.SrcDbUsername, cic.SrcDbUserpassword);
