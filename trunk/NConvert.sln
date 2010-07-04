@@ -4,10 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert", "NConvert\NConvert.csproj", "{57BB47B2-5FEF-45EB-A13F-D22E69C1112E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BABA278D-C530-4D29-84E4-BB673EFCC0C3}"
-	ProjectSection(SolutionItems) = preProject
-		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
-		NConvert.vsmdi = NConvert.vsmdi
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert.cvc20beta_dnt21202", "NConvert.cvc20beta_dnt21202\NConvert.cvc20beta_dnt21202.csproj", "{56FFEA62-B784-4BE3-923B-9F12118BDFD3}"
 EndProject
@@ -17,14 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert.dvnet11_dnt21202",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Natsume.Tools.TinyData", "Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj", "{5CB1FF30-C7C4-4FAB-B295-6330D2BF988F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert.TestCase", "NConvert.TestCase\NConvert.TestCase.csproj", "{58B0244A-4D44-4194-B520-22A1BEFB60D4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert.TestForm", "NConvert.TestForm\NConvert.TestForm.csproj", "{88DC1D46-AB5C-43BA-A5E5-778578F98756}"
-EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = NConvert.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -50,14 +39,6 @@ Global
 		{5CB1FF30-C7C4-4FAB-B295-6330D2BF988F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CB1FF30-C7C4-4FAB-B295-6330D2BF988F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CB1FF30-C7C4-4FAB-B295-6330D2BF988F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58B0244A-4D44-4194-B520-22A1BEFB60D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58B0244A-4D44-4194-B520-22A1BEFB60D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58B0244A-4D44-4194-B520-22A1BEFB60D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58B0244A-4D44-4194-B520-22A1BEFB60D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88DC1D46-AB5C-43BA-A5E5-778578F98756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88DC1D46-AB5C-43BA-A5E5-778578F98756}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88DC1D46-AB5C-43BA-A5E5-778578F98756}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88DC1D46-AB5C-43BA-A5E5-778578F98756}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
