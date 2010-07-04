@@ -756,12 +756,12 @@ highlight,
 digest,
 rate,
 hide,
-poll,
 attachment,
 moderated,
 closed,
 magic,
-identify
+identify,
+special
 )
 VALUES 
 (
@@ -786,12 +786,12 @@ VALUES
 @digest,
 @rate,
 @hide,
-@poll,
 @attachment,
 @moderated,
 @closed,
 @magic,
-@identify
+@identify,
+@special
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
             for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
@@ -832,6 +832,7 @@ VALUES
                         dbh.ParameterAdd("@closed ", objTopic.closed, DbType.Int32, 4);
                         dbh.ParameterAdd("@magic ", objTopic.magic, DbType.Int32, 4);
                         dbh.ParameterAdd("@identify", objTopic.identify, DbType.Int32, 4);
+                        dbh.ParameterAdd("@special ", objTopic.special, DbType.Byte, 1);
                         #endregion
                         dbh.ExecuteNonQuery(sqlTopic);//插入dnt_topics表
                         MainForm.SuccessedRecordCount++;
