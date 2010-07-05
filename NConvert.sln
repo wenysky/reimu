@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert", "NConvert\NConvert.csproj", "{57BB47B2-5FEF-45EB-A13F-D22E69C1112E}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BABA278D-C530-4D29-84E4-BB673EFCC0C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConvertEntities", "ConvertEntities", "{5A863FD7-EF7A-4A63-A159-21B1AC2252C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert", "NConvert\NConvert.csproj", "{57BB47B2-5FEF-45EB-A13F-D22E69C1112E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert.cvc20beta_dnt21202", "NConvert.cvc20beta_dnt21202\NConvert.cvc20beta_dnt21202.csproj", "{56FFEA62-B784-4BE3-923B-9F12118BDFD3}"
 EndProject
@@ -14,8 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Natsume.Tools.TinyData", "Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj", "{5CB1FF30-C7C4-4FAB-B295-6330D2BF988F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert.lybbs70_dnt31", "NConvert.lybbs70_dnt31\NConvert.lybbs70_dnt31.csproj", "{09823552-0BE2-42AC-85F0-91CFF9E9B7CA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConvertEntities", "ConvertEntities", "{5A863FD7-EF7A-4A63-A159-21B1AC2252C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepinSummer", "..\..\DeepinSummer\trunk\DeepinSummer\DeepinSummer.csproj", "{67268E9E-AA3B-4D9E-956A-158922DA6B79}"
 EndProject
@@ -74,8 +74,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
-		{C559D014-62B5-498C-ADAF-8A50F8C3A707} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
 		{56FFEA62-B784-4BE3-923B-9F12118BDFD3} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
+		{C559D014-62B5-498C-ADAF-8A50F8C3A707} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
+		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
 	EndGlobalSection
 EndGlobal
