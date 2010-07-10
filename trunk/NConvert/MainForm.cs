@@ -139,12 +139,21 @@ namespace NConvert
             try
             {
                 srcDBH.Open();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("源数据库链接失败，" + ex.Message);
+                return false;
+            }
+
+            try
+            {
                 targetDBH.Open();
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("数据库链接失败");
+                MessageBox.Show("目标数据库链接失败，"+ ex.Message);
                 return false;
             }
         }
