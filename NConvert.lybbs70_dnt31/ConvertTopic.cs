@@ -18,6 +18,12 @@ namespace NConvert.lybbs70_dnt31
 
         public List<Topics> GetTopicList(int CurrentPage)
         {
+            MainForm.srcDBH.ExecuteNonQuery(
+                string.Format(
+                    "ALTER TABLE {0}posts CHANGE `istop` `istop` INT( 1 ) NOT NULL DEFAULT '0'", 
+                    MainForm.cic.SrcDbTablePrefix)
+                );
+
             string sql;
 
             #region 分页语句
@@ -41,7 +47,7 @@ namespace NConvert.lybbs70_dnt31
                 //如果转换主题分类,则转换此字段
                 if (MainForm.IsConvertTopicTypes)
                 {
-                    objTopic.typeid = Convert.ToInt32(dr["SubjectId"]);//将此字段事先更新为int
+                    //objTopic.typeid = Convert.ToInt32(dr["SubjectId"]);//将此字段事先更新为int
                 }
                 //objTopic.readperm = Convert.ToInt32(dr["Require"]);
                 //objTopic.price = Convert.ToInt32(dr["Price"]) > Int16.MaxValue ? Int16.MaxValue : Convert.ToInt16(dr["Price"]);//数据库smallint最大只有3W多
@@ -85,11 +91,11 @@ namespace NConvert.lybbs70_dnt31
                 //objTopic.rate = dr[""] ;
                 objTopic.hide = 1; //TODO
                 objTopic.special = Convert.ToInt32(dr["vote"]) > 0 ? Byte.Parse("1") : Byte.Parse("0");
-                objTopic.attachment = 1;
-                //objTopic.moderated = dr[""] ;
+                if (dr["accessaryname"] != DBNull.Value && dr["accessaryname"].ToString() != string.Empty)
+                {
+                    objTopic.attachment = 1;
+                }
                 objTopic.closed = Convert.ToInt32(dr["titlelock"]);
-                //objTopic.magic = dr[""] ;
-                //objTopic.identify= dr[""] ;
                 topiclist.Add(objTopic);
             }
             dr.Close();
