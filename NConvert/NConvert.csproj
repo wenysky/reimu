@@ -78,10 +78,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entity\Attachments.cs" />
+    <Compile Include="Entity\PollRecords.cs" />
     <Compile Include="Entity\DllInfo.cs" />
     <Compile Include="Entity\ForumLinks.cs" />
     <Compile Include="Entity\Forums.cs" />
     <Compile Include="Entity\Pms.cs" />
+    <Compile Include="Entity\PollOptionInfo.cs" />
     <Compile Include="Entity\Polls.cs" />
     <Compile Include="Entity\Posts.cs" />
     <Compile Include="Entity\PostTables.cs" />

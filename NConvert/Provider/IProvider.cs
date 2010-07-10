@@ -93,6 +93,15 @@ namespace NConvert.Provider
         int GetPollsRecordCount();
 
         List<Polls> GetPollList(int pagei);
+
+        int GetPollOptionsRecordCount();
+
+        List<PollOptionInfo> GetPollOptionsList(int pagei);
+
+
+        int GetVotesRecordCount();
+
+        List<VoteRecords> GetVotesList(int pagei);
         #endregion
 
         #region 转换短消息
