@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NConvert.Provider;
+using NConvert.Entity;
 
 namespace NConvert.lybbs70_dnt31
 {
@@ -15,9 +16,9 @@ namespace NConvert.lybbs70_dnt31
             return 0;
         }
 
-        public List<NConvert.Entity.TopicTypes> GetTopicTypeList()
+        public List<TopicTypes> GetTopicTypeList()
         {
-            throw new NotImplementedException();
+            return new List<TopicTypes>();
         }
 
         public int GetForumLinksRecordCount()
@@ -25,9 +26,9 @@ namespace NConvert.lybbs70_dnt31
             return 0;
         }
 
-        public List<NConvert.Entity.ForumLinks> GetForumLinkList()
+        public List<ForumLinks> GetForumLinkList()
         {
-            throw new NotImplementedException();
+            return new List<ForumLinks>();
         }
 
         #endregion

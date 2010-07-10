@@ -1,129 +1,103 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace NConvert.Entity
 {
+    /// <summary>
+    /// 投票信息类
+    /// </summary>
     public class Polls
     {
-        private int m_tid;
 
-        private System.Byte m_polltype;
-
-        private short m_itemcount;
-
-        private string m_itemnamelist;
-
-        private string m_itemvaluelist;
-
-        private string m_usernamelist;
-
-        private System.DateTime m_enddatetime = DateTime.MinValue;
-
-        private int m_userid;
-
-        /// <summary> tid </summary>
-        public int tid
+        private int _pollid = 0;
+        private int _tid = 0;
+        private int _displayorder = 0;
+        private int _multiple = 0;
+        private int _visible = 0;
+        private int _maxchoices = 1;
+        private DateTime _expiration = DateTime.Now;
+        private int _uid = 0;
+        private string _voternames = string.Empty;
+        /// <summary>
+        /// 投票ID
+        /// </summary>
+        public int Pollid
         {
+            set { _pollid = value; }
+            get { return _pollid; }
+        }
+        /// <summary>
+        /// 主题ID
+        /// </summary>
+        public int Tid
+        {
+            set { _tid = value; }
+            get { return _tid; }
+        }
+        /// <summary>
+        /// 显示顺序
+        /// </summary>
+        public int Displayorder
+        {
+            set { _displayorder = value; }
+            get { return _displayorder; }
+        }
+        /// <summary>
+        /// 是否多选
+        /// </summary>
+        public int Multiple
+        {
+            set { _multiple = value; }
+            get { return _multiple; }
+        }
+        /// <summary>
+        /// 是否投票可见
+        /// </summary>
+        public int Visible
+        {
+            set { _visible = value; }
+            get { return _visible; }
+        }
+        /// <summary>
+        /// 最大可选项数
+        /// </summary>
+        public int Maxchoices
+        {
+            set { _maxchoices = value; }
+            get { return _maxchoices; }
+        }
+        /// <summary>
+        /// 过期时间
+        /// </summary>
+        public DateTime Expiration
+        {
+            set { _expiration = value; }
             get
             {
-                return this.m_tid;
+                if (_expiration == null)
+                {
+                    return DateTime.Now;
+                }
+                return _expiration;
             }
-            set
-            {
-                this.m_tid = value;
-            }
+        }
+        /// <summary>
+        /// 发起投票人的ID
+        /// </summary>
+        public int Uid
+        {
+            set { _uid = value; }
+            get { return _uid; }
+        }
+        /// <summary>
+        /// 已投过票的用户
+        /// </summary>
+        public string Voternames
+        {
+            set { _voternames = value; }
+            get { return _voternames == null ? "" : _voternames; }
         }
 
-        /// <summary> polltype </summary>
-        public System.Byte polltype
-        {
-            get
-            {
-                return this.m_polltype;
-            }
-            set
-            {
-                this.m_polltype = value;
-            }
-        }
 
-        /// <summary> itemcount </summary>
-        public short itemcount
-        {
-            get
-            {
-                return this.m_itemcount;
-            }
-            set
-            {
-                this.m_itemcount = value;
-            }
-        }
-
-        /// <summary> itemnamelist </summary>
-        public string itemnamelist
-        {
-            get
-            {
-                return this.m_itemnamelist;
-            }
-            set
-            {
-                this.m_itemnamelist = value;
-            }
-        }
-
-        /// <summary> itemvaluelist </summary>
-        public string itemvaluelist
-        {
-            get
-            {
-                return this.m_itemvaluelist;
-            }
-            set
-            {
-                this.m_itemvaluelist = value;
-            }
-        }
-
-        /// <summary> usernamelist </summary>
-        public string usernamelist
-        {
-            get
-            {
-                return this.m_usernamelist;
-            }
-            set
-            {
-                this.m_usernamelist = value;
-            }
-        }
-
-        /// <summary> enddatetime </summary>
-        public System.DateTime enddatetime
-        {
-            get
-            {
-                return this.m_enddatetime;
-            }
-            set
-            {
-                this.m_enddatetime = value;
-            }
-        }
-
-        /// <summary> userid </summary>
-        public int userid
-        {
-            get
-            {
-                return this.m_userid;
-            }
-            set
-            {
-                this.m_userid = value;
-            }
-        }
     }
 }

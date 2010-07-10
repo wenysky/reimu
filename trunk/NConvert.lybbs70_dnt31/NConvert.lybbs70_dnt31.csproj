@@ -65,6 +65,8 @@
     <Compile Include="ConvertPosts.cs" />
     <Compile Include="ConvertTopic.cs" />
     <Compile Include="ConvertUsers.cs" />
+    <Compile Include="ConvertPollOptions.cs" />
+    <Compile Include="ConvertPollRecords.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Other.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

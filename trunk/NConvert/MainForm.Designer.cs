@@ -689,7 +689,8 @@
             // ckbxConvertPolls
             // 
             this.ckbxConvertPolls.AutoSize = true;
-            this.ckbxConvertPolls.Enabled = false;
+            this.ckbxConvertPolls.Checked = true;
+            this.ckbxConvertPolls.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckbxConvertPolls.Location = new System.Drawing.Point(96, 61);
             this.ckbxConvertPolls.Name = "ckbxConvertPolls";
             this.ckbxConvertPolls.Size = new System.Drawing.Size(72, 16);

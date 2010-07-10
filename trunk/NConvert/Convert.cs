@@ -13,55 +13,62 @@ namespace NConvert
         {
             //try
             //{
-                if (!MainForm.DbConnStatus())
-                {
-                    System.Windows.Forms.MessageBox.Show("数据库连接失败!\r\n");
-                    MainForm.MessageForm.SetButtonStatus(false);
-                    System.Threading.Thread.CurrentThread.Abort();
-                }
-                if (MainForm.IsConvertUsers)
-                    ConvertUsers();
+            if (!MainForm.DbConnStatus())
+            {
+                System.Windows.Forms.MessageBox.Show("数据库连接失败!\r\n");
+                MainForm.MessageForm.SetButtonStatus(false);
+                System.Threading.Thread.CurrentThread.Abort();
+            }
+            if (MainForm.IsConvertUsers)
+                ConvertUsers();
 
-                if (MainForm.IsConvertForums)
-                    ConvertForums();
+            if (MainForm.IsConvertForums)
+                ConvertForums();
 
-                if (MainForm.IsConvertTopicTypes)
-                    ConvertTopicTypes();
+            if (MainForm.IsConvertTopicTypes)
+                ConvertTopicTypes();
 
-                if (MainForm.IsConvertTopics)
-                {
-                    ConvertTopics();
-                    ResetTopicsInfo();
-                }
+            if (MainForm.IsConvertTopics)
+            {
+                ConvertTopics();
+                ResetTopicsInfo();
+            }
 
-                if (MainForm.IsConvertPosts)
-                {
-                    ConvertPosts();
-                    UpdateLastPostid();
-                }
-                if (MainForm.IsUpdatePostsInfo)
-                {
-                    UpdatePostsInfo();
-                }
+            if (MainForm.IsConvertPosts)
+            {
+                ConvertPosts();
+                UpdateLastPostid();
+            }
+            if (MainForm.IsUpdatePostsInfo)
+            {
+                UpdatePostsInfo();
+            }
 
-                if (MainForm.IsConvertAttachments)
-                    ConvertAttachments();
-                if (MainForm.IsConvertPms)
-                    ConvertPms();
-                if (MainForm.IsConvertForumLinks)
-                    ConvertForumLinks();
-                if (MainForm.IsResetTopicLastpostid)
-                    Utils.Topics.ResetTopicLastpostid();
+            if (MainForm.IsConvertPolls)
+            {
+                ConvertPolls();
+                ConvertPollOptions();
+                ConvertVoteRecords();
+            }
 
-                if (MainForm.IsResetTopicReplies)
-                    ResetTopicReplyCount();
+            if (MainForm.IsConvertAttachments)
+                ConvertAttachments();
+            if (MainForm.IsConvertPms)
+                ConvertPms();
+            if (MainForm.IsConvertForumLinks)
+                ConvertForumLinks();
+            if (MainForm.IsResetTopicLastpostid)
+                Utils.Topics.ResetTopicLastpostid();
+
+            if (MainForm.IsResetTopicReplies)
+                ResetTopicReplyCount();
 
 
-                MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
+            MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             //}
             //catch (Exception ex)
             //{
-                //MainForm.MessageForm.SetMessage(string.Format("初始化错误:{0}\r\n", ex.Message));
+            //MainForm.MessageForm.SetMessage(string.Format("初始化错误:{0}\r\n", ex.Message));
             //}
             MainForm.MessageForm.SetButtonStatus(false);
 
@@ -98,7 +105,7 @@ namespace NConvert
 
             //try
             //{
-                dbhConvertUsers.SetIdentityInsertON(string.Format("{0}users", MainForm.cic.TargetDbTablePrefix));
+            dbhConvertUsers.SetIdentityInsertON(string.Format("{0}users", MainForm.cic.TargetDbTablePrefix));
             //}
             //catch (Exception ex)
             //{
@@ -319,8 +326,8 @@ phone
                         dbhConvertUsers.ParameterAdd("@newsletter", objUser.newsletter, DbType.Int32, 4);
                         #endregion
                         dbhConvertUsers.ExecuteNonQuery(sqlUser);//插入dnt_users表
-                        
-                        
+
+
                         //清理上次执行的参数
                         dbhConvertUsers.ParametersClear();
                         #region dnt_userfields表参数
@@ -350,16 +357,16 @@ phone
                         #endregion
                         dbhConvertUsers.ExecuteNonQuery(sqlUserfields);//插入dnt_userfields表
                         MainForm.SuccessedRecordCount++;
-                    }   
+                    }
                     catch (Exception ex)
-                    {   
+                    {
                         MainForm.MessageForm.SetMessage(string.Format("错误:{0}.uid={1}\r\n", ex.Message, objUser.uid));
                         MainForm.FailedRecordCount++;
-                    }   
+                    }
                     MainForm.MessageForm.CurrentProgressBarNumAdd();
-                }       
+                }
                 MainForm.MessageForm.TotalProgressBarNumAdd();
-            }           
+            }
 
             //dbh.ExecuteNonQuery(string.Format("SET IDENTITY_INSERT {0}users OFF", MainForm.cic.TargetDbTablePrefix));
 
@@ -390,10 +397,10 @@ phone
             dbhConvertForums.TruncateTable(string.Format("{0}forums", MainForm.cic.TargetDbTablePrefix));
             dbhConvertForums.TruncateTable(string.Format("{0}forumfields", MainForm.cic.TargetDbTablePrefix));
 
-            
+
             //try
             //{
-                dbhConvertForums.SetIdentityInsertON(string.Format("{0}forums", MainForm.cic.TargetDbTablePrefix));
+            dbhConvertForums.SetIdentityInsertON(string.Format("{0}forums", MainForm.cic.TargetDbTablePrefix));
             //}
             //catch (Exception ex)
             //{
@@ -611,16 +618,16 @@ VALUES
                     #endregion
                     dbhConvertForums.ExecuteNonQuery(sqlForumfields);//插入dnt_forumfields表
                     MainForm.SuccessedRecordCount++;
-                }   
+                }
                 catch (Exception ex)
-                {   
+                {
                     MainForm.MessageForm.SetMessage(string.Format("错误:{0}.fid={1}\r\n", ex.Message, objForum.fid));
                     MainForm.FailedRecordCount++;
-                }   
+                }
                 MainForm.MessageForm.CurrentProgressBarNumAdd();
-            }       
+            }
             MainForm.MessageForm.TotalProgressBarNumAdd();
-                    
+
             //dbh.ExecuteNonQuery(string.Format("SET IDENTITY_INSERT {0}forums OFF", MainForm.cic.TargetDbTablePrefix));
             dbhConvertForums.SetIdentityInsertOFF(string.Format("{0}forums", MainForm.cic.TargetDbTablePrefix));
             dbhConvertForums.Close();
@@ -697,7 +704,7 @@ VALUES
             //一次分页完毕
             MainForm.MessageForm.TotalProgressBarNumAdd();
 
-                       
+
             dbhConvertTopicTypes.SetIdentityInsertOFF(string.Format("{0}topictypes", MainForm.cic.TargetDbTablePrefix));
             dbhConvertTopicTypes.Dispose();
             MainForm.RecordCount = -1;
@@ -730,7 +737,7 @@ VALUES
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
             //清理数据库
-            dbh.ExecuteNonQuery(string.Format("TRUNCATE TABLE {0}topics", MainForm.cic.TargetDbTablePrefix));  
+            dbh.ExecuteNonQuery(string.Format("TRUNCATE TABLE {0}topics", MainForm.cic.TargetDbTablePrefix));
             dbh.SetIdentityInsertON(string.Format("{0}topics", MainForm.cic.TargetDbTablePrefix));
             #region sql语句
             string sqlTopic = string.Format(@"INSERT INTO {0}topics
@@ -1100,7 +1107,7 @@ VALUES
         }
 
         /// <summary>
-        /// 转换投票
+        /// 转换投票主体
         /// </summary>
         public static void ConvertPolls()
         {
@@ -1125,6 +1132,7 @@ VALUES
 
             //清理数据库
             dbh.TruncateTable(string.Format("{0}Polls", MainForm.cic.TargetDbTablePrefix));
+            dbh.SetIdentityInsertON(string.Format("{0}Polls", MainForm.cic.TargetDbTablePrefix));
 
             for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
             {
@@ -1135,47 +1143,51 @@ VALUES
                     #region sql语句
                     string sqlPoll = string.Format(@"INSERT INTO {0}polls
 (
-aaa
+pollid
+,tid
+,displayorder
+,multiple
+,visible
+,maxchoices
+,expiration
+,uid
+,voternames
 )
 VALUES 
 (
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
-@
+@pollid
+,@tid
+,@displayorder
+,@multiple
+,@visible
+,@maxchoices
+,@expiration
+,@uid
+,@voternames
 )", MainForm.cic.TargetDbTablePrefix);
                     #endregion
                     //清理上次执行的参数
                     dbh.ParametersClear();
                     #region dnt_posts表参数
-                    dbh.ParameterAdd("@pid", objPoll.tid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@pollid", objPoll.Pollid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@tid", objPoll.Tid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@displayorder", objPoll.Displayorder, DbType.Int32, 4);
+                    dbh.ParameterAdd("@multiple", objPoll.Multiple, DbType.Int32, 4);
+                    dbh.ParameterAdd("@visible", objPoll.Visible, DbType.Int32, 4);
+                    dbh.ParameterAdd("@maxchoices", objPoll.Maxchoices, DbType.Int32, 4);
+                    dbh.ParameterAdd("@expiration", objPoll.Expiration, DbType.DateTime, 8);
+                    dbh.ParameterAdd("@uid", objPoll.Uid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@voternames", objPoll.Voternames, DbType.String, 1073741823);
                     #endregion
 
                     try
                     {
-                        dbh.ExecuteNonQuery(sqlPoll);//插入dnt_topics表
+                        dbh.ExecuteNonQuery(sqlPoll);//插入dnt_polls表
                         MainForm.SuccessedRecordCount++;
                     }
                     catch (Exception ex)
                     {
-                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.tid={1}\r\n", ex.Message, objPoll.tid));
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.Pollid={1}\r\n", ex.Message, objPoll.Pollid));
                         MainForm.FailedRecordCount++;
                     }
                     MainForm.MessageForm.CurrentProgressBarNumAdd();
@@ -1183,9 +1195,203 @@ VALUES
                 //一次分页完毕
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
+            dbh.SetIdentityInsertOFF(string.Format("{0}Polls", MainForm.cic.TargetDbTablePrefix));
             dbh.Close();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换投票。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+        /// <summary>
+        /// 转换投票项目
+        /// </summary>
+        public static void ConvertPollOptions()
+        {
+            DBHelper dbh = MainForm.GetTargetDBH();
+            dbh.Open();
+            MainForm.MessageForm.SetMessage("开始转换投票\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetPollOptionsRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbh.TruncateTable(string.Format("{0}polloptions", MainForm.cic.TargetDbTablePrefix));
+            dbh.SetIdentityInsertON(string.Format("{0}polloptions", MainForm.cic.TargetDbTablePrefix));
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到主题列表
+                List<PollOptionInfo> polloptionList = Provider.Provider.GetInstance().GetPollOptionsList(pagei);
+                foreach (PollOptionInfo objPoll in polloptionList)
+                {
+                    #region sql语句
+                    string sqlPoll = string.Format(@"INSERT INTO {0}polloptions
+(
+ polloptionid
+,tid
+,pollid
+,votes
+,displayorder
+,polloption
+,voternames
+)
+VALUES 
+(
+@polloptionid
+,@tid
+,@pollid
+,@votes
+,@displayorder
+,@polloption
+,@voternames
+)", MainForm.cic.TargetDbTablePrefix);
+                    #endregion
+                    //清理上次执行的参数
+                    dbh.ParametersClear();
+                    #region dnt_posts表参数
+                    dbh.ParameterAdd("@polloptionid", objPoll.Polloptionid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@tid", objPoll.Tid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@pollid", objPoll.Pollid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@votes", objPoll.Votes, DbType.Int32, 4);
+                    dbh.ParameterAdd("@displayorder", objPoll.Displayorder, DbType.Int32, 4);
+                    dbh.ParameterAdd("@polloption", objPoll.Polloption, DbType.String, 80);
+                    dbh.ParameterAdd("@voternames", objPoll.Voternames, DbType.String, 1073741823);
+                    #endregion
+
+                    try
+                    {
+                        dbh.ExecuteNonQuery(sqlPoll);//插入dnt_polls表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.Polloptionid={1}\r\n", ex.Message, objPoll.Polloptionid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                //一次分页完毕
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+            dbh.SetIdentityInsertOFF(string.Format("{0}polloptions", MainForm.cic.TargetDbTablePrefix));
+            dbh.Close();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换投票项。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+        /// <summary>
+        /// 整理投票记录
+        /// </summary>
+        public static void ConvertVoteRecords()
+        {
+            DBHelper dbh = MainForm.GetTargetDBH();
+            dbh.Open();
+            MainForm.MessageForm.SetMessage("开始转换投票人记录\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetVotesRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            //dbh.TruncateTable(string.Format("{0}polloptions", MainForm.cic.TargetDbTablePrefix));
+            //dbh.SetIdentityInsertON(string.Format("{0}polloptions", MainForm.cic.TargetDbTablePrefix));
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到主题列表
+                List<VoteRecords> pollrecordList = Provider.Provider.GetInstance().GetVotesList(pagei);
+                foreach (VoteRecords objPoll in pollrecordList)
+                {
+                    #region sql语句
+                    string sqlPoll = string.Format(@"UPDATE {0}polls SET voternames=@voternames WHERE pollid=@pollid",
+                        MainForm.cic.TargetDbTablePrefix);
+                    #endregion
+                    //清理上次执行的参数
+                    dbh.ParametersClear();
+                    #region dnt_posts表参数
+                    StringBuilder sbTopic = new StringBuilder();
+                    foreach (string name in objPoll.Voternames)
+                    {
+                        sbTopic.Append("\r\n" + name);
+                    }
+                    dbh.ParameterAdd("@voternames", sbTopic.ToString().Trim('\r').Trim('\n'), DbType.String, 1073741823);
+                    dbh.ParameterAdd("@pollid", objPoll.Pollid, DbType.Int32, 4);
+                    #endregion
+
+                    try
+                    {
+                        dbh.ExecuteNonQuery(sqlPoll);//插入dnt_polls表
+
+                        foreach (KeyValuePair<int, string> record in objPoll.Voterecords)
+                        {
+                            string sql2 = string.Format(
+                                @"UPDATE {0}polloptions SET voternames=@voternames WHERE polloptionid=@polloptionid",
+                                MainForm.cic.TargetDbTablePrefix
+                                );
+
+                            dbh.ParametersClear();
+                            #region dnt_posts表参数
+                            dbh.ParameterAdd("@voternames", record.Value, DbType.String, 1073741823);
+                            dbh.ParameterAdd("@polloptionid", record.Key, DbType.Int32, 4);
+                            #endregion
+
+                            try
+                            {
+                                dbh.ExecuteNonQuery(sql2);//插入dnt_polls表
+                            }
+                            catch (Exception ex2)
+                            {
+                                throw new Exception(
+                                    string.Format("polloptionid={0},{1}\r\n",
+                                    record.Key.ToString(),
+                                    ex2.Message)
+                                    );
+                            }
+                        }
+
+
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(
+                            string.Format("错误:{0}.Pollid={1}\r\n", ex.Message, objPoll.Pollid)
+                            );
+                        MainForm.FailedRecordCount++;
+                    }
+
+
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                //一次分页完毕
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+            dbh.SetIdentityInsertOFF(string.Format("{0}polloptions", MainForm.cic.TargetDbTablePrefix));
+            dbh.Close();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换投票项。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
         /// <summary>
@@ -1264,7 +1470,7 @@ VALUES
                     dbh.ParameterAdd("@postdatetime", objPm.postdatetime, DbType.DateTime, 8);
                     dbh.ParameterAdd("@message", objPm.message, DbType.String, 1073741823);
                     #endregion
-                    
+
                     try
                     {
                         dbh.ExecuteNonQuery(sqlPms);//插入dnt_topics表
@@ -1342,7 +1548,7 @@ VALUES
                 dbh.ParameterAdd("@note", objForumLink.note, DbType.String, 200);
                 dbh.ParameterAdd("@logo", objForumLink.logo, DbType.String, 100);
                 #endregion
-                
+
                 try
                 {
                     dbh.ExecuteNonQuery(sqlForumLink);
@@ -1537,7 +1743,7 @@ VALUES
             MainForm.FailedRecordCount = 0;
 
 
-            DBHelper topicCountDBH = MainForm.GetTargetDBH();            
+            DBHelper topicCountDBH = MainForm.GetTargetDBH();
             topicCountDBH.Open();
             int topicCount = Convert.ToInt32(topicCountDBH.ExecuteScalar(string.Format("SELECT MAX(tid) FROM {0}topics", MainForm.cic.TargetDbTablePrefix)));
             topicCountDBH.Dispose();
@@ -1550,7 +1756,7 @@ VALUES
             DBHelper postinfoDBH = MainForm.GetTargetDBH();
             postinfoDBH.Open();
             for (int i = 1; i <= topicCount; i++)
-            {                
+            {
                 DataTable dtTopicInfo = topicinfoDBH.ExecuteDataSet(string.Format("SELECT tid,fid,title FROM {0}topics WHERE tid={1}", MainForm.cic.TargetDbTablePrefix, i)).Tables[0];
                 if (dtTopicInfo.Rows.Count > 0)
                 {
