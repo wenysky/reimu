@@ -35,6 +35,20 @@ namespace NConvert.Provider
         string[] GetSupportTargetDbType();
 
         #endregion
+        
+        #region 转换用户
+        /// <summary>
+        /// 得到用户组表中记录数.优先读取全局静态变量,如果变量为-1,则从数据库读取.
+        /// </summary>
+        /// <returns>记录数</returns>
+        int GetUserGroupsRecordCount();
+        /// <summary>
+        /// 分页得到用户组列表
+        /// </summary>
+        /// <param name="CurrentPage">获取第几页</param>
+        /// <returns>用户列表</returns>
+        List<UserGroupInfo> GetUserGroupList(int CurrentPage);
+        #endregion
 
         #region 转换用户
         /// <summary>

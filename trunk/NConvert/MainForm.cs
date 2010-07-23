@@ -95,12 +95,14 @@ namespace NConvert
         #endregion
 
         #region 转换项目
+        public static bool IsConvertUserGroups;//转换用户组
         public static bool IsConvertUsers;//转换用户
         public static bool IsConvertForums;//转换版块
         public static bool IsConvertTopicTypes;//转换主题分类
         public static bool IsConvertTopics;//转换主题
         public static bool IsConvertPosts;//转换帖子
         public static bool IsConvertPolls;//转换投票
+        public static bool IsConvertPollRecords;//转换投票记录（人）
         public static bool IsConvertAttachments;//转换附件
         public static bool IsConvertForumLinks;//转换友情链接
         public static bool IsConvertPms;//转换短消息
@@ -198,13 +200,14 @@ namespace NConvert
             srcDBH = GetSrcDBH_OldVer();
             targetDBH = GetTargetDBH_OldVer();
             #region 设置需要转换的项目
-
+            IsConvertUserGroups = ckbxConvertUserGroups.Checked;
             IsConvertUsers = ckbxConvertUsers.Checked;
             IsConvertForums = ckbxConvertForums.Checked;
             IsConvertTopicTypes = ckbxConvertTopicTypes.Checked;
             IsConvertTopics = ckbxConvertTopics.Checked;
             IsConvertPosts = ckbxConvertPosts.Checked;
             IsConvertPolls = ckbxConvertPolls.Checked;
+            IsConvertPollRecords = ckbxConvertPollRecords.Checked;
             IsConvertAttachments = ckbxConvertAttachments.Checked;
             IsConvertForumLinks = ckbxConvertForumLinks.Checked;
             IsConvertPms = ckbxConvertPms.Checked;

@@ -54,6 +54,10 @@ namespace NConvert.lybbs70_dnt31
                 {
                     objUser.password = "e10adc3949ba59abbe56e057f20f883e";
                 }
+                else
+                {
+                    objUser.password = dr["password"] == DBNull.Value ? "" : dr["password"].ToString();
+                }
 #else
                 objUser.password = dr["password"] == DBNull.Value ? "" : dr["password"].ToString();
 #endif
@@ -132,17 +136,21 @@ namespace NConvert.lybbs70_dnt31
             short NewGroupID;
             switch (OldUserGroupID)
             {
-                case 7: NewGroupID = 1;
+                case 7: 
+                    NewGroupID = 1;
                     break;
-                case 6: NewGroupID = 2;
+                case 6: 
+                    NewGroupID = 2;
                     break;
-                case 3: NewGroupID = 3;
+                case 3: 
+                    NewGroupID = 3;
                     break;
-                case 2: NewGroupID = 0;
+                case 2: 
+                    NewGroupID = 10;
 #warning 需要完善 认证会员组
                     break;
-                case 1:
-                    NewGroupID = 0;
+                case 1://普通用户组全部到10积分用户组
+                    NewGroupID = 10;
                     break;
                 default:
                     throw new Exception("用户组错误");

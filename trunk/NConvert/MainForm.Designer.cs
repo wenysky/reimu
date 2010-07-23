@@ -80,6 +80,7 @@
             this.lbDllName = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.ckbxConvertUserGroups = new System.Windows.Forms.CheckBox();
             this.ckbxUpdatePostsInfo = new System.Windows.Forms.CheckBox();
             this.ckbxResetTopicReplies = new System.Windows.Forms.CheckBox();
             this.ckbxResetTopicLastpostid = new System.Windows.Forms.CheckBox();
@@ -93,6 +94,7 @@
             this.ckbxConvertForums = new System.Windows.Forms.CheckBox();
             this.ckbxConvertUsers = new System.Windows.Forms.CheckBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.ckbxConvertPollRecords = new System.Windows.Forms.CheckBox();
             this.plSrcDBSetting_sql.SuspendLayout();
             this.plTargetDBSetting.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -597,6 +599,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.ckbxConvertPollRecords);
+            this.groupBox4.Controls.Add(this.ckbxConvertUserGroups);
             this.groupBox4.Controls.Add(this.ckbxUpdatePostsInfo);
             this.groupBox4.Controls.Add(this.ckbxResetTopicReplies);
             this.groupBox4.Controls.Add(this.ckbxResetTopicLastpostid);
@@ -609,19 +613,31 @@
             this.groupBox4.Controls.Add(this.ckbxConvertTopicTypes);
             this.groupBox4.Controls.Add(this.ckbxConvertForums);
             this.groupBox4.Controls.Add(this.ckbxConvertUsers);
-            this.groupBox4.Location = new System.Drawing.Point(567, 74);
+            this.groupBox4.Location = new System.Drawing.Point(567, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(185, 188);
+            this.groupBox4.Size = new System.Drawing.Size(185, 250);
             this.groupBox4.TabIndex = 30;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "转换项目";
+            // 
+            // ckbxConvertUserGroups
+            // 
+            this.ckbxConvertUserGroups.AutoSize = true;
+            this.ckbxConvertUserGroups.Checked = true;
+            this.ckbxConvertUserGroups.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbxConvertUserGroups.Location = new System.Drawing.Point(6, 15);
+            this.ckbxConvertUserGroups.Name = "ckbxConvertUserGroups";
+            this.ckbxConvertUserGroups.Size = new System.Drawing.Size(84, 16);
+            this.ckbxConvertUserGroups.TabIndex = 12;
+            this.ckbxConvertUserGroups.Text = "转换用户组";
+            this.ckbxConvertUserGroups.UseVisualStyleBackColor = true;
             // 
             // ckbxUpdatePostsInfo
             // 
             this.ckbxUpdatePostsInfo.AutoSize = true;
             this.ckbxUpdatePostsInfo.Checked = true;
             this.ckbxUpdatePostsInfo.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxUpdatePostsInfo.Location = new System.Drawing.Point(6, 170);
+            this.ckbxUpdatePostsInfo.Location = new System.Drawing.Point(6, 190);
             this.ckbxUpdatePostsInfo.Name = "ckbxUpdatePostsInfo";
             this.ckbxUpdatePostsInfo.Size = new System.Drawing.Size(96, 16);
             this.ckbxUpdatePostsInfo.TabIndex = 11;
@@ -631,7 +647,7 @@
             // ckbxResetTopicReplies
             // 
             this.ckbxResetTopicReplies.AutoSize = true;
-            this.ckbxResetTopicReplies.Location = new System.Drawing.Point(6, 148);
+            this.ckbxResetTopicReplies.Location = new System.Drawing.Point(6, 168);
             this.ckbxResetTopicReplies.Name = "ckbxResetTopicReplies";
             this.ckbxResetTopicReplies.Size = new System.Drawing.Size(120, 16);
             this.ckbxResetTopicReplies.TabIndex = 10;
@@ -643,7 +659,7 @@
             this.ckbxResetTopicLastpostid.AutoSize = true;
             this.ckbxResetTopicLastpostid.Checked = true;
             this.ckbxResetTopicLastpostid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxResetTopicLastpostid.Location = new System.Drawing.Point(6, 126);
+            this.ckbxResetTopicLastpostid.Location = new System.Drawing.Point(6, 146);
             this.ckbxResetTopicLastpostid.Name = "ckbxResetTopicLastpostid";
             this.ckbxResetTopicLastpostid.Size = new System.Drawing.Size(120, 16);
             this.ckbxResetTopicLastpostid.TabIndex = 9;
@@ -655,7 +671,7 @@
             this.ckbxConvertForumLinks.AutoSize = true;
             this.ckbxConvertForumLinks.Checked = true;
             this.ckbxConvertForumLinks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertForumLinks.Location = new System.Drawing.Point(96, 82);
+            this.ckbxConvertForumLinks.Location = new System.Drawing.Point(6, 124);
             this.ckbxConvertForumLinks.Name = "ckbxConvertForumLinks";
             this.ckbxConvertForumLinks.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertForumLinks.TabIndex = 8;
@@ -667,7 +683,7 @@
             this.ckbxConvertPms.AutoSize = true;
             this.ckbxConvertPms.Checked = true;
             this.ckbxConvertPms.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertPms.Location = new System.Drawing.Point(6, 104);
+            this.ckbxConvertPms.Location = new System.Drawing.Point(96, 101);
             this.ckbxConvertPms.Name = "ckbxConvertPms";
             this.ckbxConvertPms.Size = new System.Drawing.Size(84, 16);
             this.ckbxConvertPms.TabIndex = 7;
@@ -679,7 +695,7 @@
             this.ckbxConvertAttachments.AutoSize = true;
             this.ckbxConvertAttachments.Checked = true;
             this.ckbxConvertAttachments.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertAttachments.Location = new System.Drawing.Point(6, 82);
+            this.ckbxConvertAttachments.Location = new System.Drawing.Point(6, 101);
             this.ckbxConvertAttachments.Name = "ckbxConvertAttachments";
             this.ckbxConvertAttachments.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertAttachments.TabIndex = 6;
@@ -691,7 +707,7 @@
             this.ckbxConvertPolls.AutoSize = true;
             this.ckbxConvertPolls.Checked = true;
             this.ckbxConvertPolls.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertPolls.Location = new System.Drawing.Point(96, 61);
+            this.ckbxConvertPolls.Location = new System.Drawing.Point(6, 81);
             this.ckbxConvertPolls.Name = "ckbxConvertPolls";
             this.ckbxConvertPolls.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertPolls.TabIndex = 5;
@@ -703,7 +719,7 @@
             this.ckbxConvertPosts.AutoSize = true;
             this.ckbxConvertPosts.Checked = true;
             this.ckbxConvertPosts.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertPosts.Location = new System.Drawing.Point(6, 61);
+            this.ckbxConvertPosts.Location = new System.Drawing.Point(96, 59);
             this.ckbxConvertPosts.Name = "ckbxConvertPosts";
             this.ckbxConvertPosts.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertPosts.TabIndex = 4;
@@ -715,7 +731,7 @@
             this.ckbxConvertTopics.AutoSize = true;
             this.ckbxConvertTopics.Checked = true;
             this.ckbxConvertTopics.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertTopics.Location = new System.Drawing.Point(96, 39);
+            this.ckbxConvertTopics.Location = new System.Drawing.Point(6, 59);
             this.ckbxConvertTopics.Name = "ckbxConvertTopics";
             this.ckbxConvertTopics.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertTopics.TabIndex = 3;
@@ -727,7 +743,7 @@
             this.ckbxConvertTopicTypes.AutoSize = true;
             this.ckbxConvertTopicTypes.Checked = true;
             this.ckbxConvertTopicTypes.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertTopicTypes.Location = new System.Drawing.Point(6, 39);
+            this.ckbxConvertTopicTypes.Location = new System.Drawing.Point(96, 37);
             this.ckbxConvertTopicTypes.Name = "ckbxConvertTopicTypes";
             this.ckbxConvertTopicTypes.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertTopicTypes.TabIndex = 2;
@@ -739,7 +755,7 @@
             this.ckbxConvertForums.AutoSize = true;
             this.ckbxConvertForums.Checked = true;
             this.ckbxConvertForums.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertForums.Location = new System.Drawing.Point(96, 17);
+            this.ckbxConvertForums.Location = new System.Drawing.Point(6, 37);
             this.ckbxConvertForums.Name = "ckbxConvertForums";
             this.ckbxConvertForums.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertForums.TabIndex = 1;
@@ -751,7 +767,7 @@
             this.ckbxConvertUsers.AutoSize = true;
             this.ckbxConvertUsers.Checked = true;
             this.ckbxConvertUsers.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbxConvertUsers.Location = new System.Drawing.Point(6, 17);
+            this.ckbxConvertUsers.Location = new System.Drawing.Point(96, 15);
             this.ckbxConvertUsers.Name = "ckbxConvertUsers";
             this.ckbxConvertUsers.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertUsers.TabIndex = 0;
@@ -761,6 +777,18 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // ckbxConvertPollRecords
+            // 
+            this.ckbxConvertPollRecords.AutoSize = true;
+            this.ckbxConvertPollRecords.Checked = true;
+            this.ckbxConvertPollRecords.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbxConvertPollRecords.Location = new System.Drawing.Point(96, 81);
+            this.ckbxConvertPollRecords.Name = "ckbxConvertPollRecords";
+            this.ckbxConvertPollRecords.Size = new System.Drawing.Size(84, 16);
+            this.ckbxConvertPollRecords.TabIndex = 13;
+            this.ckbxConvertPollRecords.Text = "转换投票人";
+            this.ckbxConvertPollRecords.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -873,6 +901,8 @@
         private System.Windows.Forms.TextBox tbxSrcAccessDBPath;
         private System.Windows.Forms.Panel plSrcDBSetting_acc;
         private System.Windows.Forms.Button btnBrowerAccessDBFile;
+        private System.Windows.Forms.CheckBox ckbxConvertUserGroups;
+        private System.Windows.Forms.CheckBox ckbxConvertPollRecords;
     }
 }
 
