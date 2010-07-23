@@ -89,6 +89,7 @@
     <Compile Include="Entity\PostTables.cs" />
     <Compile Include="Entity\Topics.cs" />
     <Compile Include="Entity\TopicTypes.cs" />
+    <Compile Include="Entity\UserGroupInfo.cs" />
     <Compile Include="Entity\Users.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
