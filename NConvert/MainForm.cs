@@ -499,7 +499,7 @@ namespace NConvert
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            if (ConvertThread.IsAlive)
+            if (ConvertThread != null && ConvertThread.IsAlive)
             {
                 try
                 {
@@ -510,6 +510,10 @@ namespace NConvert
                     SetMessage("正在终止线程...");
                 }
                 SetMessage("已手动停止转换\r\n");
+            }
+            else
+            {
+                SetMessage("没有启动任何线程！\r\n");
             }
         }
 
