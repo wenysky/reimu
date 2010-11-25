@@ -87,7 +87,7 @@ namespace NConvert
         /// </summary>
         public static void ConvertUserGroups()
         {
-            DBHelper dbhConvertUsers = MainForm.GetTargetDBH();
+            Yuwen.Tools.Data.DBHelper dbhConvertUsers = MainForm.GetTargetDBH_OldVer();//.GetTargetDBH();
             dbhConvertUsers.Open();
             MainForm.MessageForm.SetMessage("开始转换用户组\r\n");
             MainForm.SuccessedRecordCount = 0;
@@ -108,12 +108,12 @@ namespace NConvert
             //清理数据库
             //dbhConvertUsers.TruncateTable(string.Format("{0}usergroups", MainForm.cic.TargetDbTablePrefix));
             dbhConvertUsers.ExecuteNonQuery(
-                string.Format("DELETE FROM {0}usergroups WHERE groupid>9", MainForm.cic.TargetDbTablePrefix)
+                string.Format("TRUNCATE TABLE {0}common_usergroup", MainForm.cic.TargetDbTablePrefix)
                 );
 
             //try
             //{
-            dbhConvertUsers.SetIdentityInsertON(string.Format("{0}usergroups", MainForm.cic.TargetDbTablePrefix));
+            //dbhConvertUsers.SetIdentityInsertON(string.Format("{0}usergroups", MainForm.cic.TargetDbTablePrefix));
             //}
             //catch (Exception ex)
             //{
@@ -121,119 +121,221 @@ namespace NConvert
             //}
 
             #region sql语句
-            string sqlUser = string.Format(@"Insert into {0}usergroups
+            string sqlUser = string.Format(@"Insert into {0}common_usergroup
 (
- groupid
- ,radminid
- ,type
- ,system
- ,grouptitle
- ,creditshigher
- ,creditslower
- ,stars
- ,color
- ,groupavatar
- ,readaccess
- ,allowvisit
- ,allowpost
- ,allowreply
- ,allowpostpoll
- ,allowdirectpost
- ,allowgetattach
- ,allowpostattach
- ,allowvote
- ,allowmultigroups
- ,allowsearch
- ,allowavatar
- ,allowcstatus
- ,allowuseblog
- ,allowinvisible
- ,allowtransfer
- ,allowsetreadperm
- ,allowsetattachperm
- ,allowhidecode
- ,allowhtml
- ,allowcusbbcode
- ,allownickname
- ,allowsigbbcode
- ,allowsigimgcode
- ,allowviewpro
- ,allowviewstats
- ,disableperiodctrl
- ,reasonpm
- ,maxprice
- ,maxpmnum
- ,maxsigsize
- ,maxattachsize
- ,maxsizeperday
- ,attachextensions
- ,raterange
- ,allowspace
- ,maxspaceattachsize
- ,maxspacephotosize
- ,allowdebate
- ,allowbonus
- ,minbonusprice
- ,maxbonusprice
- ,allowtrade
- ,allowdiggs
+`groupid`, 
+`radminid`, 
+`type`, 
+`system`, 
+`grouptitle`, 
+`creditshigher`, 
+`creditslower`, 
+`stars`, 
+`color`, 
+`icon`, 
+`allowvisit`, 
+`allowsendpm`, 
+`allowinvite`, 
+`allowmailinvite`, 
+`maxinvitenum`, 
+`inviteprice`, 
+`maxinviteday`, 
+`readaccess`, 
+`allowpost`, 
+`allowreply`, 
+`allowpostpoll`, 
+`allowpostreward`, 
+`allowposttrade`, 
+`allowpostactivity`, 
+`allowdirectpost`, 
+`allowgetattach`, 
+`allowpostattach`, 
+`allowpostimage`, 
+`allowvote`, 
+`allowmultigroups`, 
+`allowsearch`, 
+`allowcstatus`, 
+`allowinvisible`, 
+`allowtransfer`, 
+`allowsetreadperm`, 
+`allowsetattachperm`, 
+`allowhidecode`, 
+`allowhtml`, 
+`allowanonymous`, 
+`allowsigbbcode`, 
+`allowsigimgcode`, 
+`allowmagics`, 
+`disableperiodctrl`, 
+`reasonpm`, 
+`maxprice`, 
+`maxsigsize`, 
+`maxattachsize`, 
+`maxsizeperday`, 
+`maxpostsperhour`, 
+`attachextensions`, 
+`raterange`, 
+`mintradeprice`, 
+`maxtradeprice`, 
+`minrewardprice`, 
+`maxrewardprice`, 
+`magicsdiscount`, 
+`maxmagicsweight`, 
+`allowpostdebate`, 
+`tradestick`, 
+`exempt`, 
+`maxattachnum`, 
+`allowposturl`, 
+`allowrecommend`, 
+`allowpostrushreply`, 
+`maxfriendnum`, 
+`maxspacesize`, 
+`allowcomment`, 
+`allowcommentarticle`, 
+`searchinterval`, 
+`searchignore`, 
+`allowblog`, 
+`allowdoing`, 
+`allowupload`, 
+`allowshare`, 
+`allowblogmod`, 
+`allowdoingmod`, 
+`allowuploadmod`, 
+`allowsharemod`, 
+`allowcss`, 
+`allowpoke`, 
+`allowfriend`, 
+`allowclick`, 
+`allowmagic`, 
+`allowstat`, 
+`allowstatdata`, 
+`videophotoignore`, 
+`allowviewvideophoto`, 
+`allowmyop`, 
+`magicdiscount`, 
+`domainlength`, 
+`seccode`, 
+`disablepostctrl`, 
+`allowbuildgroup`, 
+`allowgroupdirectpost`, 
+`allowgroupposturl`, 
+`edittimelimit`, 
+`allowpostarticle`, 
+`allowdownlocalimg`, 
+`allowpostarticlemod`, 
+`allowspacediyhtml`, 
+`allowspacediybbcode`, 
+`allowspacediyimgcode`, 
+`allowcommentpost`, 
+`allowcommentitem`, 
+`ignorecensor`
 ) 
 values
 (
-@groupid
-,@radminid
-,@type
-,@system
-,@grouptitle
-,@creditshigher
-,@creditslower
-,@stars
-,@color
-,@groupavatar
-,@readaccess
-,@allowvisit
-,@allowpost
-,@allowreply
-,@allowpostpoll
-,@allowdirectpost
-,@allowgetattach
-,@allowpostattach
-,@allowvote
-,@allowmultigroups
-,@allowsearch
-,@allowavatar
-,@allowcstatus
-,@allowuseblog
-,@allowinvisible
-,@allowtransfer
-,@allowsetreadperm
-,@allowsetattachperm
-,@allowhidecode
-,@allowhtml
-,@allowcusbbcode
-,@allownickname
-,@allowsigbbcode
-,@allowsigimgcode
-,@allowviewpro
-,@allowviewstats
-,@disableperiodctrl
-,@reasonpm
-,@maxprice
-,@maxpmnum
-,@maxsigsize
-,@maxattachsize
-,@maxsizeperday
-,@attachextensions
-,@raterange
-,@allowspace
-,@maxspaceattachsize
-,@maxspacephotosize
-,@allowdebate
-,@allowbonus
-,@minbonusprice
-,@maxbonusprice
-,@allowtrade
-,@allowdiggs
+@groupid,
+@radminid, 
+@type, 
+@system, 
+@grouptitle, 
+@creditshigher, 
+@creditslower, 
+@stars, 
+@color, 
+@icon, 
+@allowvisit, 
+@allowsendpm, 
+@allowinvite, 
+@allowmailinvite, 
+@maxinvitenum, 
+@inviteprice, 
+@maxinviteday, 
+@readaccess, 
+@allowpost, 
+@allowreply, 
+@allowpostpoll, 
+@allowpostreward, 
+@allowposttrade, 
+@allowpostactivity, 
+@allowdirectpost, 
+@allowgetattach, 
+@allowpostattach, 
+@allowpostimage, 
+@allowvote, 
+@allowmultigroups, 
+@allowsearch, 
+@allowcstatus, 
+@allowinvisible, 
+@allowtransfer, 
+@allowsetreadperm, 
+@allowsetattachperm, 
+@allowhidecode, 
+@allowhtml, 
+@allowanonymous, 
+@allowsigbbcode, 
+@allowsigimgcode, 
+@allowmagics, 
+@disableperiodctrl, 
+@reasonpm, 
+@maxprice, 
+@maxsigsize, 
+@maxattachsize, 
+@maxsizeperday, 
+@maxpostsperhour, 
+@attachextensions, 
+@raterange, 
+@mintradeprice, 
+@maxtradeprice, 
+@minrewardprice, 
+@maxrewardprice, 
+@magicsdiscount, 
+@maxmagicsweight, 
+@allowpostdebate, 
+@tradestick, 
+@exempt, 
+@maxattachnum, 
+@allowposturl, 
+@allowrecommend, 
+@allowpostrushreply, 
+@maxfriendnum, 
+@maxspacesize, 
+@allowcomment, 
+@allowcommentarticle, 
+@searchinterval, 
+@searchignore, 
+@allowblog, 
+@allowdoing, 
+@allowupload, 
+@allowshare, 
+@allowblogmod, 
+@allowdoingmod, 
+@allowuploadmod, 
+@allowsharemod, 
+@allowcss, 
+@allowpoke, 
+@allowfriend, 
+@allowclick, 
+@allowmagic, 
+@allowstat, 
+@allowstatdata, 
+@videophotoignore, 
+@allowviewvideophoto, 
+@allowmyop, 
+@magicdiscount, 
+@domainlength, 
+@seccode, 
+@disablepostctrl, 
+@allowbuildgroup, 
+@allowgroupdirectpost, 
+@allowgroupposturl, 
+@edittimelimit, 
+@allowpostarticle, 
+@allowdownlocalimg, 
+@allowpostarticlemod, 
+@allowspacediyhtml, 
+@allowspacediybbcode, 
+@allowspacediyimgcode, 
+@allowcommentpost, 
+@allowcommentitem, 
+@ignorecensor
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
@@ -319,7 +421,7 @@ values
             //dbh.ExecuteNonQuery(string.Format("SET IDENTITY_INSERT {0}users OFF", MainForm.cic.TargetDbTablePrefix));
 
             dbhConvertUsers.SetIdentityInsertOFF(string.Format("{0}users", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertUsers.Close();
+            dbhConvertUsers.Dispose();//.Close();
             dbhConvertUsers.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换用户。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
