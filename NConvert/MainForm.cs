@@ -194,7 +194,21 @@ namespace NConvert
             cic.TargetDbUsername = tbxTargetLoginID.Text.Trim();
             cic.TargetDbUserpassword = tbxTargetPassword.Text.Trim();
             cic.TargetDbTablePrefix = tbxTargetDbTablePrefix.Text.Trim();
-            targetDbConn = string.Format("Data Source={0};Initial Catalog={1};User ID={2};Password={3};pooling=false;", cic.TargetDbAddress, cic.TargetDbName, cic.TargetDbUsername, cic.TargetDbUserpassword);
+
+            if (cic.TargetDbType.ToLower() == "access")
+            {
+                targetDbConn = cic.TargetDbFilePath;
+                targetDbTypeNamespace = "System.Data.OleDb";
+            }
+            else if (cic.TargetDbType.ToLower() == "mysql")
+            {
+                targetDbConn = string.Format(@"Data Source={0};Port=3306;Initial Catalog={1};User ID={2};Password={3};Allow Zero Datetime=true;charset=utf8;", cic.TargetDbAddress, cic.TargetDbName, cic.TargetDbUsername, cic.TargetDbUserpassword);
+                targetDbTypeNamespace = "MySql.Data.MySqlClient";
+            }
+            else
+            {
+                targetDbConn = string.Format("Data Source={0};Initial Catalog={1};User ID={2};Password={3};", cic.TargetDbAddress, cic.TargetDbName, cic.TargetDbUsername, cic.TargetDbUserpassword);
+            }
 
             //初始化全局静态DHB对象
             srcDBH = GetSrcDBH_OldVer();
