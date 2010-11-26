@@ -45,9 +45,15 @@ namespace NConvert.Entity
         public int allowsetattachperm { get; set; }
         public int allowhidecode { get; set; }
         public int allowhtml { get; set; }
+        /// <summary>
+        /// 匿名发帖
+        /// </summary>
         public int allowanonymous { get; set; }
         public int allowsigbbcode { get; set; }
         public int allowsigimgcode { get; set; }
+        /// <summary>
+        /// 使用道具
+        /// </summary>
         public int allowmagics { get; set; }
         public int disableperiodctrl { get; set; }
         public int reasonpm { get; set; }
@@ -66,16 +72,28 @@ namespace NConvert.Entity
         public int maxmagicsweight { get; set; }
         public int allowpostdebate { get; set; }
         public int tradestick { get; set; }
+        /// <summary>
+        /// 用户组表达式
+        /// </summary>
         public int exempt { get; set; }
         public int maxattachnum { get; set; }
         public int allowposturl { get; set; }
         public int allowrecommend { get; set; }
+        /// <summary>
+        /// 抢楼贴
+        /// </summary>
         public int allowpostrushreply { get; set; }
         public int maxfriendnum { get; set; }
         public int maxspacesize { get; set; }
         public int allowcomment { get; set; }
         public int allowcommentarticle { get; set; }
+        /// <summary>
+        /// 两次搜索间隔
+        /// </summary>
         public int searchinterval { get; set; }
+        /// <summary>
+        /// 是否免费搜索
+        /// </summary>
         public int searchignore { get; set; }
         public int allowblog { get; set; }
         public int allowdoing { get; set; }
@@ -98,6 +116,9 @@ namespace NConvert.Entity
         public int magicdiscount { get; set; }
         public int domainlength { get; set; }
         public int seccode { get; set; }
+        /// <summary>
+        /// 发表是否受审核限制
+        /// </summary>
         public int disablepostctrl { get; set; }
         public int allowbuildgroup { get; set; }
         public int allowgroupdirectpost { get; set; }
