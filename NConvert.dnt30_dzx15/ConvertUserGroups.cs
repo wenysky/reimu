@@ -46,21 +46,25 @@ namespace NConvert.dnt30_dzx15
 
             while (dr.Read())
             {
+                //SELECT *
+                //FROM `pre_common_usergroup`
+                //LEFT JOIN `pre_common_usergroup_field` ON `pre_common_usergroup`.groupid = `pre_common_usergroup_field`.groupid
                 UserGroupInfo objUser = new UserGroupInfo();
-
-
-
-
 
                 objUser.groupid = Convert.ToInt32(dr["groupid"]);
                 objUser.radminid = Convert.ToInt32(dr["radminid"]);
                 if (objUser.radminid == -1)
                 {
                     objUser.type = "special";
+                    objUser.radminid = 0;
                 }
                 else if (Convert.ToInt32(dr["system"]) == 1)
                 {
                     objUser.type = "system";
+                }
+                else if (objUser.radminid <= 3 && objUser.radminid > 0)//非系统的管理组
+                {
+                    objUser.type = "special";
                 }
                 else
                 {
@@ -74,32 +78,25 @@ namespace NConvert.dnt30_dzx15
                 objUser.color = dr["color"].ToString();
                 objUser.icon = dr["groupavatar"].ToString();
                 objUser.allowvisit = Convert.ToInt32(dr["allowvisit"]);
-                objUser.allowsendpm = Convert.ToInt32(dr["allowsendpm"]);
-                objUser.allowinvite = Convert.ToInt32(dr["allowinvite"]);
-                objUser.allowmailinvite = Convert.ToInt32(dr["allowmailinvite"]);
-                objUser.maxinvitenum = Convert.ToInt32(dr["maxinvitenum"]);
-                objUser.inviteprice = Convert.ToInt32(dr["inviteprice"]);
-                objUser.maxinviteday = Convert.ToInt32(dr["maxinviteday"]);
+                objUser.allowsendpm = 1;
+                objUser.allowinvite = GetGroupValueByModers(objUser.radminid, 0, 1);
+                objUser.allowmailinvite = GetGroupValueByModers(objUser.radminid, 0, 1);
+                objUser.maxinvitenum = 0;
+                objUser.inviteprice = 0;
+                objUser.maxinviteday = GetGroupValueByLowerUsers(objUser.groupid, 0, 10);
                 objUser.readaccess = Convert.ToInt32(dr["readaccess"]);
                 objUser.allowpost = Convert.ToInt32(dr["allowpost"]);
                 objUser.allowreply = Convert.ToInt32(dr["allowreply"]);
                 objUser.allowpostpoll = Convert.ToInt32(dr["allowpostpoll"]);
-                objUser.allowpostreward = Convert.ToInt32(dr["allowpostreward"]);
-                objUser.allowposttrade = Convert.ToInt32(dr["allowposttrade"]);
-                objUser.allowpostactivity = Convert.ToInt32(dr["allowpostactivity"]);
+                objUser.allowpostreward = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowposttrade = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowpostactivity = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
                 objUser.allowdirectpost = Convert.ToInt32(dr["allowdirectpost"]);
                 objUser.allowgetattach = Convert.ToInt32(dr["allowgetattach"]);
                 objUser.allowpostattach = Convert.ToInt32(dr["allowpostattach"]);
-                objUser.allowpostimage = Convert.ToInt32(dr["allowpostimage"]);
+                objUser.allowpostimage = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
                 objUser.allowvote = Convert.ToInt32(dr["allowvote"]);
-                if (objUser.groupid > 3 && objUser.groupid < 13)
-                {
-                    objUser.allowmultigroups = 0;
-                }
-                else
-                {
-                    objUser.allowmultigroups = 1;
-                }
+                objUser.allowmultigroups = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
                 objUser.allowsearch = Convert.ToInt32(dr["allowsearch"]);
                 objUser.allowcstatus = Convert.ToInt32(dr["allowcstatus"]);
                 objUser.allowinvisible = Convert.ToInt32(dr["allowinvisible"]);
@@ -108,95 +105,167 @@ namespace NConvert.dnt30_dzx15
                 objUser.allowsetattachperm = Convert.ToInt32(dr["allowsetattachperm"]);
                 objUser.allowhidecode = Convert.ToInt32(dr["allowhidecode"]);
                 objUser.allowhtml = Convert.ToInt32(dr["allowhtml"]);
-                objUser.allowanonymous = Convert.ToInt32(dr["allowanonymous"]);
+                objUser.allowanonymous = 0;
                 objUser.allowsigbbcode = Convert.ToInt32(dr["allowsigbbcode"]);
                 objUser.allowsigimgcode = Convert.ToInt32(dr["allowsigimgcode"]);
-                objUser.allowmagics = Convert.ToInt32(dr["allowmagics"]);
+                objUser.allowmagics = 0;
                 objUser.disableperiodctrl = Convert.ToInt32(dr["disableperiodctrl"]);
                 objUser.reasonpm = Convert.ToInt32(dr["reasonpm"]);
                 objUser.maxprice = Convert.ToInt32(dr["maxprice"]);
                 objUser.maxsigsize = Convert.ToInt32(dr["maxsigsize"]);
                 objUser.maxattachsize = Convert.ToInt32(dr["maxattachsize"]);
                 objUser.maxsizeperday = Convert.ToInt32(dr["maxsizeperday"]);
-                objUser.maxpostsperhour = Convert.ToInt32(dr["maxpostsperhour"]);
+                objUser.maxpostsperhour = 0;
                 objUser.attachextensions = dr["attachextensions"].ToString();
                 objUser.raterange = dr["raterange"].ToString();
-                objUser.mintradeprice = Convert.ToInt32(dr["mintradeprice"]);
-                objUser.maxtradeprice = Convert.ToInt32(dr["maxtradeprice"]);
-                objUser.minrewardprice = Convert.ToInt32(dr["minrewardprice"]);
-                objUser.maxrewardprice = Convert.ToInt32(dr["maxrewardprice"]);
-                objUser.magicsdiscount = Convert.ToInt32(dr["magicsdiscount"]);
-                objUser.maxmagicsweight = Convert.ToInt32(dr["maxmagicsweight"]);
-                objUser.allowpostdebate = Convert.ToInt32(dr["allowpostdebate"]);
-                objUser.tradestick = Convert.ToInt32(dr["tradestick"]);
-                objUser.exempt = Convert.ToInt32(dr["exempt"]);
-                objUser.maxattachnum = Convert.ToInt32(dr["maxattachnum"]);
-                objUser.allowposturl = Convert.ToInt32(dr["allowposturl"]);
-                objUser.allowrecommend = Convert.ToInt32(dr["allowrecommend"]);
-                objUser.allowpostrushreply = Convert.ToInt32(dr["allowpostrushreply"]);
-                objUser.maxfriendnum = Convert.ToInt32(dr["maxfriendnum"]);
-                objUser.maxspacesize = Convert.ToInt32(dr["maxspacesize"]);
-                objUser.allowcomment = Convert.ToInt32(dr["allowcomment"]);
-                objUser.allowcommentarticle = Convert.ToInt32(dr["allowcommentarticle"]);
-                objUser.searchinterval = Convert.ToInt32(dr["searchinterval"]);
-                objUser.searchignore = Convert.ToInt32(dr["searchignore"]);
-                objUser.allowblog = Convert.ToInt32(dr["allowblog"]);
-                objUser.allowdoing = Convert.ToInt32(dr["allowdoing"]);
-                objUser.allowupload = Convert.ToInt32(dr["allowupload"]);
-                objUser.allowshare = Convert.ToInt32(dr["allowshare"]);
-                objUser.allowblogmod = Convert.ToInt32(dr["allowblogmod"]);
-                objUser.allowdoingmod = Convert.ToInt32(dr["allowdoingmod"]);
-                objUser.allowuploadmod = Convert.ToInt32(dr["allowuploadmod"]);
-                objUser.allowsharemod = Convert.ToInt32(dr["allowsharemod"]);
-                objUser.allowcss = Convert.ToInt32(dr["allowcss"]);
-                objUser.allowpoke = Convert.ToInt32(dr["allowpoke"]);
-                objUser.allowfriend = Convert.ToInt32(dr["allowfriend"]);
-                objUser.allowclick = Convert.ToInt32(dr["allowclick"]);
-                objUser.allowmagic = Convert.ToInt32(dr["allowmagic"]);
-                objUser.allowstat = Convert.ToInt32(dr["allowstat"]);
-                objUser.allowstatdata = Convert.ToInt32(dr["allowstatdata"]);
-                objUser.videophotoignore = Convert.ToInt32(dr["videophotoignore"]);
-                objUser.allowviewvideophoto = Convert.ToInt32(dr["allowviewvideophoto"]);
-                objUser.allowmyop = Convert.ToInt32(dr["allowmyop"]);
-                objUser.magicdiscount = Convert.ToInt32(dr["magicdiscount"]);
-                objUser.domainlength = Convert.ToInt32(dr["domainlength"]);
-                objUser.seccode = Convert.ToInt32(dr["seccode"]);
-                objUser.disablepostctrl = Convert.ToInt32(dr["disablepostctrl"]);
-                objUser.allowbuildgroup = Convert.ToInt32(dr["allowbuildgroup"]);
-                objUser.allowgroupdirectpost = Convert.ToInt32(dr["allowgroupdirectpost"]);
-                objUser.allowgroupposturl = Convert.ToInt32(dr["allowgroupposturl"]);
-                objUser.edittimelimit = Convert.ToInt32(dr["edittimelimit"]);
-                objUser.allowpostarticle = Convert.ToInt32(dr["allowpostarticle"]);
-                objUser.allowdownlocalimg = Convert.ToInt32(dr["allowdownlocalimg"]);
-                objUser.allowpostarticlemod = Convert.ToInt32(dr["allowpostarticlemod"]);
-                objUser.allowspacediyhtml = Convert.ToInt32(dr["allowspacediyhtml"]);
-                objUser.allowspacediybbcode = Convert.ToInt32(dr["allowspacediybbcode"]);
-                objUser.allowspacediyimgcode = Convert.ToInt32(dr["allowspacediyimgcode"]);
-                objUser.allowcommentpost = Convert.ToInt32(dr["allowcommentpost"]);
-                objUser.allowcommentitem = Convert.ToInt32(dr["allowcommentitem"]);
-                objUser.ignorecensor = Convert.ToInt32(dr["ignorecensor"]);
+                objUser.mintradeprice = 1;
+                objUser.maxtradeprice = 0;
+                objUser.minrewardprice = 1;
+                objUser.maxrewardprice = 0;
+                objUser.magicsdiscount = 0;
+                objUser.maxmagicsweight = 100;
+                objUser.allowpostdebate = 0;
+                objUser.tradestick = 5;
+                if (objUser.groupid <= 2)
+                {
+                    objUser.exempt = 255;
+                }
+                else if (objUser.groupid == 224)
+                {
+                    objUser.exempt = 224;
+                }
+                else
+                {
+                    objUser.exempt = 0;
+                }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                objUser.maxattachnum = 0;
+                objUser.allowposturl = 3;
+                if (objUser.groupid == 7)
+                {
+                    objUser.allowrecommend = 0;
+                }
+                else
+                {
+                    objUser.allowrecommend = 1;
+                }
+                if (objUser.groupid == 1)
+                {
+                    objUser.allowpostrushreply = 1;
+                }
+                else
+                {
+                    objUser.allowpostrushreply = 0;
+                }
+                objUser.maxfriendnum = 0;
+                objUser.maxspacesize = 0;
+                if (objUser.groupid >= 4 && objUser.groupid <= 9)
+                {
+                    objUser.allowcomment = 0;
+                    objUser.allowcommentarticle = 0;
+                }
+                else
+                {
+                    objUser.allowcomment = 1;
+                    objUser.allowcommentarticle = 1000;
+                }
+                objUser.searchinterval = 0;
+                objUser.searchignore = 0;
+                objUser.allowblog = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowdoing = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowupload = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowshare = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowblogmod = 0;
+                objUser.allowdoingmod = 0;
+                objUser.allowuploadmod = 0;
+                objUser.allowsharemod = 0;
+                objUser.allowcss = 0;
+                objUser.allowpoke = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowfriend = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowclick = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowmagic = 0;
+                objUser.allowstat = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
+                objUser.allowstatdata = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
+                objUser.videophotoignore = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
+                objUser.allowviewvideophoto = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
+                objUser.allowmyop = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.magicdiscount = 0;
+                objUser.domainlength = GetGroupValueByLowerUsers(objUser.groupid, 0, 5);
+                objUser.seccode = 1;
+                objUser.disablepostctrl = GetGroupValueByModers(objUser.radminid, 0, 1);
+                objUser.allowbuildgroup = GetGroupValueByLowerUsers(objUser.groupid, 0, 5);
+                objUser.allowgroupdirectpost = 3;
+                objUser.allowgroupposturl = GetGroupValueByAdminUsers(objUser.radminid, 0, 3);
+                objUser.edittimelimit = 0;
+                objUser.allowpostarticle = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
+                objUser.allowdownlocalimg = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
+                objUser.allowpostarticlemod = 0;
+                objUser.allowspacediyhtml = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
+                objUser.allowspacediybbcode = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowspacediyimgcode = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowcommentpost = GetGroupValueByLowerUsers(objUser.groupid, 0, 2);
+                objUser.allowcommentitem = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.ignorecensor = GetGroupValueByModers(objUser.radminid, 0, 1);
                 userlist.Add(objUser);
             }
             //userlist[userlist.Count - 1].Creditslower = 99999999;
             return userlist;
+        }
+        /// <summary>
+        /// 受限用户组的判断并返回值（禁言/访问/IP、游客、待验证、限制会员/乞丐）
+        /// </summary>
+        /// <param name="groupid"></param>
+        /// <param name="lowerValue"></param>
+        /// <param name="HigherValue"></param>
+        /// <returns></returns>
+        private static int GetGroupValueByLowerUsers(int groupid, int lowerValue, int HigherValue)
+        {
+            if (groupid >= 4 && groupid <= 9)
+            {
+                return lowerValue;
+            }
+            else
+            {
+                return HigherValue;
+            }
+        }
+
+        /// <summary>
+        /// 管理员特权
+        /// </summary>
+        /// <param name="groupid"></param>
+        /// <param name="lowerValue"></param>
+        /// <param name="adminValue"></param>
+        /// <returns></returns>
+        private static int GetGroupValueByAdminUsers(int radminid, int lowerValue, int adminValue)
+        {
+            if (radminid == 1)
+            {
+                return adminValue;
+            }
+            else
+            {
+                return lowerValue;
+            }
+        }
+
+        /// <summary>
+        /// 管理组特权
+        /// </summary>
+        /// <param name="groupid"></param>
+        /// <param name="lowerValue"></param>
+        /// <param name="adminValue"></param>
+        /// <returns></returns>
+        private static int GetGroupValueByModers(int radminid, int lowerValue, int adminValue)
+        {
+            if (radminid <= 3)
+            {
+                return adminValue;
+            }
+            else
+            {
+                return lowerValue;
+            }
         }
     }
 }

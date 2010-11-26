@@ -110,6 +110,9 @@ namespace NConvert
             dbhConvertUsers.ExecuteNonQuery(
                 string.Format("TRUNCATE TABLE {0}common_usergroup", MainForm.cic.TargetDbTablePrefix)
                 );
+            dbhConvertUsers.ExecuteNonQuery(
+                string.Format("TRUNCATE TABLE {0}common_usergroup_field", MainForm.cic.TargetDbTablePrefix)
+                );
 
             //try
             //{
@@ -139,7 +142,33 @@ namespace NConvert
 `allowmailinvite`, 
 `maxinvitenum`, 
 `inviteprice`, 
-`maxinviteday`, 
+`maxinviteday`
+) 
+values
+(
+@groupid,
+@radminid, 
+@type, 
+@system, 
+@grouptitle, 
+@creditshigher, 
+@creditslower, 
+@stars, 
+@color, 
+@icon, 
+@allowvisit, 
+@allowsendpm, 
+@allowinvite, 
+@allowmailinvite, 
+@maxinvitenum, 
+@inviteprice, 
+@maxinviteday
+)", MainForm.cic.TargetDbTablePrefix);
+
+
+            string sqlUserGroupField = string.Format(@"Insert into {0}common_usergroup_field
+(
+`groupid`,
 `readaccess`, 
 `allowpost`, 
 `allowreply`, 
@@ -232,22 +261,6 @@ namespace NConvert
 values
 (
 @groupid,
-@radminid, 
-@type, 
-@system, 
-@grouptitle, 
-@creditshigher, 
-@creditslower, 
-@stars, 
-@color, 
-@icon, 
-@allowvisit, 
-@allowsendpm, 
-@allowinvite, 
-@allowmailinvite, 
-@maxinvitenum, 
-@inviteprice, 
-@maxinviteday, 
 @readaccess, 
 @allowpost, 
 @allowreply, 
@@ -350,67 +363,119 @@ values
                         //清理上次执行的参数
                         dbhConvertUsers.ParametersClear();
                         #region dnt_users表参数
-                        dbhConvertUsers.ParameterAdd("@groupid", objUser.Groupid, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@radminid", objUser.Radminid, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@type", objUser.Type, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@system", objUser.System, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@grouptitle", objUser.Grouptitle, DbType.String, 50);
-                        dbhConvertUsers.ParameterAdd("@creditshigher", objUser.Creditshigher, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@creditslower", objUser.Creditslower, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@stars", objUser.Stars, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@color", objUser.Color, DbType.String, 7);
-                        dbhConvertUsers.ParameterAdd("@groupavatar", objUser.Groupavatar, DbType.String, 60);
-                        dbhConvertUsers.ParameterAdd("@readaccess", objUser.Readaccess, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowvisit", objUser.Allowvisit, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowpost", objUser.Allowpost, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowreply", objUser.Allowreply, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowpostpoll", objUser.Allowpostpoll, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowdirectpost", objUser.Allowdirectpost, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowgetattach", objUser.Allowgetattach, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowpostattach", objUser.Allowpostattach, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowvote", objUser.Allowvote, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowmultigroups", objUser.Allowmultigroups, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowsearch", objUser.Allowsearch, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowavatar", objUser.Allowavatar, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowcstatus", objUser.Allowcstatus, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowuseblog", objUser.Allowuseblog, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowinvisible", objUser.Allowinvisible, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowtransfer", objUser.Allowtransfer, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowsetreadperm", objUser.Allowsetreadperm, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowsetattachperm", objUser.Allowsetattachperm, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowhidecode", objUser.Allowhidecode, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowhtml", objUser.Allowhtml, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowcusbbcode", objUser.Allowcusbbcode, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allownickname", objUser.Allownickname, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowsigbbcode", objUser.Allowsigbbcode, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowsigimgcode", objUser.Allowsigimgcode, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowviewpro", objUser.Allowviewpro, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowviewstats", objUser.Allowviewstats, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@disableperiodctrl", objUser.Disableperiodctrl, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@reasonpm", objUser.Reasonpm, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@maxprice", objUser.Maxprice, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@maxpmnum", objUser.Maxpmnum, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@maxsigsize", objUser.Maxsigsize, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@maxattachsize", objUser.Maxattachsize, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@maxsizeperday", objUser.Maxsizeperday, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@attachextensions", objUser.Attachextensions, DbType.String, 100);
-                        dbhConvertUsers.ParameterAdd("@raterange", objUser.Raterange, DbType.String, 500);
-                        dbhConvertUsers.ParameterAdd("@allowspace", objUser.Allowspace, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@maxspaceattachsize", objUser.Maxspaceattachsize, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@maxspacephotosize", objUser.Maxspacephotosize, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowdebate", objUser.Allowdebate, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowbonus", objUser.Allowbonus, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@minbonusprice", objUser.Minbonusprice, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@maxbonusprice", objUser.Maxbonusprice, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowtrade", objUser.Allowtrade, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@allowdiggs", objUser.Allowdiggs, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@groupid", objUser.groupid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@radminid", objUser.radminid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@type", objUser.type, DbType.String, 10);
+                        dbhConvertUsers.ParameterAdd("@system", objUser.system, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@grouptitle", objUser.grouptitle, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@creditshigher", objUser.creditshigher, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@creditslower", objUser.creditslower, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@stars", objUser.stars, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@color", objUser.color, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@icon", objUser.icon, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@allowvisit", objUser.allowvisit, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowsendpm", objUser.allowsendpm, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowinvite", objUser.allowinvite, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowmailinvite", objUser.allowmailinvite, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxinvitenum", objUser.maxinvitenum, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@inviteprice", objUser.inviteprice, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxinviteday", objUser.maxinviteday, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@readaccess", objUser.readaccess, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpost", objUser.allowpost, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowreply", objUser.allowreply, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostpoll", objUser.allowpostpoll, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostreward", objUser.allowpostreward, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowposttrade", objUser.allowposttrade, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostactivity", objUser.allowpostactivity, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowdirectpost", objUser.allowdirectpost, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowgetattach", objUser.allowgetattach, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostattach", objUser.allowpostattach, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostimage", objUser.allowpostimage, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowvote", objUser.allowvote, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowmultigroups", objUser.allowmultigroups, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowsearch", objUser.allowsearch, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowcstatus", objUser.allowcstatus, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowinvisible", objUser.allowinvisible, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowtransfer", objUser.allowtransfer, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowsetreadperm", objUser.allowsetreadperm, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowsetattachperm", objUser.allowsetattachperm, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowhidecode", objUser.allowhidecode, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowhtml", objUser.allowhtml, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowanonymous", objUser.allowanonymous, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowsigbbcode", objUser.allowsigbbcode, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowsigimgcode", objUser.allowsigimgcode, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowmagics", objUser.allowmagics, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@disableperiodctrl", objUser.disableperiodctrl, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@reasonpm", objUser.reasonpm, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxprice", objUser.maxprice, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxsigsize", objUser.maxsigsize, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxattachsize", objUser.maxattachsize, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxsizeperday", objUser.maxsizeperday, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxpostsperhour", objUser.maxpostsperhour, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@attachextensions", objUser.attachextensions, DbType.String, 100);
+                        dbhConvertUsers.ParameterAdd("@raterange", objUser.raterange, DbType.String, 150);
+                        dbhConvertUsers.ParameterAdd("@mintradeprice", objUser.mintradeprice, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxtradeprice", objUser.maxtradeprice, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@minrewardprice", objUser.minrewardprice, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxrewardprice", objUser.maxrewardprice, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@magicsdiscount", objUser.magicsdiscount, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxmagicsweight", objUser.maxmagicsweight, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostdebate", objUser.allowpostdebate, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@tradestick", objUser.tradestick, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@exempt", objUser.exempt, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxattachnum", objUser.maxattachnum, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowposturl", objUser.allowposturl, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowrecommend", objUser.allowrecommend, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostrushreply", objUser.allowpostrushreply, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxfriendnum", objUser.maxfriendnum, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@maxspacesize", objUser.maxspacesize, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowcomment", objUser.allowcomment, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowcommentarticle", objUser.allowcommentarticle, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@searchinterval", objUser.searchinterval, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@searchignore", objUser.searchignore, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowblog", objUser.allowblog, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowdoing", objUser.allowdoing, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowupload", objUser.allowupload, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowshare", objUser.allowshare, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowblogmod", objUser.allowblogmod, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowdoingmod", objUser.allowdoingmod, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowuploadmod", objUser.allowuploadmod, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowsharemod", objUser.allowsharemod, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowcss", objUser.allowcss, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpoke", objUser.allowpoke, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowfriend", objUser.allowfriend, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowclick", objUser.allowclick, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowmagic", objUser.allowmagic, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowstat", objUser.allowstat, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowstatdata", objUser.allowstatdata, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@videophotoignore", objUser.videophotoignore, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowviewvideophoto", objUser.allowviewvideophoto, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowmyop", objUser.allowmyop, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@magicdiscount", objUser.magicdiscount, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@domainlength", objUser.domainlength, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@seccode", objUser.seccode, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@disablepostctrl", objUser.disablepostctrl, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowbuildgroup", objUser.allowbuildgroup, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowgroupdirectpost", objUser.allowgroupdirectpost, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowgroupposturl", objUser.allowgroupposturl, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@edittimelimit", objUser.edittimelimit, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostarticle", objUser.allowpostarticle, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowdownlocalimg", objUser.allowdownlocalimg, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowpostarticlemod", objUser.allowpostarticlemod, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowspacediyhtml", objUser.allowspacediyhtml, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowspacediybbcode", objUser.allowspacediybbcode, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowspacediyimgcode", objUser.allowspacediyimgcode, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowcommentpost", objUser.allowcommentpost, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowcommentitem", objUser.allowcommentitem, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@ignorecensor", objUser.ignorecensor, DbType.Int32, 4);
                         #endregion
                         dbhConvertUsers.ExecuteNonQuery(sqlUser);//插入dnt_userGroups表
+                        dbhConvertUsers.ExecuteNonQuery(sqlUserGroupField);
                         MainForm.SuccessedRecordCount++;
                     }
                     catch (Exception ex)
                     {
-                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.groupid={1}\r\n", ex.Message, objUser.Groupid));
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.groupid={1}\r\n", ex.Message, objUser.groupid));
                         MainForm.FailedRecordCount++;
                     }
                     MainForm.MessageForm.CurrentProgressBarNumAdd();
@@ -420,8 +485,8 @@ values
 
             //dbh.ExecuteNonQuery(string.Format("SET IDENTITY_INSERT {0}users OFF", MainForm.cic.TargetDbTablePrefix));
 
-            dbhConvertUsers.SetIdentityInsertOFF(string.Format("{0}users", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertUsers.Dispose();//.Close();
+            //dbhConvertUsers.SetIdentityInsertOFF(string.Format("{0}users", MainForm.cic.TargetDbTablePrefix));
+            //dbhConvertUsers.Dispose();//.Close();
             dbhConvertUsers.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换用户。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
