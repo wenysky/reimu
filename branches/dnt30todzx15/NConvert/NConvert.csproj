@@ -142,8 +142,10 @@
     <Compile Include="TestThread.cs" />
     <Compile Include="Utils\Attachments.cs" />
     <Compile Include="Utils\Posts.cs" />
+    <Compile Include="Utils\Text.cs" />
     <Compile Include="Utils\Topics.cs" />
     <Compile Include="Utils\Forums.cs" />
+    <Compile Include="Utils\TypeParse.cs" />
     <Compile Include="Utils\UBB.cs" />
   </ItemGroup>
   <ItemGroup>

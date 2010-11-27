@@ -245,3 +245,197 @@ member
 @sellercredit
 @favtimes
 @sharetimes
+
+
+INSERT INTO `dzx15c`.`pre_forum_forum` (
+`fid` ,
+`fup` ,
+`type` ,
+`name` ,
+`status` ,
+`displayorder` ,
+`styleid` ,
+`threads` ,
+`posts` ,
+`todayposts` ,
+`lastpost` ,
+`domain` ,
+`allowsmilies` ,
+`allowhtml` ,
+`allowbbcode` ,
+`allowimgcode` ,
+`allowmediacode` ,
+`allowanonymous` ,
+`allowpostspecial` ,
+`allowspecialonly` ,
+`allowappend` ,
+`alloweditrules` ,
+`allowfeed` ,
+`allowside` ,
+`recyclebin` ,
+`modnewposts` ,
+`jammer` ,
+`disablewatermark` ,
+`inheritedmod` ,
+`autoclose` ,
+`forumcolumns` ,
+`threadcaches` ,
+`alloweditpost` ,
+`simple` ,
+`modworks` ,
+`allowtag` ,
+`allowglobalstick` ,
+`level` ,
+`commoncredits` ,
+`archive` ,
+`recommend` ,
+`favtimes` ,
+`sharetimes` 
+)
+VALUES (
+NULL , '0', 'forum', '', '0', '0', '0', '0', '0', '0', '', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0'
+);
+
+
+INSERT INTO `dzx15c`.`pre_forum_forumfield` (
+`fid` ,
+`description` ,
+`password` ,
+`icon` ,
+`redirect` ,
+`attachextensions` ,
+`creditspolicy` ,
+`formulaperm` ,
+`moderators` ,
+`rules` ,
+`threadtypes` ,
+`threadsorts` ,
+`viewperm` ,
+`postperm` ,
+`replyperm` ,
+`getattachperm` ,
+`postattachperm` ,
+`postimageperm` ,
+`spviewperm` ,
+`keywords` ,
+`supe_pushsetting` ,
+`modrecommend` ,
+`threadplugin` ,
+`extra` ,
+`jointype` ,
+`gviewperm` ,
+`membernum` ,
+`dateline` ,
+`lastupdate` ,
+`activity` ,
+`founderuid` ,
+`foundername` ,
+`banner` ,
+`groupnum` ,
+`commentitem` ,
+`hidemenu` 
+)
+VALUES (
+'0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', '0', '0', '0', '0', '0', '0', '', '', '0', '', '0'
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fid
+fup
+type
+name
+status
+displayorder
+styleid
+threads
+posts
+todayposts
+lastpost
+domain
+allowsmilies
+allowhtml
+allowbbcode
+allowimgcode
+allowmediacode
+allowanonymous
+allowpostspecial
+allowspecialonly
+allowappend
+alloweditrules
+allowfeed
+allowside
+recyclebin
+modnewposts
+jammer
+disablewatermark
+inheritedmod
+autoclose
+forumcolumns
+threadcaches
+alloweditpost
+simple
+modworks
+allowtag
+allowglobalstick
+level
+commoncredits
+archive
+recommend
+favtimes
+sharetimes
+
+
+description
+password
+icon
+redirect
+attachextensions
+creditspolicy
+formulaperm
+moderators
+rules
+threadtypes
+threadsorts
+viewperm
+postperm
+replyperm
+getattachperm
+postattachperm
+postimageperm
+spviewperm
+keywords
+supe_pushsetting
+modrecommend
+threadplugin
+extra
+jointype
+gviewperm
+membernum
+dateline
+lastupdate
+activity
+founderuid
+foundername
+banner
+groupnum
+commentitem
+hidemenu

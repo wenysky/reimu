@@ -10,7 +10,7 @@ namespace NConvert.dnt30_dzx15
     public partial class Provider : IProvider
     {
         string pkidname = "uid";
-        string tablename = "dnt_users";
+        string tablename = "users";
         public int GetUsersRecordCount()
         {
             DBHelper userDBH = MainForm.GetSrcDBH_OldVer();
@@ -32,12 +32,12 @@ namespace NConvert.dnt30_dzx15
             if (CurrentPage <= 1)
             {
                 sql = string.Format
-                       ("SELECT TOP {1} * FROM {0} ORDER BY {2}", MainForm.cic.SrcDbTablePrefix + tablename, MainForm.PageSize, pkidname);
+                       ("SELECT TOP {1} * FROM {0} LEFT JOIN {3} ON {0}.uid={3}.uid ORDER BY {0}.{2}", MainForm.cic.SrcDbTablePrefix + tablename, MainForm.PageSize, pkidname, MainForm.cic.SrcDbTablePrefix + "userfields");
             }
             else
             {
                 sql = string.Format
-                       ("SELECT TOP {1} * FROM {0} WHERE {3} NOT IN (SELECT TOP {2} {3} FROM {0} ORDER BY {3}) ORDER BY {3}", MainForm.cic.SrcDbTablePrefix + tablename, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1), pkidname);
+                       ("SELECT TOP {1} * FROM {0} LEFT JOIN {4} ON {0}.uid={4}.uid WHERE {3} NOT IN (SELECT TOP {2} {3} FROM {0} ORDER BY {0}.{3}) ORDER BY {0}.{3}", MainForm.cic.SrcDbTablePrefix + tablename, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1), pkidname, MainForm.cic.SrcDbTablePrefix + "userfields");
             }
             #endregion
 
@@ -47,47 +47,29 @@ namespace NConvert.dnt30_dzx15
             while (dr.Read())
             {
                 Users objUser = new Users();
-                objUser.uid = Convert.ToInt32(dr["id"]);
-                objUser.username = dr["username"].ToString();
-                objUser.password = dr["password"] == DBNull.Value ? "" : dr["password"].ToString();
-                if (dr["sex"] == DBNull.Value || dr["sex"].ToString() == "sect" || dr["sex"].ToString() == "")
-                {
-                    objUser.gender = 0;
-                }
-                else
-                {
-                    objUser.gender = dr["sex"].ToString() == "male" ? 1 : 2;
-                }
-                objUser.email = dr["email"] == DBNull.Value ? "" : dr["email"].ToString();
-                objUser.groupid = GetNewUserGroupID(Convert.ToInt16(dr["usermode"]));
-                //if (Convert.ToInt32(dr["LockUser"]) == 1 || Convert.ToInt32(dr["UserDel"]) == 1)
-                //{
-                //    objUser.groupid = 8;//未审核,未被激活,锁定,删除=>等待验证会员
-                //}
-                objUser.adminid = objUser.groupid < 4 ? objUser.groupid : 0;
 
-
-                //objUser = dr["GroupExpirty"].ToString();
                 objUser.uid = Convert.ToInt32(dr["uid"]);
                 objUser.email = dr["email"].ToString();
                 objUser.username = dr["username"].ToString();
-                objUser.password = dr["password"].ToString();
-                objUser.status = Convert.ToInt32(dr["status"]);
-                objUser.emailstatus = Convert.ToInt32(dr["emailstatus"]);
-                objUser.avatarstatus = Convert.ToInt32(dr["avatarstatus"]);
-                objUser.videophotostatus = Convert.ToInt32(dr["videophotostatus"]);
+                objUser.password = dr["password"].ToString().ToLower();
+                objUser.salt = Utils.Text.GenerateRandom(6, NConvert.Utils.Text.RandomType.NumberAndLowercased);
+                objUser.ucpassword = Utils.Text.MD5(objUser.password + objUser.salt).ToLower();
+                objUser.status = 0;
+                objUser.emailstatus = 0;
+                objUser.avatarstatus = 0;
+                objUser.videophotostatus = 0;
                 objUser.adminid = Convert.ToInt32(dr["adminid"]);
                 objUser.groupid = Convert.ToInt32(dr["groupid"]);
                 objUser.groupexpiry = Convert.ToInt32(dr["groupexpiry"]);
-                objUser.extgroupids = Convert.ToInt32(dr["extgroupids"]);
-                objUser.regdate = Convert.ToInt32(dr["regdate"]);
+                objUser.extgroupids = "";
+                objUser.regdate = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["joindate"]));
                 objUser.credits = Convert.ToInt32(dr["credits"]);
-                objUser.notifysound = Convert.ToInt32(dr["notifysound"]);
-                objUser.timeoffset = Convert.ToInt32(dr["timeoffset"]);
+                objUser.notifysound = 0;
+                objUser.timeoffset = "";
                 objUser.newpm = Convert.ToInt32(dr["newpm"]);
-                objUser.newprompt = Convert.ToInt32(dr["newprompt"]);
+                objUser.newprompt = 0;
                 objUser.accessmasks = Convert.ToInt32(dr["accessmasks"]);
-                objUser.allowadmincp = Convert.ToInt32(dr["allowadmincp"]);
+                objUser.allowadmincp = 0;
 
                 objUser.extcredits1 = Convert.ToInt32(dr["extcredits1"]);
                 objUser.extcredits2 = Convert.ToInt32(dr["extcredits2"]);
@@ -97,130 +79,96 @@ namespace NConvert.dnt30_dzx15
                 objUser.extcredits6 = Convert.ToInt32(dr["extcredits6"]);
                 objUser.extcredits7 = Convert.ToInt32(dr["extcredits7"]);
                 objUser.extcredits8 = Convert.ToInt32(dr["extcredits8"]);
-                objUser.friends = Convert.ToInt32(dr["friends"]);
+                objUser.friends = 0;
                 objUser.posts = Convert.ToInt32(dr["posts"]);
-                objUser.threads = Convert.ToInt32(dr["threads"]);
+                objUser.threads = Convert.ToInt32(dr["posts"]);
                 objUser.digestposts = Convert.ToInt32(dr["digestposts"]);
-                objUser.doings = Convert.ToInt32(dr["doings"]);
-                objUser.blogs = Convert.ToInt32(dr["blogs"]);
-                objUser.albums = Convert.ToInt32(dr["albums"]);
-                objUser.sharings = Convert.ToInt32(dr["sharings"]);
-                objUser.attachsize = Convert.ToInt32(dr["attachsize"]);
-                objUser.views = Convert.ToInt32(dr["views"]);
+                objUser.doings = 0;
+                objUser.blogs = 0;
+                objUser.albums = 0;
+                objUser.sharings = 0;
+                objUser.attachsize = 0;
+                objUser.views = 0;
                 objUser.oltime = Convert.ToInt32(dr["oltime"]);
 
-                objUser.publishfeed = Convert.ToInt32(dr["publishfeed"]);
-                objUser.customshow = Convert.ToInt32(dr["customshow"]);
+                objUser.publishfeed = 0;
+                objUser.customshow = 26;
                 objUser.customstatus = dr["customstatus"].ToString();
                 objUser.medals = dr["medals"].ToString();
                 objUser.sightml = dr["sightml"].ToString();
-                objUser.groupterms = dr["groupterms"].ToString();
+                objUser.groupterms = "";
                 objUser.authstr = dr["authstr"].ToString();
-                objUser.groups = dr["groups"].ToString();
-                objUser.attentiongroup = dr["attentiongroup"].ToString();
+                objUser.groups = "";
+                objUser.attentiongroup = "";
 
                 objUser.realname = dr["realname"].ToString();
                 objUser.gender = Convert.ToInt32(dr["gender"]);
-                objUser.birthyear = Convert.ToInt32(dr["birthyear"]);
-                objUser.birthmonth = Convert.ToInt32(dr["birthmonth"]);
-                objUser.birthday = Convert.ToInt32(dr["birthday"]);
-                objUser.constellation = dr["constellation"].ToString();
-                objUser.zodiac = dr["zodiac"].ToString();
-                objUser.telephone = dr["telephone"].ToString();
+                objUser.birthyear = dr["bday"] == DBNull.Value ? 0 : Convert.ToDateTime(dr["bday"]).Year;
+                objUser.birthmonth = dr["bday"] == DBNull.Value ? 0 : Convert.ToDateTime(dr["bday"]).Month;
+                objUser.birthday = dr["bday"] == DBNull.Value ? 0 : Convert.ToDateTime(dr["bday"]).Day;
+                objUser.constellation = "";
+                objUser.zodiac = "";
+                objUser.telephone = dr["phone"].ToString();
                 objUser.mobile = dr["mobile"].ToString();
-                objUser.idcardtype = dr["idcardtype"].ToString();
+                objUser.idcardtype = "身份证";
                 objUser.idcard = dr["idcard"].ToString();
-                objUser.address = dr["address"].ToString();
-                objUser.zipcode = dr["zipcode"].ToString();
-                objUser.nationality = dr["nationality"].ToString();
-                objUser.birthprovince = dr["birthprovince"].ToString();
-                objUser.birthcity = dr["birthcity"].ToString();
-                objUser.resideprovince = dr["resideprovince"].ToString();
-                objUser.residecity = dr["residecity"].ToString();
-                objUser.residedist = dr["residedist"].ToString();
-                objUser.residecommunity = dr["residecommunity"].ToString();
-                objUser.residesuite = dr["residesuite"].ToString();
-                objUser.graduateschool = dr["graduateschool"].ToString();
-                objUser.company = dr["company"].ToString();
-                objUser.education = dr["education"].ToString();
-                objUser.occupation = dr["occupation"].ToString();
-                objUser.position = dr["position"].ToString();
-                objUser.revenue = dr["revenue"].ToString();
-                objUser.affectivestatus = dr["affectivestatus"].ToString();
-                objUser.lookingfor = dr["lookingfor"].ToString();
-                objUser.bloodtype = dr["bloodtype"].ToString();
-                objUser.height = dr["height"].ToString();
-                objUser.weight = dr["weight"].ToString();
-                objUser.alipay = dr["alipay"].ToString();
+                objUser.address = dr["location"].ToString();
+                objUser.zipcode = "";
+                objUser.nationality = "";
+                objUser.birthprovince = "";
+                objUser.birthcity = "";
+                objUser.resideprovince = "";
+                objUser.residecity = "";
+                objUser.residedist = "";
+                objUser.residecommunity = "";
+                objUser.residesuite = "";
+                objUser.graduateschool = "";
+                objUser.company = "";
+                objUser.education = "";
+                objUser.occupation = "";
+                objUser.position = "";
+                objUser.revenue = "";
+                objUser.affectivestatus = "";
+                objUser.lookingfor = "";
+                objUser.bloodtype = "";
+                objUser.height = "";
+                objUser.weight = "";
+                objUser.alipay = "";
                 objUser.icq = dr["icq"].ToString();
                 objUser.qq = dr["qq"].ToString();
                 objUser.yahoo = dr["yahoo"].ToString();
                 objUser.msn = dr["msn"].ToString();
-                objUser.taobao = dr["taobao"].ToString();
-                objUser.site = dr["site"].ToString();
+                objUser.taobao = "";
+                objUser.site = dr["website"].ToString();
                 objUser.bio = dr["bio"].ToString();
-                objUser.interest = dr["interest"].ToString();
-                objUser.field1 = dr["field1"].ToString();
-                objUser.field2 = dr["field2"].ToString();
-                objUser.field3 = dr["field3"].ToString();
-                objUser.field4 = dr["field4"].ToString();
-                objUser.field5 = dr["field5"].ToString();
-                objUser.field6 = dr["field6"].ToString();
-                objUser.field7 = dr["field7"].ToString();
-                objUser.field8 = dr["field8"].ToString();
+                objUser.interest = "";
+                objUser.field1 = "";
+                objUser.field2 = "";
+                objUser.field3 = "";
+                objUser.field4 = "";
+                objUser.field5 = "";
+                objUser.field6 = "";
+                objUser.field7 = "";
+                objUser.field8 = "";
 
                 objUser.regip = dr["regip"].ToString();
                 objUser.lastip = dr["lastip"].ToString();
-                objUser.lastvisit = Convert.ToInt32(dr["lastvisit"]);
-                objUser.lastactivity = Convert.ToInt32(dr["lastactivity"]);
-                objUser.lastpost = Convert.ToInt32(dr["lastpost"]);
-                objUser.lastsendmail = Convert.ToInt32(dr["lastsendmail"]);
-                objUser.notifications = Convert.ToInt32(dr["notifications"]);
-                objUser.myinvitations = Convert.ToInt32(dr["myinvitations"]);
-                objUser.pokes = Convert.ToInt32(dr["pokes"]);
-                objUser.pendingfriends = Convert.ToInt32(dr["pendingfriends"]);
+                objUser.lastvisit = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["lastvisit"]));
+                objUser.lastactivity = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["lastactivity"]));
+                objUser.lastpost = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["lastpost"]));
+                objUser.lastsendmail = 0;
+                objUser.notifications = 0;
+                objUser.myinvitations = 0;
+                objUser.pokes = 0;
+                objUser.pendingfriends = 0;
                 objUser.invisible = Convert.ToInt32(dr["invisible"]);
-                objUser.buyercredit = Convert.ToInt32(dr["buyercredit"]);
-                objUser.sellercredit = Convert.ToInt32(dr["sellercredit"]);
-                objUser.favtimes = Convert.ToInt32(dr["favtimes"]);
-                objUser.sharetimes = Convert.ToInt32(dr["sharetimes"]);
-
-                
+                objUser.buyercredit = 0;
+                objUser.sellercredit = 0;
+                objUser.favtimes = 0;
+                objUser.sharetimes = 0;
                 userlist.Add(objUser);
             }
             return userlist;
-        }
-
-        private static short GetNewUserGroupID(short OldUserGroupID)
-        {
-            short NewGroupID;
-            switch (OldUserGroupID)
-            {
-                case 7: 
-                    NewGroupID = 1;
-                    break;
-                case 6: 
-                    NewGroupID = 2;
-                    break;
-                case 3: 
-                    NewGroupID = 3;
-                    break;
-                case 2: 
-                    NewGroupID = 10;
-#warning 需要完善 认证会员组
-                    break;
-                case 1://普通用户组全部到10积分用户组
-                    NewGroupID = 10;
-                    break;
-                default:
-                    throw new Exception("用户组错误");
-            }
-
-            if (NewGroupID > 5)//6以上的都转换到普通积分用户组中
-            {
-                NewGroupID = 10;
-            }
-            return NewGroupID;
         }
     }
 }
