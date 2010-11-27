@@ -35,13 +35,13 @@ namespace NConvert
             if (MainForm.IsConvertTopics)
             {
                 ConvertTopics();
-                ResetTopicsInfo();
+                //ResetTopicsInfo();
             }
 
             if (MainForm.IsConvertPosts)
             {
                 ConvertPosts();
-                UpdateLastPostid();
+                //UpdateLastPostid();
             }
             if (MainForm.IsUpdatePostsInfo)
             {
@@ -1354,7 +1354,7 @@ VALUES
         /// </summary>
         public static void ConvertTopics()
         {
-            DBHelper dbh = MainForm.GetTargetDBH();
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
             dbh.Open();
             MainForm.MessageForm.SetMessage("开始转换主题\r\n");
             MainForm.SuccessedRecordCount = 0;
@@ -1376,70 +1376,85 @@ VALUES
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
             //清理数据库
-            dbh.ExecuteNonQuery(string.Format("TRUNCATE TABLE {0}topics", MainForm.cic.TargetDbTablePrefix));
-            dbh.SetIdentityInsertON(string.Format("{0}topics", MainForm.cic.TargetDbTablePrefix));
+            dbh.ExecuteNonQuery(string.Format("TRUNCATE TABLE {0}forum_thread", MainForm.cic.TargetDbTablePrefix));
+
             #region sql语句
-            string sqlTopic = string.Format(@"INSERT INTO {0}topics
-(
-tid,
-fid,
-iconid,
-typeid,
-readperm,
-price,
-poster,
-posterid,
-title,
-postdatetime,
-lastpost,
-lastpostid,
-lastposter,
-lastposterid,
-views,
-replies,
-displayorder,
-highlight,
-digest,
-rate,
-hide,
-attachment,
-moderated,
-closed,
-magic,
-identify,
-special
+            string sqlTopic = string.Format(@"INSERT INTO {0}forum_thread (
+`tid` ,
+`fid` ,
+`posttableid` ,
+`typeid` ,
+`sortid` ,
+`readperm` ,
+`price` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`lastpost` ,
+`lastposter` ,
+`views` ,
+`replies` ,
+`displayorder` ,
+`highlight` ,
+`digest` ,
+`rate` ,
+`special` ,
+`attachment` ,
+`moderated` ,
+`closed` ,
+`stickreply` ,
+`recommends` ,
+`recommend_add` ,
+`recommend_sub` ,
+`heats` ,
+`status` ,
+`isgroup` ,
+`favtimes` ,
+`sharetimes` ,
+`stamp` ,
+`icon` ,
+`pushedaid` 
 )
-VALUES 
-(
+VALUES (
 @tid,
 @fid,
-@iconid,
+@posttableid,
 @typeid,
+@sortid,
 @readperm,
 @price,
-@poster,
-@posterid,
-@title,
-@postdatetime,
+@author,
+@authorid,
+@subject,
+@dateline,
 @lastpost,
-@lastpostid,
 @lastposter,
-@lastposterid,
 @views,
 @replies,
 @displayorder,
 @highlight,
 @digest,
 @rate,
-@hide,
+@special,
 @attachment,
 @moderated,
 @closed,
-@magic,
-@identify,
-@special
+@stickreply,
+@recommends,
+@recommend_add,
+@recommend_sub,
+@heats,
+@status,
+@isgroup,
+@favtimes,
+@sharetimes,
+@stamp,
+@icon,
+@pushedaid
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
+
             for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
             {
                 //分段得到主题列表
@@ -1451,34 +1466,41 @@ VALUES
                         //清理上次执行的参数
                         dbh.ParametersClear();
                         #region dnt_topics表参数
-                        dbh.ParameterAdd("@tid ", objTopic.tid, DbType.Int32, 4);
-                        dbh.ParameterAdd("@fid ", objTopic.fid, DbType.Int16, 2);
-                        dbh.ParameterAdd("@iconid ", objTopic.iconid, DbType.Byte, 1);
-                        dbh.ParameterAdd("@typeid ", objTopic.typeid, DbType.Int32, 1);
-                        dbh.ParameterAdd("@readperm ", objTopic.readperm, DbType.Int32, 4);
-                        dbh.ParameterAdd("@price ", objTopic.price, DbType.Int16, 2);
-                        dbh.ParameterAdd("@poster ", objTopic.poster, DbType.String, 20);
-                        dbh.ParameterAdd("@posterid ", objTopic.posterid, DbType.Int32, 4);
-                        dbh.ParameterAdd("@title ", objTopic.title, DbType.String, 60);
-                        dbh.ParameterAdd("@postdatetime", objTopic.postdatetime, DbType.DateTime, 8);
-                        dbh.ParameterAdd("@lastpost ", objTopic.lastpost, DbType.DateTime, 8);
-                        dbh.ParameterAdd("@lastpostid ", objTopic.lastpostid, DbType.Int32, 4);
-                        dbh.ParameterAdd("@lastposter ", objTopic.lastposter, DbType.String, 20);
-                        dbh.ParameterAdd("@lastposterid", objTopic.lastposterid, DbType.Int32, 4);
-                        dbh.ParameterAdd("@views ", objTopic.views, DbType.Int32, 4);
-                        dbh.ParameterAdd("@replies ", objTopic.replies, DbType.Int32, 4);
+                        dbh.ParameterAdd("@tid", objTopic.tid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@fid", objTopic.fid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@posttableid", objTopic.posttableid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@typeid", objTopic.typeid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@sortid", objTopic.sortid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@readperm", objTopic.readperm, DbType.Int32, 4);
+                        dbh.ParameterAdd("@price", objTopic.price, DbType.Int32, 4);
+                        dbh.ParameterAdd("@author", objTopic.author, DbType.String, 15);
+                        dbh.ParameterAdd("@authorid", objTopic.authorid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@subject", objTopic.subject, DbType.String, 80);
+                        dbh.ParameterAdd("@dateline", objTopic.dateline, DbType.Int32, 4);
+                        dbh.ParameterAdd("@lastpost", objTopic.lastpost, DbType.Int32, 4);
+                        dbh.ParameterAdd("@lastposter", objTopic.lastposter, DbType.String, 15);
+                        dbh.ParameterAdd("@views", objTopic.views, DbType.Int32, 4);
+                        dbh.ParameterAdd("@replies", objTopic.replies, DbType.Int32, 4);
                         dbh.ParameterAdd("@displayorder", objTopic.displayorder, DbType.Int32, 4);
-                        dbh.ParameterAdd("@highlight ", objTopic.highlight, DbType.String, 500);
-                        dbh.ParameterAdd("@digest ", objTopic.digest, DbType.Int16, 2);
-                        dbh.ParameterAdd("@rate ", objTopic.rate, DbType.Int16, 2);
-                        dbh.ParameterAdd("@hide ", objTopic.hide, DbType.Int32, 4);
-                        dbh.ParameterAdd("@poll ", objTopic.poll, DbType.Int32, 4);
-                        dbh.ParameterAdd("@attachment ", objTopic.attachment, DbType.Int32, 4);
-                        dbh.ParameterAdd("@moderated ", objTopic.moderated, DbType.Int16, 2);
-                        dbh.ParameterAdd("@closed ", objTopic.closed, DbType.Int32, 4);
-                        dbh.ParameterAdd("@magic ", objTopic.magic, DbType.Int32, 4);
-                        dbh.ParameterAdd("@identify", objTopic.identify, DbType.Int32, 4);
-                        dbh.ParameterAdd("@special ", objTopic.special, DbType.Byte, 1);
+                        dbh.ParameterAdd("@highlight", objTopic.highlight, DbType.Int32, 4);
+                        dbh.ParameterAdd("@digest", objTopic.digest, DbType.Int32, 4);
+                        dbh.ParameterAdd("@rate", objTopic.rate, DbType.Int32, 4);
+                        dbh.ParameterAdd("@special", objTopic.special, DbType.Int32, 4);
+                        dbh.ParameterAdd("@attachment", objTopic.attachment, DbType.Int32, 4);
+                        dbh.ParameterAdd("@moderated", objTopic.moderated, DbType.Int32, 4);
+                        dbh.ParameterAdd("@closed", objTopic.closed, DbType.Int32, 4);
+                        dbh.ParameterAdd("@stickreply", objTopic.stickreply, DbType.Int32, 4);
+                        dbh.ParameterAdd("@recommends", objTopic.recommends, DbType.Int32, 4);
+                        dbh.ParameterAdd("@recommend_add", objTopic.recommend_add, DbType.Int32, 4);
+                        dbh.ParameterAdd("@recommend_sub", objTopic.recommend_sub, DbType.Int32, 4);
+                        dbh.ParameterAdd("@heats", objTopic.heats, DbType.Int32, 4);
+                        dbh.ParameterAdd("@status", objTopic.status, DbType.Int32, 4);
+                        dbh.ParameterAdd("@isgroup", objTopic.isgroup, DbType.Int32, 4);
+                        dbh.ParameterAdd("@favtimes", objTopic.favtimes, DbType.Int32, 4);
+                        dbh.ParameterAdd("@sharetimes", objTopic.sharetimes, DbType.Int32, 4);
+                        dbh.ParameterAdd("@stamp", objTopic.stamp, DbType.Int32, 4);
+                        dbh.ParameterAdd("@icon", objTopic.icon, DbType.Int32, 4);
+                        dbh.ParameterAdd("@pushedaid", objTopic.pushedaid, DbType.Int32, 4);
                         #endregion
                         dbh.ExecuteNonQuery(sqlTopic);//插入dnt_topics表
                         MainForm.SuccessedRecordCount++;
@@ -1493,9 +1515,7 @@ VALUES
                 }
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
-
-
-            dbh.SetIdentityInsertOFF(string.Format("{0}topics", MainForm.cic.TargetDbTablePrefix));
+            
             dbh.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换主题。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
@@ -1506,11 +1526,8 @@ VALUES
         /// </summary>
         public static void ConvertPosts()
         {
-            DBHelper dbh = MainForm.GetTargetDBH();
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
             dbh.Open();
-            MainForm.MessageForm.SetMessage(string.Format("创建帖子分表..."));
-            CreatePostesTables();
-            MainForm.MessageForm.SetMessage(string.Format("完成。\r\n"));
 
             MainForm.MessageForm.SetMessage("开始转换帖子\r\n");
             MainForm.SuccessedRecordCount = 0;
@@ -1530,7 +1547,61 @@ VALUES
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
             //清理数据库
-            dbh.TruncateTable(string.Format("{0}Posts1", MainForm.cic.TargetDbTablePrefix));
+            dbh.TruncateTable(string.Format("{0}forum_post", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlPost = string.Format(@"INSERT INTO {0}forum_post (
+`pid` ,
+`fid` ,
+`tid` ,
+`first` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`useip` ,
+`invisible` ,
+`anonymous` ,
+`usesig` ,
+`htmlon` ,
+`bbcodeoff` ,
+`smileyoff` ,
+`parseurloff` ,
+`attachment` ,
+`rate` ,
+`ratetimes` ,
+`status` ,
+`tags` ,
+`comment` 
+)
+VALUES (
+@pid,
+@fid,
+@tid,
+@first,
+@author,
+@authorid,
+@subject,
+@dateline,
+@message,
+@useip,
+@invisible,
+@anonymous,
+@usesig,
+@htmlon,
+@bbcodeoff,
+@smileyoff,
+@parseurloff,
+@attachment,
+@rate,
+@ratetimes,
+@status,
+@tags,
+@comment
+)",
+                MainForm.cic.TargetDbTablePrefix);
+            #endregion
 
             for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
             {
@@ -1538,85 +1609,32 @@ VALUES
                 List<Posts> postList = Provider.Provider.GetInstance().GetPostList(pagei);
                 foreach (Posts objPost in postList)
                 {
-                    //查找分表,构造sql语句
-                    #region sql语句
-                    string sqlPost = string.Format(@"INSERT INTO {0}posts{1}
-(
-pid, 
-fid, 
-tid, 
-parentid, 
-layer, 
-poster, 
-posterid, 
-title, 
-postdatetime, 
-message, 
-ip, 
-lastedit,
-invisible, 
-usesig, 
-htmlon, 
-smileyoff, 
-parseurloff, 
-bbcodeoff, 
-attachment, 
-rate, 
-ratetimes
-)
-VALUES 
-(
-@pid, 
-@fid, 
-@tid, 
-@parentid, 
-@layer, 
-@poster, 
-@posterid, 
-@title, 
-@postdatetime,
-@message, 
-@ip, 
-@lastedit,
-@invisible, 
-@usesig, 
-@htmlon, 
-@smileyoff, 
-@parseurloff, 
-@bbcodeoff, 
-@attachment, 
-@rate, 
-@ratetimes
-)", MainForm.cic.TargetDbTablePrefix, NConvert.Utils.Posts.GetPostTableId(objPost.tid));
-                    #endregion
                     //清理上次执行的参数
                     dbh.ParametersClear();
                     #region dnt_posts表参数
-                    //if (objPost.pid == 1036)
-                    //{
-                    //    MainForm.MessageForm.SetMessage(string.Format("第一次遇到1036:pid={0}.tid={1},pagei={2}\r\n", objPost.pid, objPost.tid, pagei));
-                    //}
                     dbh.ParameterAdd("@pid", objPost.pid, DbType.Int32, 4);
                     dbh.ParameterAdd("@fid", objPost.fid, DbType.Int32, 4);
                     dbh.ParameterAdd("@tid", objPost.tid, DbType.Int32, 4);
-                    dbh.ParameterAdd("@parentid ", objPost.parentid, DbType.Int32, 4);
-                    dbh.ParameterAdd("@layer", objPost.layer, DbType.Int32, 4);
-                    dbh.ParameterAdd("@poster", objPost.poster, DbType.String, 20);
-                    dbh.ParameterAdd("@posterid", objPost.posterid, DbType.Int32, 4);
-                    dbh.ParameterAdd("@title", objPost.title, DbType.String, 60);
-                    dbh.ParameterAdd("@postdatetime", objPost.postdatetime, DbType.DateTime, 4);
-                    dbh.ParameterAdd("@message", objPost.message, DbType.String, 1073741823);
-                    dbh.ParameterAdd("@ip", objPost.ip, DbType.String, 15);
-                    dbh.ParameterAdd("@lastedit", objPost.lastedit, DbType.String, 50);
-                    dbh.ParameterAdd("@invisible ", objPost.invisible, DbType.Int32, 4);
+                    dbh.ParameterAdd("@first", objPost.first, DbType.Int32, 4);
+                    dbh.ParameterAdd("@author", objPost.author, DbType.String, 15);
+                    dbh.ParameterAdd("@authorid", objPost.authorid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@subject", objPost.subject, DbType.String, 80);
+                    dbh.ParameterAdd("@dateline", objPost.dateline, DbType.Int32, 4);
+                    dbh.ParameterAdd("@message", objPost.message, DbType.String, 10000);
+                    dbh.ParameterAdd("@useip", objPost.useip, DbType.String, 15);
+                    dbh.ParameterAdd("@invisible", objPost.invisible, DbType.Int32, 4);
+                    dbh.ParameterAdd("@anonymous", objPost.anonymous, DbType.Int32, 4);
                     dbh.ParameterAdd("@usesig", objPost.usesig, DbType.Int32, 4);
                     dbh.ParameterAdd("@htmlon", objPost.htmlon, DbType.Int32, 4);
-                    dbh.ParameterAdd("@smileyoff", objPost.smileyoff, DbType.Int32, 4);
-                    dbh.ParameterAdd("@parseurloff ", objPost.parseurloff, DbType.Int32, 4);
                     dbh.ParameterAdd("@bbcodeoff", objPost.bbcodeoff, DbType.Int32, 4);
+                    dbh.ParameterAdd("@smileyoff", objPost.smileyoff, DbType.Int32, 4);
+                    dbh.ParameterAdd("@parseurloff", objPost.parseurloff, DbType.Int32, 4);
                     dbh.ParameterAdd("@attachment", objPost.attachment, DbType.Int32, 4);
                     dbh.ParameterAdd("@rate", objPost.rate, DbType.Int32, 4);
                     dbh.ParameterAdd("@ratetimes", objPost.ratetimes, DbType.Int32, 4);
+                    dbh.ParameterAdd("@status", objPost.status, DbType.Int32, 4);
+                    dbh.ParameterAdd("@tags", objPost.tags, DbType.String, 255);
+                    dbh.ParameterAdd("@comment", objPost.comment, DbType.Int32, 4);
                     #endregion
 
                     try
@@ -1634,7 +1652,7 @@ VALUES
                 //一次分页完毕
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
-            dbh.Close();
+            dbh.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换帖子。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
@@ -1646,7 +1664,7 @@ VALUES
         /// </summary>
         public static void ConvertAttachments()
         {
-            DBHelper dbh = MainForm.GetTargetDBH();
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
             dbh.Open();
             MainForm.MessageForm.SetMessage("开始转换附件\r\n");
             MainForm.SuccessedRecordCount = 0;
@@ -1666,9 +1684,8 @@ VALUES
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
             //清理数据库
-            dbh.TruncateTable(string.Format("{0}attachments", MainForm.cic.TargetDbTablePrefix));
-            dbh.SetIdentityInsertON(string.Format("{0}attachments", MainForm.cic.TargetDbTablePrefix));
-
+            dbh.TruncateTable(string.Format("{0}forum_attachment", MainForm.cic.TargetDbTablePrefix));
+            dbh.TruncateTable(string.Format("{0}forum_attachmentfield", MainForm.cic.TargetDbTablePrefix));
             for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
             {
                 //分段得到主题列表
@@ -1676,57 +1693,88 @@ VALUES
                 foreach (Attachments objAttachment in attachmentList)
                 {
                     #region sql语句
-                    string sqlAttachment = string.Format(@"INSERT INTO {0}attachments
-(
-aid,
-uid, 
-tid, 
-pid, 
-postdatetime, 
-readperm, 
-filename, 
-description, 
-filetype, 
-filesize,
-attachment, 
-downloads
+                    string sqlAttachment = string.Format(@"INSERT INTO {0}forum_attachment (
+`aid` ,
+`tid` ,
+`pid` ,
+`width` ,
+`dateline` ,
+`readperm` ,
+`price` ,
+`filename` ,
+`filetype` ,
+`filesize` ,
+`attachment` ,
+`downloads` ,
+`isimage` ,
+`uid` ,
+`thumb` ,
+`remote` ,
+`picid` 
 )
-VALUES 
-(
+VALUES (
 @aid,
-@uid, 
-@tid, 
-@pid, 
-@postdatetime, 
-@readperm, 
-@filename, 
-@description, 
-@filetype, 
+@tid,
+@pid,
+@width,
+@dateline,
+@readperm,
+@price,
+@filename,
+@filetype,
 @filesize,
-@attachment, 
-@downloads
+@attachment,
+@downloads,
+@isimage,
+@uid,
+@thumb,
+@remote,
+@picid
+)", MainForm.cic.TargetDbTablePrefix);
+
+
+                    string sqlAttachmentField = string.Format(@"INSERT INTO {0}forum_attachmentfield (
+`aid` ,
+`tid` ,
+`pid` ,
+`uid` ,
+`description` 
+)
+VALUES (
+@aid,
+@tid,
+@pid,
+@uid,
+@description
 )", MainForm.cic.TargetDbTablePrefix);
                     #endregion
                     //清理上次执行的参数
                     dbh.ParametersClear();
                     #region dnt_attachment表参数
                     dbh.ParameterAdd("@aid", objAttachment.aid, DbType.Int32, 4);
-                    dbh.ParameterAdd("@uid", objAttachment.uid, DbType.Int32, 4);
                     dbh.ParameterAdd("@tid", objAttachment.tid, DbType.Int32, 4);
                     dbh.ParameterAdd("@pid", objAttachment.pid, DbType.Int32, 4);
-                    dbh.ParameterAdd("@postdatetime", objAttachment.postdatetime, DbType.DateTime, 8);
+                    dbh.ParameterAdd("@width", objAttachment.width, DbType.Int32, 4);
+                    dbh.ParameterAdd("@dateline", objAttachment.dateline, DbType.Int32, 4);
                     dbh.ParameterAdd("@readperm", objAttachment.readperm, DbType.Int32, 4);
+                    dbh.ParameterAdd("@price", objAttachment.price, DbType.Int32, 4);
                     dbh.ParameterAdd("@filename", objAttachment.filename, DbType.String, 100);
-                    dbh.ParameterAdd("@description", objAttachment.description, DbType.String, 100);
                     dbh.ParameterAdd("@filetype", objAttachment.filetype, DbType.String, 50);
                     dbh.ParameterAdd("@filesize", objAttachment.filesize, DbType.Int32, 4);
                     dbh.ParameterAdd("@attachment", objAttachment.attachment, DbType.String, 100);
                     dbh.ParameterAdd("@downloads", objAttachment.downloads, DbType.Int32, 4);
+                    dbh.ParameterAdd("@isimage", objAttachment.isimage, DbType.Int32, 4);
+                    dbh.ParameterAdd("@uid", objAttachment.uid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@thumb", objAttachment.thumb, DbType.Int32, 4);
+                    dbh.ParameterAdd("@remote", objAttachment.remote, DbType.Int32, 4);
+                    dbh.ParameterAdd("@picid", objAttachment.picid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@description", objAttachment.description, DbType.Int32, 4);
                     #endregion
 
                     try
                     {
                         dbh.ExecuteNonQuery(sqlAttachment);//插入dnt_topics表
+                        dbh.ExecuteNonQuery(sqlAttachmentField);
                         MainForm.SuccessedRecordCount++;
                     }
                     catch (Exception ex)
@@ -1739,8 +1787,7 @@ VALUES
                 //一次分页完毕
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
-            dbh.SetIdentityInsertOFF(string.Format("{0}attachments", MainForm.cic.TargetDbTablePrefix));
-            dbh.Close();
+            dbh.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换附件。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }

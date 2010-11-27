@@ -13,89 +13,82 @@ namespace NConvert.dnt30_dzx15
 
         public int GetTopicsRecordCount()
         {
-            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(Id) FROM {0}posts WHERE parentid = 0", MainForm.cic.SrcDbTablePrefix)));
+            return Convert.ToInt32(
+                MainForm.srcDBH.ExecuteScalar(
+                string.Format(
+                "SELECT COUNT(tid) FROM {0}topics WHERE displayorder>-1",
+                MainForm.cic.SrcDbTablePrefix)
+                )
+                );
         }
 
         public List<Topics> GetTopicList(int CurrentPage)
         {
-            MainForm.srcDBH.ExecuteNonQuery(
-                string.Format(
-                    "ALTER TABLE {0}posts CHANGE `istop` `istop` INT( 1 ) NOT NULL DEFAULT '0'", 
-                    MainForm.cic.SrcDbTablePrefix)
-                );
-
             string sql;
 
             #region 分页语句
-            sql = string.Format(
-                "SELECT * FROM {0}posts WHERE parentid = 0 ORDER BY Id LIMIT {1},{2}",
-                MainForm.cic.SrcDbTablePrefix,
-                MainForm.PageSize * (CurrentPage - 1),
-                MainForm.PageSize
-                );
+            if (CurrentPage <= 1)
+            {
+                sql = string.Format
+                       ("SELECT TOP {1} * FROM {0}topics WHERE displayorder>-1 ORDER BY tid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+            }
+            else
+            {
+                sql = string.Format
+                       ("SELECT TOP {1} * FROM {0}topics WHERE WHERE displayorder>-1 AND tid NOT IN (SELECT TOP {2} tid FROM {0}topics WHERE displayorder>-1 ORDER BY tid) ORDER BY tid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+            }
             #endregion
 
             System.Data.Common.DbDataReader dr = MainForm.srcDBH.ExecuteReader(sql);
             List<Topics> topiclist = new List<Topics>();
             while (dr.Read())
             {
-                //TODO 彩色标题
                 Topics objTopic = new Topics();
-                objTopic.tid = Convert.ToInt32(dr["id"]);
-                objTopic.fid = Convert.ToInt16(dr["db"]);
-                //objTopic.iconid = dr[""] ;
-                //如果转换主题分类,则转换此字段
-                if (MainForm.IsConvertTopicTypes)
+                objTopic.tid = Convert.ToInt32(dr["tid"]);
+                objTopic.fid = Convert.ToInt32(dr["fid"]);
+                //todo 分表
+                objTopic.posttableid = 0;
+                objTopic.typeid = Convert.ToInt32(string.Format("{0}{1}", objTopic.fid, dr["typeid"].ToString()));
+                objTopic.sortid = 0;
+                objTopic.readperm = Convert.ToInt32(dr["readperm"]);
+                objTopic.price = Convert.ToInt32(dr["price"]);
+                objTopic.author = dr["poster"].ToString();
+                objTopic.authorid = Convert.ToInt32(dr["posterid"]);
+                objTopic.subject = dr["title"].ToString();
+                objTopic.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["postdatetime"]));
+                objTopic.lastpost = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["lastpost"]));
+                objTopic.lastposter = dr["lastposter"].ToString();
+                objTopic.views = Convert.ToInt32(dr["views"]);
+                objTopic.replies = Convert.ToInt32(dr["replies"]);
+                objTopic.displayorder = Convert.ToInt32(dr["displayorder"]);
+                if (dr["highlight"].ToString() != string.Empty)
                 {
-                    //objTopic.typeid = Convert.ToInt32(dr["SubjectId"]);//将此字段事先更新为int
-                }
-                //objTopic.readperm = Convert.ToInt32(dr["Require"]);
-                //objTopic.price = Convert.ToInt32(dr["Price"]) > Int16.MaxValue ? Int16.MaxValue : Convert.ToInt16(dr["Price"]);//数据库smallint最大只有3W多
-                objTopic.poster = dr["author"].ToString();
-                objTopic.posterid = Convert.ToInt32(dr["authorid"]);
-                objTopic.title = dr["title"].ToString();
-                objTopic.postdatetime = Convert.ToDateTime(dr["postat"]);
-
-                //objTopic.lastpost = dr["lastpostat"] == DBNull.Value ? DateTime.Now : Timestamp2Date(dr["lastpostat"].ToString());
-                if (MainForm.IsResetTopicLastpostid)
-                {
-                    objTopic.lastpostid = 785200 + objTopic.tid;
+                    //todo
+                    objTopic.highlight = 41;
                 }
                 else
                 {
-                    objTopic.lastpostid = objTopic.tid;
+                    objTopic.highlight = 0;
                 }
-                objTopic.lastposter = dr["lastauthor"] == DBNull.Value ? "" : dr["lastauthor"].ToString();
-                objTopic.lastposterid = dr["lastauthorid"] == DBNull.Value ? 0 : Convert.ToInt32(dr["lastauthorid"]);
-
-                objTopic.views = Convert.ToInt32(dr["viewnumber"]);
-                objTopic.replies = Convert.ToInt32(dr["replynum"]);
-
-
-                objTopic.displayorder = Convert.ToInt32(dr["istop"]) > 0 ? Convert.ToInt32(dr["istop"]) : 0;
-
-
-                //if (Convert.ToBoolean(dr["Deleted"]))
-                //{
-                //    objTopic.displayorder = -1;
-                //}
-
-                objTopic.highlight = dr["color"] == DBNull.Value ? "" : "color:" + dr["color"].ToString() + ";";
-                if (dr["boldcode"] != DBNull.Value && Convert.ToInt32(dr["boldcode"]) > 0)
-                {
-                    objTopic.highlight += "font-weight:bold;";
-                }
-
-
-                objTopic.digest = Convert.ToByte(dr["jinghua"]);
-                //objTopic.rate = dr[""] ;
-                objTopic.hide = 1; //TODO
-                objTopic.special = Convert.ToInt32(dr["vote"]) > 0 ? Byte.Parse("1") : Byte.Parse("0");
-                if (dr["accessaryname"] != DBNull.Value && dr["accessaryname"].ToString() != string.Empty)
-                {
-                    objTopic.attachment = 1;
-                }
-                objTopic.closed = Convert.ToInt32(dr["titlelock"]);
+                objTopic.digest = Convert.ToInt32(dr["digest"]);
+                objTopic.rate = Convert.ToInt32(dr["rate"]);
+                objTopic.special = Convert.ToInt32(dr["special"]);
+                objTopic.attachment = Convert.ToInt32(dr["attachment"]);
+                objTopic.moderated = Convert.ToInt32(dr["moderated"]);
+                objTopic.closed = Convert.ToInt32(dr["closed"]);
+                objTopic.stickreply = 0;
+                objTopic.recommends = 0;
+                objTopic.recommend_add = 0;
+                objTopic.recommend_sub = 0;
+                objTopic.heats = 0;
+                //管理操作后  好像都是32
+                objTopic.status = 0;
+                objTopic.isgroup = 0;
+                objTopic.favtimes = 0;
+                objTopic.sharetimes = 0;
+                objTopic.stamp = -1;
+                objTopic.icon = -1;
+                objTopic.pushedaid = 0;
                 topiclist.Add(objTopic);
             }
             dr.Close();
