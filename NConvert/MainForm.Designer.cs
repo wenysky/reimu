@@ -397,7 +397,7 @@
             this.tbxTargetDbTablePrefix.Name = "tbxTargetDbTablePrefix";
             this.tbxTargetDbTablePrefix.Size = new System.Drawing.Size(160, 20);
             this.tbxTargetDbTablePrefix.TabIndex = 14;
-            this.tbxTargetDbTablePrefix.Text = "dzx15c_";
+            this.tbxTargetDbTablePrefix.Text = "pre_";
             // 
             // groupBox1
             // 

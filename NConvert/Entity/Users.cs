@@ -6,6 +6,11 @@ namespace NConvert.Entity
     {
         public int uid { get; set; }
         /// <summary>
+        /// char6
+        /// </summary>
+        public string salt { get; set; }
+        public string ucpassword { get; set; }
+        /// <summary>
         /// 40char
         /// </summary>
         public string email { get; set; }
@@ -48,7 +53,7 @@ namespace NConvert.Entity
         /// <summary>
         /// char20  扩展用户组
         /// </summary>
-        public int extgroupids { get; set; }
+        public string extgroupids { get; set; }
         /// <summary>
         /// 注册时间
         /// </summary>
@@ -61,7 +66,7 @@ namespace NConvert.Entity
         /// <summary>
         /// char4  时区校正
         /// </summary>
-        public int timeoffset { get; set; }
+        public string timeoffset { get; set; }
         public int newpm { get; set; }
         /// <summary>
         /// 新提醒数目
@@ -129,7 +134,7 @@ namespace NConvert.Entity
         /// </summary>
         public string authstr { get; set; }
         /// <summary>
-        /// 用户所有群组
+        /// TEXT用户所有群组
         /// </summary>
         public string groups { get; set; }
         /// <summary>
@@ -180,6 +185,9 @@ namespace NConvert.Entity
         public string nationality { get; set; }
         public string birthprovince { get; set; }
         public string birthcity { get; set; }
+        /// <summary>
+        /// 居住省份
+        /// </summary>
         public string resideprovince { get; set; }
         public string residecity { get; set; }
         /// <summary>
