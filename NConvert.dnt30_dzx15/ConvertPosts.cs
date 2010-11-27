@@ -13,7 +13,7 @@ namespace NConvert.dnt30_dzx15
 
         public int GetPostsRecordCount()
         {
-            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(Id) FROM {0}posts", MainForm.cic.SrcDbTablePrefix)));
+            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(pid) FROM {0}posts1", MainForm.cic.SrcDbTablePrefix)));
         }
 
         /// <summary>
@@ -26,12 +26,16 @@ namespace NConvert.dnt30_dzx15
             string sql;
 
             #region 分页语句
-            sql = string.Format(
-                "SELECT * FROM {0}posts p LEFT JOIN {0}postcontent pc ON p.id = pc.postID ORDER BY id LIMIT {1},{2}", 
-                MainForm.cic.SrcDbTablePrefix, 
-                MainForm.PageSize * (CurrentPage - 1), 
-                MainForm.PageSize
-                );
+            if (CurrentPage <= 1)
+            {
+                sql = string.Format
+                       ("SELECT TOP {1} * FROM {0}posts1 ORDER BY pid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+            }
+            else
+            {
+                sql = string.Format
+                       ("SELECT TOP {1} * FROM {0}posts1 WHERE pid NOT IN (SELECT TOP {2} pid FROM {0}posts1 ORDER BY pid) ORDER BY pid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+            }
             #endregion
 
             System.Data.Common.DbDataReader dr = MainForm.srcDBH.ExecuteReader(sql);
@@ -39,24 +43,29 @@ namespace NConvert.dnt30_dzx15
             while (dr.Read())
             {
                 Posts objPost = new Posts();
-                objPost.pid = Convert.ToInt32(dr["id"]);
-                objPost.tid = Convert.ToInt32(dr["parentid"]) == 0 ? objPost.pid : Convert.ToInt32(dr["parentid"]);//如果没有父ID，就说明它是主题贴
-                objPost.message = ConvertUBB(dr["content"].ToString());
-                //objPost.lastedit = GetLastEditInfo(dr["Body"].ToString());
-                objPost.posterid = Convert.ToInt32(dr["authorid"]);
-                objPost.poster = dr["author"].ToString();//CVC长度40>20
-                objPost.ip = dr["ipfrom"].ToString();
-                objPost.postdatetime = Convert.ToDateTime(dr["postat"]);
-                if (dr["accessaryname"] != DBNull.Value && dr["accessaryname"].ToString().Trim() != "")
-                {
-                    objPost.attachment = 1;
-                }
-                //objPost.invisible = Convert.ToInt32(dr["Deleted"]);
-
-                objPost.parentid = objPost.pid;
-                //TODO 板块id需要在后面整理更新
-                //layer没有指定
-
+                objPost.pid = Convert.ToInt32(dr["pid"]);
+                objPost.fid = Convert.ToInt32(dr["fid"]);
+                objPost.tid = Convert.ToInt32(dr["tid"]);
+                objPost.first = Convert.ToInt32(dr["layer"]) == 0 ? 1 : 0;
+                objPost.author = dr["poster"].ToString();
+                objPost.authorid = Convert.ToInt32(dr["posterid"]);
+                objPost.subject = dr["title"].ToString();
+                objPost.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["postdatetime"]));
+                objPost.message = dr["message"].ToString();
+                objPost.useip = dr["ip"].ToString();
+                objPost.invisible = Convert.ToInt32(dr["invisible"]);
+                objPost.anonymous = 0;
+                objPost.usesig = Convert.ToInt32(dr["usesig"]);
+                objPost.htmlon = Convert.ToInt32(dr["htmlon"]);
+                objPost.bbcodeoff = Convert.ToInt32(dr["bbcodeoff"]);
+                objPost.smileyoff = Convert.ToInt32(dr["smileyoff"]);
+                objPost.parseurloff = Convert.ToInt32(dr["parseurloff"]);
+                objPost.attachment = Convert.ToInt32(dr["attachment"]);
+                objPost.rate = Convert.ToInt32(dr["rate"]);
+                objPost.ratetimes = Convert.ToInt32(dr["ratetimes"]);
+                objPost.status = 0;
+                objPost.tags = "";
+                objPost.comment = 0;
                 postlist.Add(objPost);
             }
             dr.Close();

@@ -439,3 +439,216 @@ banner
 groupnum
 commentitem
 hidemenu
+
+
+
+INSERT INTO `dzx15c`.`pre_forum_thread` (
+`tid` ,
+`fid` ,
+`posttableid` ,
+`typeid` ,
+`sortid` ,
+`readperm` ,
+`price` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`lastpost` ,
+`lastposter` ,
+`views` ,
+`replies` ,
+`displayorder` ,
+`highlight` ,
+`digest` ,
+`rate` ,
+`special` ,
+`attachment` ,
+`moderated` ,
+`closed` ,
+`stickreply` ,
+`recommends` ,
+`recommend_add` ,
+`recommend_sub` ,
+`heats` ,
+`status` ,
+`isgroup` ,
+`favtimes` ,
+`sharetimes` ,
+`stamp` ,
+`icon` ,
+`pushedaid` 
+)
+VALUES (
+NULL , '0', '0', '0', '0', '0', '0', '', '0', '', '0', '0', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '-1', '-1', '0'
+);
+
+
+tid
+fid
+posttableid
+typeid
+sortid
+readperm
+price
+author
+authorid
+subject
+dateline
+lastpost
+lastposter
+views
+replies
+displayorder
+highlight
+digest
+rate
+special
+attachment
+moderated
+closed
+stickreply
+recommends
+recommend_add
+recommend_sub
+heats
+status
+isgroup
+favtimes
+sharetimes
+stamp
+icon
+pushedaid
+
+
+
+INSERT INTO `dzx15c`.`pre_forum_post` (
+`pid` ,
+`fid` ,
+`tid` ,
+`first` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`useip` ,
+`invisible` ,
+`anonymous` ,
+`usesig` ,
+`htmlon` ,
+`bbcodeoff` ,
+`smileyoff` ,
+`parseurloff` ,
+`attachment` ,
+`rate` ,
+`ratetimes` ,
+`status` ,
+`tags` ,
+`comment` 
+)
+VALUES (@pid,
+@fid,
+@tid,
+@first,
+@author,
+@authorid,
+@subject,
+@dateline,
+@message,
+@useip,
+@invisible,
+@anonymous,
+@usesig,
+@htmlon,
+@bbcodeoff,
+@smileyoff,
+@parseurloff,
+@attachment,
+@rate,
+@ratetimes,
+@status,
+@tags,
+@comment
+);
+
+
+pid
+fid
+tid
+first
+author
+authorid
+subject
+dateline
+message
+useip
+invisible
+anonymous
+usesig
+htmlon
+bbcodeoff
+smileyoff
+parseurloff
+attachment
+rate
+ratetimes
+status
+tags
+comment
+
+
+
+INSERT INTO `dzx15c`.`pre_forum_attachment` (
+`aid` ,
+`tid` ,
+`pid` ,
+`width` ,
+`dateline` ,
+`readperm` ,
+`price` ,
+`filename` ,
+`filetype` ,
+`filesize` ,
+`attachment` ,
+`downloads` ,
+`isimage` ,
+`uid` ,
+`thumb` ,
+`remote` ,
+`picid` 
+)
+VALUES (
+);
+
+
+INSERT INTO `dzx15c`.`pre_forum_attachmentfield` (
+`aid` ,
+`tid` ,
+`pid` ,
+`uid` ,
+`description` 
+)
+VALUES (
+);
+
+
+
+aid
+tid
+pid
+width
+dateline
+readperm
+price
+filename
+filetype
+filesize
+attachment
+downloads
+isimage
+uid
+thumb
+remote
+picid
+description

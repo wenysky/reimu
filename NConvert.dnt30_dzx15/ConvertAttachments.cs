@@ -14,7 +14,7 @@ namespace NConvert.dnt30_dzx15
 
         public int GetAttachmentsRecordCount()
         {
-            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(Id) FROM {0}uploadinfo", MainForm.cic.SrcDbTablePrefix)));
+            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(aid) FROM {0}attachments", MainForm.cic.SrcDbTablePrefix)));
         }
 
         public List<Attachments> GetAttachmentList(int CurrentPage)
@@ -22,12 +22,16 @@ namespace NConvert.dnt30_dzx15
             string sql;
 
             #region 分页语句
-            sql = string.Format(
-                "SELECT * FROM {0}uploadinfo ORDER BY Id LIMIT {1},{2}", 
-                MainForm.cic.SrcDbTablePrefix, 
-                MainForm.PageSize * (CurrentPage - 1), 
-                MainForm.PageSize
-                );
+            if (CurrentPage <= 1)
+            {
+                sql = string.Format
+                       ("SELECT TOP {1} * FROM {0}attachments ORDER BY aid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+            }
+            else
+            {
+                sql = string.Format
+                       ("SELECT TOP {1} * FROM {0}attachments WHERE aid NOT IN (SELECT TOP {2} aid FROM {0}attachments ORDER BY aid) ORDER BY aid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+            }
             #endregion
 
             System.Data.Common.DbDataReader dr = MainForm.srcDBH.ExecuteReader(sql);
@@ -35,18 +39,36 @@ namespace NConvert.dnt30_dzx15
             while (dr.Read())
             {
                 Attachments objAttachment = new Attachments();
-                objAttachment.aid = Convert.ToInt32(dr["Id"]);
-                objAttachment.pid = Convert.ToInt32(dr["postsid"]);
-                objAttachment.tid = Convert.ToInt32(dr["parentid"]);
-                objAttachment.uid = dr["authorid"] == DBNull.Value ? -1 : Convert.ToInt32(dr["authorid"]);
-                objAttachment.attachment = dr["filerealname"] == DBNull.Value ? "无标题" : dr["filerealname"].ToString();
-                objAttachment.filename = dr["filepath"] == DBNull.Value ? "nothing.zip" : dr["filepath"].ToString();
-                objAttachment.description = objAttachment.attachment;
-                objAttachment.filesize = dr["filesize"] == DBNull.Value ? -1 : Convert.ToInt32(dr["filesize"]);
-                objAttachment.filetype = Utils.Attachments.GetFileType(objAttachment.filename);
-                //objAttachment.downloads = Convert.ToInt32(dr["Downloads"]);
-                //objAttachment.readperm = Convert.ToInt32(dr["DownloadRequire"]);
-                objAttachment.postdatetime = Convert.ToDateTime(dr["uploaddate"]);
+                objAttachment.aid = Convert.ToInt32(dr["aid"]);
+                objAttachment.tid = Convert.ToInt32(dr["tid"]);
+                objAttachment.pid = Convert.ToInt32(dr["pid"]);
+                objAttachment.width = Convert.ToInt32(dr["width"]);
+                objAttachment.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["postdatetime"]));
+                objAttachment.readperm = Convert.ToInt32(dr["readperm"]);
+                objAttachment.price = Convert.ToInt32(dr["attachprice"]);
+                objAttachment.filename = dr["attachment"].ToString();
+                objAttachment.filetype = "application/octet-stream";// dr["filetype"].ToString();
+                objAttachment.filesize = Convert.ToInt32(dr["filesize"]);
+                objAttachment.attachment = dr["filename"].ToString().Replace("\\", "/");
+                objAttachment.downloads = Convert.ToInt32(dr["downloads"]);
+                List<string> isImage = new List<string>();
+                isImage.Add(".jpg");
+                isImage.Add(".gif");
+                isImage.Add(".png");
+                isImage.Add(".jpeg");
+                if (isImage.Contains(System.IO.Path.GetExtension(objAttachment.filename.Trim())))
+                {
+                    objAttachment.isimage = -1;
+                }
+                else
+                {
+                    objAttachment.isimage = 0;
+                }
+                objAttachment.uid = Convert.ToInt32(dr["uid"]);
+                objAttachment.thumb = 0;
+                objAttachment.remote = 0;
+                objAttachment.picid = 0;
+                objAttachment.description = 0;
 
                 attachmentlist.Add(objAttachment);
             }
