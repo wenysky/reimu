@@ -40,6 +40,7 @@ namespace NConvert
 
             if (MainForm.IsConvertPosts)
             {
+                MainForm.extAttachList = new List<Attachments>();
                 ConvertPosts();
                 //UpdateLastPostid();
             }
@@ -722,7 +723,7 @@ VALUES (
 `site` ,
 `bio` ,
 `interest` ,
-`field1` ,
+`realmtiny3` ,
 `field2` ,
 `field3` ,
 `field4` ,
