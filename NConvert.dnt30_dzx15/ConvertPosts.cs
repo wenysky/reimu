@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NConvert.Provider;
 using NConvert.Entity;
+using System.Text.RegularExpressions;
 
 namespace NConvert.dnt30_dzx15
 {
@@ -61,6 +62,58 @@ namespace NConvert.dnt30_dzx15
                 objPost.smileyoff = Convert.ToInt32(dr["smileyoff"]);
                 objPost.parseurloff = Convert.ToInt32(dr["parseurloff"]);
                 objPost.attachment = Convert.ToInt32(dr["attachment"]);
+
+                MatchCollection mc = Utils.Text.GetMatchFull(objPost.message, @"/bbs/download\.aspx\?id=([0-9]+)");
+                if (mc.Count > 0)
+                {
+                    foreach (Match m in mc)
+                    {
+                        int extaid = Convert.ToInt32(m.Groups[0].Value);
+
+                        Yuwen.Tools.TinyData.DBHelper dbhExtattach = new Yuwen.Tools.TinyData.DBHelper(MainForm.cic.SrcDbAddress.Replace("dnt3", "science"), MainForm.srcDbTypeNamespace);
+                        System.Data.Common.DbDataReader drExtattach = dbhExtattach.ExecuteReader("SELECT * FROM kexue_appendix WHERE id=" + extaid);
+                        if (drExtattach.Read())
+                        {
+                            Attachments objAttachment = new Attachments();
+                            objAttachment.aid = Convert.ToInt32(dr["id"]);
+                            objAttachment.tid = objPost.tid;
+                            objAttachment.pid = objPost.pid;
+                            objAttachment.width = 0;
+                            objAttachment.dateline = 0;
+                            objAttachment.readperm = 0;
+                            objAttachment.price = Convert.ToInt32(dr["mymoney"]);
+                            objAttachment.filename = dr["title"].ToString();
+                            objAttachment.filetype = "application/octet-stream";// dr["filetype"].ToString();
+                            objAttachment.filesize = 0;
+                            objAttachment.attachment = dr["url"].ToString();
+                            objAttachment.downloads = Convert.ToInt32(dr["dnum"]);
+                            List<string> isImage = new List<string>();
+                            isImage.Add(".jpg");
+                            isImage.Add(".gif");
+                            isImage.Add(".png");
+                            isImage.Add(".jpeg");
+                            if (isImage.Contains(System.IO.Path.GetExtension(objAttachment.filename.Trim())))
+                            {
+                                objAttachment.isimage = -1;
+                            }
+                            else
+                            {
+                                objAttachment.isimage = 0;
+                            }
+                            objAttachment.uid = Convert.ToInt32(dr["newsid"]);
+                            objAttachment.thumb = 0;
+                            objAttachment.remote = 0;
+                            objAttachment.picid = 0;
+                            objAttachment.description = 0;
+                            dr.Close();
+                            dr.Dispose();
+                            MainForm.extAttachList.Add(objAttachment);
+                            //[attach]
+                            //objPost.message = Utils.Text.ReplaceRegex(@"/bbs/download\.aspx\?id=" + m.Groups[0].Value, objPost.message, m.Groups[0].Value);
+                        }
+                    }
+                }
+
                 objPost.rate = Convert.ToInt32(dr["rate"]);
                 objPost.ratetimes = Convert.ToInt32(dr["ratetimes"]);
                 objPost.status = 0;
