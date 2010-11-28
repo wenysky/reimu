@@ -14,6 +14,10 @@ namespace NConvert.Utils
 
         public static int DateTime2TimeStamp(DateTime dtNow)
         {
+            if (dtNow.Year < 1990)
+            {
+                return 0;
+            }
             DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             TimeSpan toNow = dtNow.Subtract(dtStart);
             string timeStamp = toNow.Ticks.ToString();

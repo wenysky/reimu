@@ -37,7 +37,7 @@ namespace NConvert.dnt30_dzx15
             else
             {
                 sql = string.Format
-                       ("SELECT TOP {1} * FROM {0} LEFT JOIN {4} ON {0}.uid={4}.uid WHERE {3} NOT IN (SELECT TOP {2} {3} FROM {0} ORDER BY {0}.{3}) ORDER BY {0}.{3}", MainForm.cic.SrcDbTablePrefix + tablename, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1), pkidname, MainForm.cic.SrcDbTablePrefix + "userfields");
+                       ("SELECT TOP {1} * FROM {0} LEFT JOIN {4} ON {0}.uid={4}.uid WHERE {0}.{3} NOT IN (SELECT TOP {2} {3} FROM {0} ORDER BY {0}.{3}) ORDER BY {0}.{3}", MainForm.cic.SrcDbTablePrefix + tablename, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1), pkidname, MainForm.cic.SrcDbTablePrefix + "userfields");
             }
             #endregion
 
@@ -103,9 +103,21 @@ namespace NConvert.dnt30_dzx15
 
                 objUser.realname = dr["realname"].ToString();
                 objUser.gender = Convert.ToInt32(dr["gender"]);
-                objUser.birthyear = dr["bday"] == DBNull.Value ? 0 : Convert.ToDateTime(dr["bday"]).Year;
-                objUser.birthmonth = dr["bday"] == DBNull.Value ? 0 : Convert.ToDateTime(dr["bday"]).Month;
-                objUser.birthday = dr["bday"] == DBNull.Value ? 0 : Convert.ToDateTime(dr["bday"]).Day;
+                DateTime bdayt;
+                if (dr["bday"] != DBNull.Value 
+                    && dr["bday"].ToString().Trim() != string.Empty 
+                    && DateTime.TryParse(dr["bday"].ToString().Trim(), out bdayt))
+                {
+                    objUser.birthyear = bdayt.Year;
+                    objUser.birthmonth = bdayt.Month;
+                    objUser.birthday = bdayt.Day;
+                }
+                else
+                {
+                    objUser.birthyear = 0;
+                    objUser.birthmonth = 0;
+                    objUser.birthday = 0;
+                }
                 objUser.constellation = "";
                 objUser.zodiac = "";
                 objUser.telephone = dr["phone"].ToString();

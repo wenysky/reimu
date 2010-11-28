@@ -35,7 +35,7 @@ namespace NConvert.dnt30_dzx15
             else
             {
                 sql = string.Format
-                       ("SELECT TOP {1} * FROM {0}topics WHERE WHERE displayorder>-1 AND tid NOT IN (SELECT TOP {2} tid FROM {0}topics WHERE displayorder>-1 ORDER BY tid) ORDER BY tid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+                       ("SELECT TOP {1} * FROM {0}topics WHERE displayorder>-1 AND tid NOT IN (SELECT TOP {2} tid FROM {0}topics WHERE displayorder>-1 ORDER BY tid) ORDER BY tid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
             }
             #endregion
 
