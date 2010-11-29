@@ -13,7 +13,7 @@ namespace NConvert.dnt30_dzx15
 
         public int GetPmsRecordCount()
         {
-            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(Id) FROM {0}webqq", MainForm.cic.SrcDbTablePrefix)));
+            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(pmid) FROM {0}pms", MainForm.cic.SrcDbTablePrefix)));
         }
 
         public List<Pms> GetPmList(int CurrentPage)
@@ -21,12 +21,16 @@ namespace NConvert.dnt30_dzx15
             string sql;
 
             #region 分页语句
-            sql = string.Format(
-                "SELECT * FROM {0}webqq ORDER BY Id LIMIT {1},{2}", 
-                MainForm.cic.SrcDbTablePrefix, 
-                MainForm.PageSize * (CurrentPage - 1), 
-                MainForm.PageSize
-                );
+            if (CurrentPage <= 1)
+            {
+                sql = string.Format
+                       ("SELECT TOP {1} * FROM {0}pms ORDER BY pmid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+            }
+            else
+            {
+                sql = string.Format
+                       ("SELECT TOP {1} * FROM {0}pms WHERE pmid NOT IN (SELECT TOP {2} pmid FROM {0}pms ORDER BY pmid) ORDER BY pmid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+            }
             #endregion
 
             System.Data.Common.DbDataReader dr = MainForm.srcDBH.ExecuteReader(sql);
@@ -34,20 +38,26 @@ namespace NConvert.dnt30_dzx15
             while (dr.Read())
             {
                 Pms objPms = new Pms();
-                objPms.pmid = Convert.ToInt32(dr["Id"]);
-                objPms.msgfromid = 1;
-                objPms.msgfrom = dr["fromname"].ToString();
-                objPms.msgtoid = 1;
-                objPms.msgto = dr["toname"].ToString();
-                objPms.subject = dr["Title"].ToString();
-                objPms.message = dr["message"].ToString();
-                objPms.newmessage = Convert.ToInt32(dr["viewed"]);
-                objPms.postdatetime = Convert.ToDateTime(dr["sendat"]);
-                if (dr["operation"] != DBNull.Value && dr["operation"].ToString().ToLower()=="send")
-                {
-                    objPms.folder = 1;
-                }
-
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
+                objPms. = Convert.ToInt32(dr[""]);
                 pmlist.Add(objPms);
             }
             dr.Close();

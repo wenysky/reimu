@@ -38,10 +38,25 @@ namespace NConvert
                 //ResetTopicsInfo();
             }
 
+            if (MainForm.IsConvertAttachments)
+                ConvertAttachments();
             if (MainForm.IsConvertPosts)
             {
                 MainForm.extAttachList = new List<Attachments>();
+                Yuwen.Tools.TinyData.DBHelper dbhExtattach = MainForm.GetTargetDBH();
+                dbhExtattach.Open();
+                MainForm.extAttachAidStartIndex = 1 + Convert.ToInt32(
+                    dbhExtattach.ExecuteScalar(
+                        string.Format(
+                        "SELECT MAX(tid) FROM {0}forum_attachment",
+                        MainForm.cic.TargetDbTablePrefix
+                        )
+                    )
+                );
+                dbhExtattach.Close();
+                dbhExtattach.Dispose();
                 ConvertPosts();
+                ConvertextAttach();
                 //UpdateLastPostid();
             }
             if (MainForm.IsUpdatePostsInfo)
@@ -59,8 +74,6 @@ namespace NConvert
                 ConvertVoteRecords();
             }
 
-            if (MainForm.IsConvertAttachments)
-                ConvertAttachments();
             if (MainForm.IsConvertPms)
                 ConvertPms();
             if (MainForm.IsConvertForumLinks)
@@ -525,7 +538,7 @@ values
             dbhConvertUsers.TruncateTable(string.Format("{0}common_member_profile", MainForm.cic.TargetDbTablePrefix));
             dbhConvertUsers.TruncateTable(string.Format("{0}common_member_status", MainForm.cic.TargetDbTablePrefix));
 
-            
+
 
             #region sql语句
             string sqlUCUser = string.Format(@"INSERT INTO {0}ucenter_members (
@@ -557,7 +570,7 @@ VALUES (
 ''
 )", MainForm.cic.TargetDbTablePrefix);
 
-            string sqlUCUserfield=string.Format(@"INSERT INTO {0}ucenter_memberfields (
+            string sqlUCUserfield = string.Format(@"INSERT INTO {0}ucenter_memberfields (
 `uid`,
 `blacklist` 
 )
@@ -655,7 +668,7 @@ VALUES (
 @oltime
 )", MainForm.cic.TargetDbTablePrefix);
 
-            
+
             string sqlMemberfieldforum = string.Format(@"INSERT INTO {0}common_member_field_forum (
 `uid` ,
 `publishfeed` ,
@@ -679,7 +692,7 @@ VALUES (
 @authstr,
 @groups,
 @attentiongroup
-)", MainForm.cic.TargetDbTablePrefix);            
+)", MainForm.cic.TargetDbTablePrefix);
             string sqlMemberprofile = string.Format(@"INSERT INTO {0}common_member_profile (
 `uid` ,
 `realname` ,
@@ -783,7 +796,7 @@ VALUES (
 @field6,
 @field7,
 @field8
-)", MainForm.cic.TargetDbTablePrefix);            
+)", MainForm.cic.TargetDbTablePrefix);
             string sqlMemberstatus = string.Format(@"INSERT INTO {0}common_member_status (
 `uid` ,
 `regip` ,
@@ -971,7 +984,7 @@ VALUES (
                 }
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
-         
+
             //dbhConvertUsers.Close();
             dbhConvertUsers.Dispose();
             MainForm.RecordCount = -1;
@@ -1516,7 +1529,7 @@ VALUES (
                 }
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
-            
+
             dbh.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换主题。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
@@ -1792,6 +1805,139 @@ VALUES (
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换附件。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
+
+
+        private static void ConvertextAttach()
+        {
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            dbh.Open();
+            MainForm.MessageForm.SetMessage("开始转换额外附件\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = MainForm.extAttachList.Count;
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            //dbh.TruncateTable(string.Format("{0}forum_attachment", MainForm.cic.TargetDbTablePrefix));
+            //dbh.TruncateTable(string.Format("{0}forum_attachmentfield", MainForm.cic.TargetDbTablePrefix));
+            MainForm.PageCount = 1;//debug
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到主题列表
+                List<Attachments> attachmentList = MainForm.extAttachList;
+                foreach (Attachments objAttachment in attachmentList)
+                {
+                    #region sql语句
+                    string sqlAttachment = string.Format(@"INSERT INTO {0}forum_attachment (
+`aid` ,
+`tid` ,
+`pid` ,
+`width` ,
+`dateline` ,
+`readperm` ,
+`price` ,
+`filename` ,
+`filetype` ,
+`filesize` ,
+`attachment` ,
+`downloads` ,
+`isimage` ,
+`uid` ,
+`thumb` ,
+`remote` ,
+`picid` 
+)
+VALUES (
+@aid,
+@tid,
+@pid,
+@width,
+@dateline,
+@readperm,
+@price,
+@filename,
+@filetype,
+@filesize,
+@attachment,
+@downloads,
+@isimage,
+@uid,
+@thumb,
+@remote,
+@picid
+)", MainForm.cic.TargetDbTablePrefix);
+
+
+                    string sqlAttachmentField = string.Format(@"INSERT INTO {0}forum_attachmentfield (
+`aid` ,
+`tid` ,
+`pid` ,
+`uid` ,
+`description` 
+)
+VALUES (
+@aid,
+@tid,
+@pid,
+@uid,
+@description
+)", MainForm.cic.TargetDbTablePrefix);
+                    #endregion
+                    //清理上次执行的参数
+                    dbh.ParametersClear();
+                    #region dnt_attachment表参数
+                    dbh.ParameterAdd("@aid", objAttachment.aid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@tid", objAttachment.tid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@pid", objAttachment.pid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@width", objAttachment.width, DbType.Int32, 4);
+                    dbh.ParameterAdd("@dateline", objAttachment.dateline, DbType.Int32, 4);
+                    dbh.ParameterAdd("@readperm", objAttachment.readperm, DbType.Int32, 4);
+                    dbh.ParameterAdd("@price", objAttachment.price, DbType.Int32, 4);
+                    dbh.ParameterAdd("@filename", objAttachment.filename, DbType.String, 100);
+                    dbh.ParameterAdd("@filetype", objAttachment.filetype, DbType.String, 50);
+                    dbh.ParameterAdd("@filesize", objAttachment.filesize, DbType.Int32, 4);
+                    dbh.ParameterAdd("@attachment", objAttachment.attachment, DbType.String, 100);
+                    dbh.ParameterAdd("@downloads", objAttachment.downloads, DbType.Int32, 4);
+                    dbh.ParameterAdd("@isimage", objAttachment.isimage, DbType.Int32, 4);
+                    dbh.ParameterAdd("@uid", objAttachment.uid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@thumb", objAttachment.thumb, DbType.Int32, 4);
+                    dbh.ParameterAdd("@remote", objAttachment.remote, DbType.Int32, 4);
+                    dbh.ParameterAdd("@picid", objAttachment.picid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@description", objAttachment.description, DbType.Int32, 4);
+                    #endregion
+
+                    try
+                    {
+                        dbh.ExecuteNonQuery(sqlAttachment);//插入dnt_topics表
+                        dbh.ExecuteNonQuery(sqlAttachmentField);
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}。aid={1} pid={2} tid={3}\r\n", ex.Message, objAttachment.aid, objAttachment.pid, objAttachment.tid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                //一次分页完毕
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+            dbh.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换附件。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
 
         /// <summary>
         /// 转换投票主体

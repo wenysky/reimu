@@ -172,7 +172,7 @@
             this.tbxSrcPassword.PasswordChar = '*';
             this.tbxSrcPassword.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcPassword.TabIndex = 7;
-            this.tbxSrcPassword.Text = "123321qq";
+            this.tbxSrcPassword.Text = "yuwen321";
             // 
             // tbxSrcLoginID
             // 
@@ -180,7 +180,7 @@
             this.tbxSrcLoginID.Name = "tbxSrcLoginID";
             this.tbxSrcLoginID.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcLoginID.TabIndex = 6;
-            this.tbxSrcLoginID.Text = "sa";
+            this.tbxSrcLoginID.Text = "yuwen";
             // 
             // tbxSrcDBName
             // 
@@ -196,7 +196,7 @@
             this.tbxSrcAddress.Name = "tbxSrcAddress";
             this.tbxSrcAddress.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcAddress.TabIndex = 4;
-            this.tbxSrcAddress.Text = "LINUX-MYMPC\\SQLEXPRESS2008";
+            this.tbxSrcAddress.Text = "10.1.1.245";
             // 
             // plTargetDBSetting
             // 
@@ -272,7 +272,7 @@
             this.tbxTargetDBName.Name = "tbxTargetDBName";
             this.tbxTargetDBName.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetDBName.TabIndex = 5;
-            this.tbxTargetDBName.Text = "sn2";
+            this.tbxTargetDBName.Text = "snm";
             // 
             // tbxTargetAddress
             // 

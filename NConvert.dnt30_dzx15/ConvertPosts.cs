@@ -14,7 +14,12 @@ namespace NConvert.dnt30_dzx15
 
         public int GetPostsRecordCount()
         {
+//#warning debug
+//            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(pid) FROM {0}posts1 WHERE tid=28696", MainForm.cic.SrcDbTablePrefix)));
+//#warning end debug
             return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(pid) FROM {0}posts1", MainForm.cic.SrcDbTablePrefix)));
+
+
         }
 
         /// <summary>
@@ -38,6 +43,11 @@ namespace NConvert.dnt30_dzx15
                        ("SELECT TOP {1} * FROM {0}posts1 WHERE pid NOT IN (SELECT TOP {2} pid FROM {0}posts1 ORDER BY pid) ORDER BY pid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
             }
             #endregion
+
+//#warning debug
+//            sql = string.Format
+//                   ("SELECT TOP {1} * FROM {0}posts1 WHERE tid=28696 ORDER BY pid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+//#warning end debug
 
             System.Data.Common.DbDataReader dr = MainForm.srcDBH.ExecuteReader(sql);
             List<Posts> postlist = new List<Posts>();
@@ -64,29 +74,43 @@ namespace NConvert.dnt30_dzx15
                 objPost.attachment = Convert.ToInt32(dr["attachment"]);
 
                 MatchCollection mc = Utils.Text.GetMatchFull(objPost.message, @"/bbs/download\.aspx\?id=([0-9]+)");
-                if (mc.Count > 0)
+                if (mc!=null && mc.Count > 0)
                 {
                     foreach (Match m in mc)
                     {
-                        int extaid = Convert.ToInt32(m.Groups[0].Value);
+                        string extaid = m.Groups[1].Value;
 
-                        Yuwen.Tools.TinyData.DBHelper dbhExtattach = new Yuwen.Tools.TinyData.DBHelper(MainForm.cic.SrcDbAddress.Replace("dnt3", "science"), MainForm.srcDbTypeNamespace);
-                        System.Data.Common.DbDataReader drExtattach = dbhExtattach.ExecuteReader("SELECT * FROM kexue_appendix WHERE id=" + extaid);
+                        string srcExtDbConn = string.Format("Data Source=LINUX-MYMPC\\SQLEXPRESS2008;Initial Catalog=science;User ID=sa;Password=123321qq;");
+                        Yuwen.Tools.TinyData.DBHelper dbhExtattach = new Yuwen.Tools.TinyData.DBHelper(srcExtDbConn, MainForm.srcDbTypeNamespace);
+                        dbhExtattach.Open();
+                        System.Data.Common.DbDataReader drExtattach = dbhExtattach.ExecuteReader(
+                            string.Format("SELECT * FROM kexue_appendix WHERE content='{0}'", extaid)
+                            );
                         if (drExtattach.Read())
                         {
+                            int extNewaid;
+                            if (MainForm.extAttachList.Count > 0)
+                            {
+                                extNewaid = MainForm.extAttachList[MainForm.extAttachList.Count - 1].aid + 1;
+                            }
+                            else
+                            {
+                                extNewaid = MainForm.extAttachAidStartIndex + 1;
+                            }
+                            
                             Attachments objAttachment = new Attachments();
-                            objAttachment.aid = Convert.ToInt32(dr["id"]);
+                            objAttachment.aid = extNewaid;
                             objAttachment.tid = objPost.tid;
                             objAttachment.pid = objPost.pid;
                             objAttachment.width = 0;
                             objAttachment.dateline = 0;
                             objAttachment.readperm = 0;
-                            objAttachment.price = Convert.ToInt32(dr["mymoney"]);
-                            objAttachment.filename = dr["title"].ToString();
+                            objAttachment.price = Convert.ToInt32(drExtattach["mymoney"]);
+                            objAttachment.filename = drExtattach["title"].ToString();
                             objAttachment.filetype = "application/octet-stream";// dr["filetype"].ToString();
-                            objAttachment.filesize = 0;
-                            objAttachment.attachment = dr["url"].ToString();
-                            objAttachment.downloads = Convert.ToInt32(dr["dnum"]);
+                            objAttachment.filesize = Convert.ToInt32(drExtattach["field"]);
+                            objAttachment.attachment = drExtattach["url"].ToString();
+                            objAttachment.downloads = Convert.ToInt32(drExtattach["dnum"]);
                             List<string> isImage = new List<string>();
                             isImage.Add(".jpg");
                             isImage.Add(".gif");
@@ -100,17 +124,19 @@ namespace NConvert.dnt30_dzx15
                             {
                                 objAttachment.isimage = 0;
                             }
-                            objAttachment.uid = Convert.ToInt32(dr["newsid"]);
+                            objAttachment.uid = Convert.ToInt32(drExtattach["newsid"]);
                             objAttachment.thumb = 0;
                             objAttachment.remote = 0;
                             objAttachment.picid = 0;
                             objAttachment.description = 0;
-                            dr.Close();
-                            dr.Dispose();
                             MainForm.extAttachList.Add(objAttachment);
+                            objPost.attachment = 1;
                             //[attach]
                             //objPost.message = Utils.Text.ReplaceRegex(@"/bbs/download\.aspx\?id=" + m.Groups[0].Value, objPost.message, m.Groups[0].Value);
                         }
+
+                        drExtattach.Close();
+                        drExtattach.Dispose();
                     }
                 }
 

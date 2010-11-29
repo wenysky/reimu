@@ -13,6 +13,15 @@ namespace NConvert.dnt30_dzx15
 
         public int GetTopicsRecordCount()
         {
+//#warning debug
+//            return Convert.ToInt32(
+//                MainForm.srcDBH.ExecuteScalar(
+//                string.Format(
+//                "SELECT COUNT(tid) FROM {0}topics WHERE displayorder>-1 AND tid=28696",
+//                MainForm.cic.SrcDbTablePrefix)
+//                )
+//                );
+//#warning end debug
             return Convert.ToInt32(
                 MainForm.srcDBH.ExecuteScalar(
                 string.Format(
@@ -38,6 +47,12 @@ namespace NConvert.dnt30_dzx15
                        ("SELECT TOP {1} * FROM {0}topics WHERE displayorder>-1 AND tid NOT IN (SELECT TOP {2} tid FROM {0}topics WHERE displayorder>-1 ORDER BY tid) ORDER BY tid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
             }
             #endregion
+
+//#warning debug
+//            sql = string.Format
+//                   ("SELECT TOP {1} * FROM {0}topics WHERE displayorder>-1 AND tid=28696 ORDER BY tid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+//#warning end debug
+
 
             System.Data.Common.DbDataReader dr = MainForm.srcDBH.ExecuteReader(sql);
             List<Topics> topiclist = new List<Topics>();
@@ -89,6 +104,20 @@ namespace NConvert.dnt30_dzx15
                 objTopic.stamp = -1;
                 objTopic.icon = -1;
                 objTopic.pushedaid = 0;
+                DateTime recommenddate;
+                if (dr["tuijiantime"] != DBNull.Value
+                    && DateTime.TryParse(
+                          dr["tuijiantime"].ToString().Trim(),
+                          out recommenddate
+                          )
+                    )
+                {
+                    objTopic.recommend = Utils.TypeParse.DateTime2TimeStamp(recommenddate);
+                }
+                else
+                {
+                    objTopic.recommend = 0;
+                }
                 topiclist.Add(objTopic);
             }
             dr.Close();
