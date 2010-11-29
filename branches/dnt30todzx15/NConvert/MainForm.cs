@@ -61,6 +61,8 @@ namespace NConvert
 
         public static List<Attachments> extAttachList;
 
+        public static int extAttachAidStartIndex;
+
         #region 数据库连接信息
         /// <summary>
         /// 源数据库连接字符串

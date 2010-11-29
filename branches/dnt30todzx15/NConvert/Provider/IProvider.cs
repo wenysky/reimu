@@ -139,6 +139,17 @@ namespace NConvert.Provider
         #endregion
 
 
-        
+        //#region 转换群组
+        //List<Attachments> GetGroupList(int pagei);
+        //#endregion
+
+
+        //#region 转换日志
+        //int GetBlogRecordCount();
+
+        //List<Attachments> GetBlogList(int pagei);
+        //#endregion
+
+
     }
 }

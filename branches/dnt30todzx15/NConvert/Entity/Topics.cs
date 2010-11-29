@@ -66,5 +66,9 @@ namespace NConvert.Entity
         public int stamp { get; set; }
         public int icon { get; set; }
         public int pushedaid { get; set; }
+        /// <summary>
+        /// 推荐时间 （如果有  就表示被推荐了）
+        /// </summary>
+        public int recommend { get; set; }
     }
 }
