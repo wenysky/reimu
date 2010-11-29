@@ -1428,7 +1428,8 @@ VALUES
 `sharetimes` ,
 `stamp` ,
 `icon` ,
-`pushedaid` 
+`pushedaid` ,
+recommend
 )
 VALUES (
 @tid,
@@ -1465,7 +1466,8 @@ VALUES (
 @sharetimes,
 @stamp,
 @icon,
-@pushedaid
+@pushedaid,
+@recommend
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
@@ -1515,6 +1517,7 @@ VALUES (
                         dbh.ParameterAdd("@stamp", objTopic.stamp, DbType.Int32, 4);
                         dbh.ParameterAdd("@icon", objTopic.icon, DbType.Int32, 4);
                         dbh.ParameterAdd("@pushedaid", objTopic.pushedaid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@recommend", objTopic.recommend, DbType.Int32, 4);
                         #endregion
                         dbh.ExecuteNonQuery(sqlTopic);//插入dnt_topics表
                         MainForm.SuccessedRecordCount++;
@@ -2232,7 +2235,7 @@ VALUES
         /// </summary>
         public static void ConvertPms()
         {
-            DBHelper dbh = MainForm.GetTargetDBH();
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
             dbh.Open();
             MainForm.MessageForm.SetMessage("开始转换短消息\r\n");
             MainForm.SuccessedRecordCount = 0;
@@ -2252,8 +2255,37 @@ VALUES
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
             //清理数据库,开启自增插入
-            dbh.TruncateTable(string.Format("{0}Pms", MainForm.cic.TargetDbTablePrefix));
-            dbh.SetIdentityInsertON(string.Format("{0}Pms", MainForm.cic.TargetDbTablePrefix));
+            dbh.TruncateTable(string.Format("{0}ucenter_pms", MainForm.cic.TargetDbTablePrefix));
+            //dbh.SetIdentityInsertON(string.Format("{0}Pms", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlPms = string.Format(@"INSERT INTO {0}ucenter_pms (
+`msgfrom` ,
+`msgfromid` ,
+`msgtoid` ,
+`folder` ,
+`new` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`delstatus` ,
+`related` ,
+`fromappid` 
+)
+VALUES (
+@msgfrom,
+@msgfromid,
+@msgtoid,
+@folder,
+@new,
+@subject,
+@dateline,
+@message,
+@delstatus,
+@related,
+@fromappid
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
 
             for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
             {
@@ -2261,47 +2293,25 @@ VALUES
                 List<Pms> pmList = Provider.Provider.GetInstance().GetPmList(pagei);
                 foreach (Pms objPm in pmList)
                 {
-                    #region sql语句
-                    string sqlPms = string.Format(@"INSERT INTO {0}pms
-(
-pmid,
-msgfrom,
-msgfromid,
-msgto,
-msgtoid,
-folder,
-new,
-subject,
-postdatetime,
-message
-)
-VALUES 
-(
-@pmid,
-@msgfrom,
-@msgfromid,
-@msgto,
-@msgtoid,
-@folder,
-@new,
-@subject,
-@postdatetime,
-@message
-)", MainForm.cic.TargetDbTablePrefix);
-                    #endregion
+                    if (objPm.pmid == -77)
+                    {
+                        continue;
+                    }
                     //清理上次执行的参数
                     dbh.ParametersClear();
                     #region dnt_pms表参数
                     dbh.ParameterAdd("@pmid", objPm.pmid, DbType.Int32, 4);
-                    dbh.ParameterAdd("@msgfrom", objPm.msgfrom, DbType.String, 50);
+                    dbh.ParameterAdd("@msgfrom", objPm.msgfrom, DbType.String, 15);
                     dbh.ParameterAdd("@msgfromid", objPm.msgfromid, DbType.Int32, 4);
-                    dbh.ParameterAdd("@msgto", objPm.msgto, DbType.String, 50);
                     dbh.ParameterAdd("@msgtoid", objPm.msgtoid, DbType.Int32, 4);
-                    dbh.ParameterAdd("@folder", objPm.folder, DbType.Int16, 2);
-                    dbh.ParameterAdd("@new", objPm.newmessage, DbType.Int32, 4);
-                    dbh.ParameterAdd("@subject", objPm.subject, DbType.String, 60);
-                    dbh.ParameterAdd("@postdatetime", objPm.postdatetime, DbType.DateTime, 8);
-                    dbh.ParameterAdd("@message", objPm.message, DbType.String, 1073741823);
+                    dbh.ParameterAdd("@folder", objPm.folder, DbType.String, 6);
+                    dbh.ParameterAdd("@new", objPm.isnew, DbType.Int32, 4);
+                    dbh.ParameterAdd("@subject", objPm.subject, DbType.String, 75);
+                    dbh.ParameterAdd("@dateline", objPm.dateline, DbType.Int32, 4);
+                    dbh.ParameterAdd("@message", objPm.message, DbType.String, 8000);
+                    dbh.ParameterAdd("@delstatus", objPm.delstatus, DbType.Int32, 4);
+                    dbh.ParameterAdd("@related", objPm.related, DbType.Int32, 4);
+                    dbh.ParameterAdd("@fromappid", objPm.fromappid, DbType.Int32, 4);
                     #endregion
 
                     try
@@ -2320,10 +2330,13 @@ VALUES
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
 
-            dbh.SetIdentityInsertOFF(string.Format("{0}Pms", MainForm.cic.TargetDbTablePrefix));
+            //dbh.SetIdentityInsertOFF(string.Format("{0}Pms", MainForm.cic.TargetDbTablePrefix));
+
+            //MainForm.MessageForm.SetMessage("清理临时短消息数据\r\n");
+            //dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}ucenter_pms WHERE msgfromid=-77", MainForm.cic.TargetDbTablePrefix));
             dbh.Dispose();
             MainForm.RecordCount = -1;
-            MainForm.MessageForm.SetMessage(string.Format("完成转换短消息。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+            MainForm.MessageForm.SetMessage(string.Format("完成转换短消息。成功(有效条数){0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
         /// <summary>

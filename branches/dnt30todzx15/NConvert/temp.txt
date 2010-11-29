@@ -652,3 +652,36 @@ thumb
 remote
 picid
 description
+
+
+INSERT INTO `dzx15c`.`pre_ucenter_pms` (
+`pmid` ,
+`msgfrom` ,
+`msgfromid` ,
+`msgtoid` ,
+`folder` ,
+`new` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`delstatus` ,
+`related` ,
+`fromappid` 
+)
+VALUES (
+NULL , '', '0', '0', 'inbox', '0', '', '0', '', '0', '0', '0'
+);
+
+
+pmid
+msgfrom
+msgfromid
+msgtoid
+folder
+new
+subject
+dateline
+message
+delstatus
+related
+fromappid
