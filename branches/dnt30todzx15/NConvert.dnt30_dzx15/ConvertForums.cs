@@ -86,7 +86,7 @@ namespace NConvert.dnt30_dzx15
                 objForum.attachextensions = drBoard["attachextensions"].ToString();
                 objForum.creditspolicy = "";
                 objForum.formulaperm = "";
-                objForum.moderators = drBoard["moderators"].ToString();
+                objForum.moderators = drBoard["moderators"].ToString().Replace(",", "\t");
                 objForum.rules = drBoard["rules"].ToString();
                 objForum.threadtypes = "";
                 objForum.threadsorts = "";
