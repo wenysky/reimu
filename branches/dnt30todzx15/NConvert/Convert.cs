@@ -45,18 +45,20 @@ namespace NConvert
                 MainForm.extAttachList = new List<Attachments>();
                 Yuwen.Tools.TinyData.DBHelper dbhExtattach = MainForm.GetTargetDBH();
                 dbhExtattach.Open();
-                MainForm.extAttachAidStartIndex = 1 + Convert.ToInt32(
-                    dbhExtattach.ExecuteScalar(
-                        string.Format(
-                        "SELECT MAX(tid) FROM {0}forum_attachment",
-                        MainForm.cic.TargetDbTablePrefix
-                        )
-                    )
-                );
+                object maxaid = dbhExtattach.ExecuteScalar(
+                        string.Format("SELECT MAX(tid) FROM {0}forum_attachment", MainForm.cic.TargetDbTablePrefix)
+                        );
+                if (maxaid != DBNull.Value)
+                {
+                    MainForm.extAttachAidStartIndex = 1 + Convert.ToInt32(maxaid);
+                }
                 dbhExtattach.Close();
                 dbhExtattach.Dispose();
                 ConvertPosts();
-                ConvertextAttach();
+                if (MainForm.extAttachList.Count > 0)
+                {
+                    ConvertextAttach();
+                }
                 //UpdateLastPostid();
             }
             if (MainForm.IsUpdatePostsInfo)
@@ -2259,6 +2261,61 @@ VALUES
             //dbh.SetIdentityInsertON(string.Format("{0}Pms", MainForm.cic.TargetDbTablePrefix));
 
             #region sql语句
+            //准备语句中，related=0
+            string sqlPmsPre = string.Format(@"INSERT INTO {0}ucenter_pms (
+`msgfrom` ,
+`msgfromid` ,
+`msgtoid` ,
+`folder` ,
+`new` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`delstatus` ,
+`related` ,
+`fromappid` 
+)
+VALUES (
+@msgfrom,
+@msgfromid,
+@msgtoid,
+@folder,
+@new,
+@subject,
+@dateline,
+@message,
+@delstatus,
+0,
+@fromappid
+)", MainForm.cic.TargetDbTablePrefix);
+            //反插的准备语句中，fromid和toid是反的
+            string sqlPmsOutPre = string.Format(@"INSERT INTO {0}ucenter_pms (
+`msgfrom` ,
+`msgfromid` ,
+`msgtoid` ,
+`folder` ,
+`new` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`delstatus` ,
+`related` ,
+`fromappid` 
+)
+VALUES (
+@msgfrom,
+@msgtoid,
+@msgfromid,
+@folder,
+@new,
+@subject,
+@dateline,
+@message,
+@delstatus,
+0,
+@fromappid
+)", MainForm.cic.TargetDbTablePrefix);
+            //正式语句中 related=1
             string sqlPms = string.Format(@"INSERT INTO {0}ucenter_pms (
 `msgfrom` ,
 `msgfromid` ,
@@ -2282,7 +2339,7 @@ VALUES (
 @dateline,
 @message,
 @delstatus,
-@related,
+1,
 @fromappid
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
@@ -2293,10 +2350,7 @@ VALUES (
                 List<Pms> pmList = Provider.Provider.GetInstance().GetPmList(pagei);
                 foreach (Pms objPm in pmList)
                 {
-                    if (objPm.pmid == -77)
-                    {
-                        continue;
-                    }
+
                     //清理上次执行的参数
                     dbh.ParametersClear();
                     #region dnt_pms表参数
@@ -2316,6 +2370,53 @@ VALUES (
 
                     try
                     {
+                        //if 1=>2 !=true
+                        //  insert 1=>2(related=0)
+                        //else
+                        //  update 1=>2(related=0)
+
+                        //if 2=>1 != true
+                        //  insert 2=>1(related=0)
+
+                        //insert 1=>2 (related=1)
+                        if (!(objPm.msgfrom.Trim() == string.Empty && objPm.msgfromid == 0))
+                        {
+                            if (Convert.ToInt32(
+                                dbh.ExecuteScalar(
+                                    string.Format(
+                                        "SELECT count(*) FROM {0}ucenter_pms WHERE msgfromid=@msgfromid AND msgtoid=@msgtoid AND folder='inbox' AND related='0'",
+                                        MainForm.cic.TargetDbTablePrefix
+                                        )
+                                    )
+                                )
+                            == 0)
+                            {
+                                dbh.ExecuteNonQuery(sqlPmsPre);
+                            }
+                            else
+                            {
+                                dbh.ExecuteNonQuery(
+                                    string.Format(
+                                    "UPDATE {0}ucenter_pms SET subject=@subject, message=@message, dateline=@dateline, new=@new, fromappid=@fromappid WHERE msgfromid=@msgfromid AND msgtoid=@msgtoid AND folder='inbox' AND related='0'",
+                                    MainForm.cic.TargetDbTablePrefix
+                                    )
+                                    );
+                            }
+
+                            if (Convert.ToInt32(
+                                dbh.ExecuteScalar(
+                                    string.Format(
+                                        "SELECT count(*) FROM {0}ucenter_pms WHERE msgfromid=@msgtoid AND msgtoid=@msgfromid AND folder='inbox' AND related='0'",
+                                        MainForm.cic.TargetDbTablePrefix
+                                        )
+                                    )
+                                )
+                            == 0)
+                            {
+                                dbh.ExecuteNonQuery(sqlPmsOutPre);
+                            }
+                        }
+                        //正式插入了
                         dbh.ExecuteNonQuery(sqlPms);//插入dnt_topics表
                         MainForm.SuccessedRecordCount++;
                     }
