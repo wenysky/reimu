@@ -35,6 +35,9 @@ namespace NConvert.Entity
         public int allowimgcode { get; set; }
         public int allowmediacode { get; set; }
         public int allowanonymous { get; set; }
+        /// <summary>
+        /// 是否允许特殊贴：1投票 2商品 4悬赏 8活动 辩论16 （5投票+悬赏，31全部）
+        /// </summary>
         public int allowpostspecial { get; set; }
         public int allowspecialonly { get; set; }
         /// <summary>
