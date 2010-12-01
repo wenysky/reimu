@@ -1012,6 +1012,7 @@ VALUES (
             //清理数据库
             dbhConvertForums.TruncateTable(string.Format("{0}forum_forum", MainForm.cic.TargetDbTablePrefix));
             dbhConvertForums.TruncateTable(string.Format("{0}forum_forumfield", MainForm.cic.TargetDbTablePrefix));
+            dbhConvertForums.TruncateTable(string.Format("{0}forum_moderator", MainForm.cic.TargetDbTablePrefix));
 
 
             #region sql语句
@@ -1274,6 +1275,36 @@ VALUES (
                     #endregion
                     dbhConvertForums.ExecuteNonQuery(sqlForum);//插入dnt_forums表
                     dbhConvertForums.ExecuteNonQuery(sqlForumfields);//插入dnt_forumfields表
+
+                    if (objForum.moderators.Trim() != string.Empty)
+                    {
+                        string moders = "";
+                        string[] moderArray = objForum.moderators.Trim().Split('\t');
+                        foreach (string moderstring in moderArray)
+                        {
+                            moders += string.Format("'{0}',", moderstring);
+                        }
+                        string sqlModer = string.Format("SELECT uid FROM {0}common_member WHERE username IN({1})", MainForm.cic.TargetDbTablePrefix, moders.Trim(','));
+                        System.Data.Common.DbDataReader drModer = dbhConvertForums.ExecuteReader(sqlModer);
+                        List<int> moderuids = new List<int>();
+                        while (drModer.Read())
+                        {
+                            moderuids.Add(Convert.ToInt32(drModer["uid"]));
+                        }
+                        drModer.Close();
+
+                        foreach (int uid in moderuids)
+                        {
+                            string sqlAddModer = string.Format(
+                                "INSERT INTO {0}forum_moderator(uid,fid) VALUES({1},{2})",
+                                MainForm.cic.TargetDbTablePrefix,
+                                uid,
+                                objForum.fid
+                                );
+                            dbhConvertForums.ExecuteNonQuery(sqlAddModer);
+                        }
+                    }
+
                     MainForm.SuccessedRecordCount++;
                 }
                 catch (Exception ex)
