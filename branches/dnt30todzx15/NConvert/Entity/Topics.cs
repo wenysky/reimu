@@ -35,6 +35,9 @@ namespace NConvert.Entity
         public int highlight { get; set; }
         public int digest { get; set; }
         public int rate { get; set; }
+        /// <summary>
+        /// 1投票 2商品 3悬赏 4活动 5辩论
+        /// </summary>
         public int special { get; set; }
         public int attachment { get; set; }
         public int moderated { get; set; }

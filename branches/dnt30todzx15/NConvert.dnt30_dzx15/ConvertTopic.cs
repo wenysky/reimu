@@ -13,15 +13,15 @@ namespace NConvert.dnt30_dzx15
 
         public int GetTopicsRecordCount()
         {
-//#warning debug
-//            return Convert.ToInt32(
-//                MainForm.srcDBH.ExecuteScalar(
-//                string.Format(
-//                "SELECT COUNT(tid) FROM {0}topics WHERE displayorder>-1 AND tid=28696",
-//                MainForm.cic.SrcDbTablePrefix)
-//                )
-//                );
-//#warning end debug
+            //#warning debug
+            //            return Convert.ToInt32(
+            //                MainForm.srcDBH.ExecuteScalar(
+            //                string.Format(
+            //                "SELECT COUNT(tid) FROM {0}topics WHERE displayorder>-1 AND tid=28696",
+            //                MainForm.cic.SrcDbTablePrefix)
+            //                )
+            //                );
+            //#warning end debug
             return Convert.ToInt32(
                 MainForm.srcDBH.ExecuteScalar(
                 string.Format(
@@ -48,10 +48,10 @@ namespace NConvert.dnt30_dzx15
             }
             #endregion
 
-//#warning debug
-//            sql = string.Format
-//                   ("SELECT TOP {1} * FROM {0}topics WHERE displayorder>-1 AND tid=28696 ORDER BY tid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
-//#warning end debug
+            //#warning debug
+            //            sql = string.Format
+            //                   ("SELECT TOP {1} * FROM {0}topics WHERE displayorder>-1 AND tid=28696 ORDER BY tid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+            //#warning end debug
 
 
             System.Data.Common.DbDataReader dr = MainForm.srcDBH.ExecuteReader(sql);
@@ -66,7 +66,6 @@ namespace NConvert.dnt30_dzx15
                 objTopic.typeid = Convert.ToInt32(string.Format("{0}{1}", objTopic.fid, dr["typeid"].ToString()));
                 objTopic.sortid = 0;
                 objTopic.readperm = Convert.ToInt32(dr["readperm"]);
-                objTopic.price = Convert.ToInt32(dr["price"]);
                 objTopic.author = dr["poster"].ToString();
                 objTopic.authorid = Convert.ToInt32(dr["posterid"]);
                 objTopic.subject = dr["title"].ToString();
@@ -87,7 +86,18 @@ namespace NConvert.dnt30_dzx15
                 }
                 objTopic.digest = Convert.ToInt32(dr["digest"]);
                 objTopic.rate = Convert.ToInt32(dr["rate"]);
-                objTopic.special = Convert.ToInt32(dr["special"]);
+                int specialId = GetConvertedSpecialId(Convert.ToInt32(dr["special"]));
+                if (specialId == -3)
+                {
+                    //已经结贴的悬赏
+                    objTopic.special = -specialId;
+                    objTopic.price = -Convert.ToInt32(dr["price"]);
+                }
+                else
+                {
+                    objTopic.special = specialId;
+                    objTopic.price = Convert.ToInt32(dr["price"]);
+                }
                 objTopic.attachment = Convert.ToInt32(dr["attachment"]);
                 objTopic.moderated = Convert.ToInt32(dr["moderated"]);
                 objTopic.closed = Convert.ToInt32(dr["closed"]);
@@ -125,8 +135,32 @@ namespace NConvert.dnt30_dzx15
             return topiclist;
         }
 
+
         #endregion
 
+        private int GetConvertedSpecialId(int dntid)
+        {
+            int newid;
+            switch (dntid)
+            {
+                case 1:
+                    newid = 1;
+                    break;
+                case 2://Discuz!NT正在悬赏
+                    newid = 3;
+                    break;
+                case 3://Discuz!NT悬赏完成
+                    newid = -3;
+                    break;
+                case 4://Discuz!NT辩论
+                    newid = 5;
+                    break;
+                default:
+                    newid = 0;
+                    break;
+            }
+            return newid;
+        }
         public static DateTime Timestamp2Date(string s)
         {
             string timeStamp = s;
