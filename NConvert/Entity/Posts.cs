@@ -28,6 +28,9 @@ namespace NConvert.Entity
         /// char15
         /// </summary>
         public string useip { get; set; }
+        /// <summary>
+        /// 是否通过审核  -2为未审核
+        /// </summary>
         public int invisible { get; set; }
         public int anonymous { get; set; }
         public int usesig { get; set; }

@@ -14,9 +14,9 @@ namespace NConvert.dnt30_dzx15
 
         public int GetPostsRecordCount()
         {
-//#warning debug
-//            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(pid) FROM {0}posts1 WHERE tid=28696", MainForm.cic.SrcDbTablePrefix)));
-//#warning end debug
+            //#warning debug
+            //            return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(pid) FROM {0}posts1 WHERE tid=28696", MainForm.cic.SrcDbTablePrefix)));
+            //#warning end debug
             return Convert.ToInt32(MainForm.srcDBH.ExecuteScalar(string.Format("SELECT COUNT(pid) FROM {0}posts1", MainForm.cic.SrcDbTablePrefix)));
 
 
@@ -44,10 +44,10 @@ namespace NConvert.dnt30_dzx15
             }
             #endregion
 
-//#warning debug
-//            sql = string.Format
-//                   ("SELECT TOP {1} * FROM {0}posts1 WHERE tid=28696 ORDER BY pid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
-//#warning end debug
+            //#warning debug
+            //            sql = string.Format
+            //                   ("SELECT TOP {1} * FROM {0}posts1 WHERE tid=28696 ORDER BY pid", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+            //#warning end debug
 
             System.Data.Common.DbDataReader dr = MainForm.srcDBH.ExecuteReader(sql);
             List<Posts> postlist = new List<Posts>();
@@ -64,7 +64,7 @@ namespace NConvert.dnt30_dzx15
                 objPost.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["postdatetime"]));
                 objPost.message = dr["message"].ToString();
                 objPost.useip = dr["ip"].ToString();
-                objPost.invisible = Convert.ToInt32(dr["invisible"]);
+                objPost.invisible = Convert.ToInt32(dr["invisible"]) == 1 ? -1 : 0;
                 objPost.anonymous = 0;
                 objPost.usesig = Convert.ToInt32(dr["usesig"]);
                 objPost.htmlon = Convert.ToInt32(dr["htmlon"]);
@@ -74,7 +74,7 @@ namespace NConvert.dnt30_dzx15
                 objPost.attachment = Convert.ToInt32(dr["attachment"]);
 
                 MatchCollection mc = Utils.Text.GetMatchFull(objPost.message, @"/bbs/download\.aspx\?id=([0-9]+)");
-                if (mc!=null && mc.Count > 0)
+                if (mc != null && mc.Count > 0)
                 {
                     foreach (Match m in mc)
                     {
@@ -97,7 +97,7 @@ namespace NConvert.dnt30_dzx15
                             {
                                 extNewaid = MainForm.extAttachAidStartIndex + 1;
                             }
-                            
+
                             Attachments objAttachment = new Attachments();
                             objAttachment.aid = extNewaid;
                             objAttachment.tid = objPost.tid;
@@ -142,7 +142,7 @@ namespace NConvert.dnt30_dzx15
 
                 objPost.rate = Convert.ToInt32(dr["rate"]);
                 objPost.ratetimes = Convert.ToInt32(dr["ratetimes"]);
-                objPost.status = 0;
+                objPost.status = Convert.ToInt32(dr["invisible"]) == -2 ? 1 : 0;
                 objPost.tags = "";
                 objPost.comment = 0;
                 postlist.Add(objPost);
