@@ -86,6 +86,14 @@ namespace NConvert
             if (MainForm.IsResetTopicReplies)
                 ResetTopicReplyCount();
 
+            if (MainForm.IsConvertBlogPosts)
+                ConvertBlogPosts();
+            if (MainForm.IsConvertGroups)
+                ConvertGroups();
+            if (MainForm.IsConvertGroupPosts)
+                ConvertGroupPosts();
+
+
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             //}
@@ -1015,6 +1023,9 @@ VALUES (
             dbhConvertForums.TruncateTable(string.Format("{0}forum_moderator", MainForm.cic.TargetDbTablePrefix));
 
 
+
+            List<Forums> forumList = Provider.Provider.GetInstance().GetForumList();
+
             #region sql语句
             string sqlForum = string.Format(@"INSERT INTO {0}forum_forum (
 `fid` ,
@@ -1184,8 +1195,6 @@ VALUES (
 )
 ", MainForm.cic.TargetDbTablePrefix);
             #endregion
-
-            List<Forums> forumList = Provider.Provider.GetInstance().GetForumList();
             foreach (Forums objForum in forumList)
             {
                 try
@@ -1736,14 +1745,8 @@ VALUES (
             //清理数据库
             dbh.TruncateTable(string.Format("{0}forum_attachment", MainForm.cic.TargetDbTablePrefix));
             dbh.TruncateTable(string.Format("{0}forum_attachmentfield", MainForm.cic.TargetDbTablePrefix));
-            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
-            {
-                //分段得到主题列表
-                List<Attachments> attachmentList = Provider.Provider.GetInstance().GetAttachmentList(pagei);
-                foreach (Attachments objAttachment in attachmentList)
-                {
-                    #region sql语句
-                    string sqlAttachment = string.Format(@"INSERT INTO {0}forum_attachment (
+            #region sql语句
+            string sqlAttachment = string.Format(@"INSERT INTO {0}forum_attachment (
 `aid` ,
 `tid` ,
 `pid` ,
@@ -1783,7 +1786,7 @@ VALUES (
 )", MainForm.cic.TargetDbTablePrefix);
 
 
-                    string sqlAttachmentField = string.Format(@"INSERT INTO {0}forum_attachmentfield (
+            string sqlAttachmentField = string.Format(@"INSERT INTO {0}forum_attachmentfield (
 `aid` ,
 `tid` ,
 `pid` ,
@@ -1797,7 +1800,13 @@ VALUES (
 @uid,
 @description
 )", MainForm.cic.TargetDbTablePrefix);
-                    #endregion
+            #endregion
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到主题列表
+                List<Attachments> attachmentList = Provider.Provider.GetInstance().GetAttachmentList(pagei);
+                foreach (Attachments objAttachment in attachmentList)
+                {
                     //清理上次执行的参数
                     dbh.ParametersClear();
                     #region dnt_attachment表参数
@@ -2469,6 +2478,232 @@ VALUES (
             dbh.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换短消息。成功(有效条数){0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+
+        /// <summary>
+        /// 转换群组帖子
+        /// </summary>
+        private static void ConvertGroupPosts()
+        {
+
+        }
+
+        /// <summary>
+        /// 转换群组
+        /// </summary>
+        private static void ConvertGroups()
+        {
+        }
+        private static void ConvertGroupTopics()
+        {
+        }
+        /// <summary>
+        /// 转换日志
+        /// </summary>
+        private static void ConvertBlogPosts()
+        {
+
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            dbh.Open();
+            MainForm.MessageForm.SetMessage("开始转换日志\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetBlogRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbh.TruncateTable(string.Format("{0}home_blog", MainForm.cic.TargetDbTablePrefix));
+            dbh.TruncateTable(string.Format("{0}home_blogfield", MainForm.cic.TargetDbTablePrefix));
+            #region sql语句
+            string sqlBlogPost = string.Format(@"INSERT INTO {0}home_blog (
+`blogid` ,
+`uid` ,
+`username` ,
+`subject` ,
+`classid` ,
+`catid` ,
+`viewnum` ,
+`replynum` ,
+`hot` ,
+`dateline` ,
+`blogtype` ,
+`picflag` ,
+`noreply` ,
+`friend` ,
+`password` ,
+`favtimes` ,
+`sharetimes` ,
+`status` ,
+`click1` ,
+`click2` ,
+`click3` ,
+`click4` ,
+`click5` ,
+`click6` ,
+`click7` ,
+`click8` ,
+`stickstatus` ,
+`recommendstatus`,
+showtitle,
+rfirstid,    
+lastchangetime,
+recommendnum
+)
+VALUES (
+@blogid,
+@uid,
+@username,
+@subject,
+@classid,
+@catid,
+@viewnum,
+@replynum,
+@hot,
+@dateline,
+@blogtype,
+@picflag,
+@noreply,
+@friend,
+@password,
+@favtimes,
+@sharetimes,
+@status,
+@click1,
+@click2,
+@click3,
+@click4,
+@click5,
+@click6,
+@click7,
+@click8,
+@stickstatus,
+@recommendstatus,
+@showtitle,
+@rfirstid,    
+@lastchangetime,
+@recommendnum
+)", MainForm.cic.TargetDbTablePrefix);
+
+
+            string sqlBlogPostField = string.Format(@"INSERT INTO {0}home_blogfield (
+`blogid` ,
+`uid` ,
+`pic` ,
+`tag` ,
+`message` ,
+`postip` ,
+`related` ,
+`relatedtime` ,
+`target_ids` ,
+`hotuser` ,
+`magiccolor` ,
+`magicpaper` ,
+`pushedaid` 
+)
+VALUES (
+@blogid,
+@uid,
+@pic,
+@tag,
+@message,
+@postip,
+@related,
+@relatedtime,
+@target_ids,
+@hotuser,
+@magiccolor,
+@magicpaper,
+@pushedaid
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到主题列表
+                List<BlogPostInfo> blogPostList = Provider.Provider.GetInstance().GetBlogList(pagei);
+                foreach (BlogPostInfo objBlogPost in blogPostList)
+                {
+                    //清理上次执行的参数
+                    dbh.ParametersClear();
+                    #region dnt_attachment表参数
+                    dbh.ParameterAdd("@blogid", objBlogPost.blogid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@uid", objBlogPost.uid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@username", objBlogPost.username, DbType.String, 15);
+                    dbh.ParameterAdd("@subject", objBlogPost.subject, DbType.String, 80);
+                    dbh.ParameterAdd("@classid", objBlogPost.classid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@catid", objBlogPost.catid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@viewnum", objBlogPost.viewnum, DbType.Int32, 4);
+                    dbh.ParameterAdd("@replynum", objBlogPost.replynum, DbType.Int32, 4);
+                    dbh.ParameterAdd("@hot", objBlogPost.hot, DbType.Int32, 4);
+                    dbh.ParameterAdd("@dateline", objBlogPost.dateline, DbType.Int32, 4);
+                    dbh.ParameterAdd("@blogtype", objBlogPost.blogtype, DbType.Int32, 4);
+                    dbh.ParameterAdd("@picflag", objBlogPost.picflag, DbType.Int32, 4);
+                    dbh.ParameterAdd("@noreply", objBlogPost.noreply, DbType.Int32, 4);
+                    dbh.ParameterAdd("@friend", objBlogPost.friend, DbType.Int32, 4);
+                    dbh.ParameterAdd("@password", objBlogPost.password, DbType.String, 10);
+                    dbh.ParameterAdd("@favtimes", objBlogPost.favtimes, DbType.Int32, 4);
+                    dbh.ParameterAdd("@sharetimes", objBlogPost.sharetimes, DbType.Int32, 4);
+                    dbh.ParameterAdd("@status", objBlogPost.status, DbType.Int32, 4);
+                    dbh.ParameterAdd("@click1", objBlogPost.click1, DbType.Int32, 4);
+                    dbh.ParameterAdd("@click2", objBlogPost.click2, DbType.Int32, 4);
+                    dbh.ParameterAdd("@click3", objBlogPost.click3, DbType.Int32, 4);
+                    dbh.ParameterAdd("@click4", objBlogPost.click4, DbType.Int32, 4);
+                    dbh.ParameterAdd("@click5", objBlogPost.click5, DbType.Int32, 4);
+                    dbh.ParameterAdd("@click6", objBlogPost.click6, DbType.Int32, 4);
+                    dbh.ParameterAdd("@click7", objBlogPost.click7, DbType.Int32, 4);
+                    dbh.ParameterAdd("@click8", objBlogPost.click8, DbType.Int32, 4);
+                    dbh.ParameterAdd("@stickstatus", objBlogPost.stickstatus, DbType.Int32, 4);
+                    dbh.ParameterAdd("@recommendstatus", objBlogPost.recommendstatus, DbType.Int32, 4);
+
+                    dbh.ParameterAdd("@showtitle", objBlogPost.showtitle, DbType.String, 80);
+                    dbh.ParameterAdd("@rfirstid", objBlogPost.rfirstid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@lastchangetime", objBlogPost.lastchangetime, DbType.Int32, 4);
+                    dbh.ParameterAdd("@recommendnum", objBlogPost.recommendnum, DbType.Int32, 4);
+
+                    dbh.ParameterAdd("@pic", objBlogPost.pic, DbType.String, 255);
+                    dbh.ParameterAdd("@tag", objBlogPost.tag, DbType.String, 255);
+                    dbh.ParameterAdd("@message", objBlogPost.message, DbType.String, 2555555);
+                    dbh.ParameterAdd("@postip", objBlogPost.postip, DbType.String, 255);
+                    dbh.ParameterAdd("@related", objBlogPost.related, DbType.String, 255);
+                    dbh.ParameterAdd("@relatedtime", objBlogPost.relatedtime, DbType.Int32, 4);
+                    dbh.ParameterAdd("@target_ids", objBlogPost.target_ids, DbType.String, 255);
+                    dbh.ParameterAdd("@hotuser", objBlogPost.hotuser, DbType.String, 255);
+                    dbh.ParameterAdd("@magiccolor", objBlogPost.magiccolor, DbType.Int32, 4);
+                    dbh.ParameterAdd("@magicpaper", objBlogPost.magicpaper, DbType.Int32, 4);
+                    dbh.ParameterAdd("@pushedaid", objBlogPost.pushedaid, DbType.Int32, 4);
+                    #endregion
+
+                    try
+                    {
+                        dbh.ExecuteNonQuery(sqlBlogPost);//插入dnt_topics表
+                        dbh.ExecuteNonQuery(sqlBlogPostField);
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}。blogid={1}\r\n", ex.Message, objBlogPost.blogid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                //一次分页完毕
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+            dbh.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换日志。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
         /// <summary>

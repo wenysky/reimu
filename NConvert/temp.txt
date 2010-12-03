@@ -691,3 +691,106 @@ fromappid
 ADMIN SEND TO wysky (1=>2 null)
 
 
+
+
+INSERT INTO `dzx15c`.`pre_home_blog` (
+`blogid` ,
+`uid` ,
+`username` ,
+`subject` ,
+`classid` ,
+`catid` ,
+`viewnum` ,
+`replynum` ,
+`hot` ,
+`dateline` ,
+`blogtype` ,
+`picflag` ,
+`noreply` ,
+`friend` ,
+`password` ,
+`favtimes` ,
+`sharetimes` ,
+`status` ,
+`click1` ,
+`click2` ,
+`click3` ,
+`click4` ,
+`click5` ,
+`click6` ,
+`click7` ,
+`click8` ,
+`stickstatus` ,
+`recommendstatus` 
+)
+VALUES (
+NULL , '0', '', '', '0', '0', '0', '0', '0', '0', '', '0', '0', '0', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'
+);
+
+INSERT INTO `dzx15c`.`pre_home_blogfield` (
+`blogid` ,
+`uid` ,
+`pic` ,
+`tag` ,
+`message` ,
+`postip` ,
+`related` ,
+`relatedtime` ,
+`target_ids` ,
+`hotuser` ,
+`magiccolor` ,
+`magicpaper` ,
+`pushedaid` 
+)
+VALUES (
+'0', '0', '', '', '', '', '', '0', '', '', '0', '0', '0'
+);
+
+
+
+
+
+blogid
+uid
+username
+subject
+classid
+catid
+viewnum
+replynum
+hot
+dateline
+blogtype
+picflag
+noreply
+friend
+password
+favtimes
+sharetimes
+status
+click1
+click2
+click3
+click4
+click5
+click6
+click7
+click8
+stickstatus
+recommendstatus
+pic
+tag
+message
+postip
+related
+relatedtime
+target_ids
+hotuser
+magiccolor
+magicpaper
+pushedaid
+
+showtitle     
+rfirstid      
+lastchangetime
+recommendnum  
