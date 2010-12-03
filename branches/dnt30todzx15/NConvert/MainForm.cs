@@ -113,11 +113,11 @@ namespace NConvert
         public static bool IsResetTopicLastpostid;//重建主题排序信息
         public static bool IsResetTopicReplies;//重建主题回复数
         public static bool IsUpdatePostsInfo;//更新帖子信息
+        public static bool IsConvertGroups;//转换
+        public static bool IsConvertGroupPosts;//转换
+        public static bool IsConvertBlogPosts;//转换
 
         /*
-        public static bool IsConvert;//转换
-        public static bool IsConvert;//转换
-        public static bool IsConvert;//转换
         public static bool IsConvert;//转换
         public static bool IsConvert;//转换
         public static bool IsConvert;//转换
@@ -233,6 +233,9 @@ namespace NConvert
             IsResetTopicReplies = ckbxResetTopicReplies.Checked;
             IsUpdatePostsInfo = ckbxUpdatePostsInfo.Checked;
 
+            IsConvertBlogPosts = ckbxIsConvertBlogPosts.Checked;
+            IsConvertGroups = ckbxIsConvertGroups.Checked;
+            IsConvertGroupPosts = ckbxIsConvertGroupPost.Checked;
             #endregion
         }
 

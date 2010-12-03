@@ -144,11 +144,11 @@ namespace NConvert.Provider
         //#endregion
 
 
-        //#region 转换日志
-        //int GetBlogRecordCount();
+        #region 转换日志
+        int GetBlogRecordCount();
 
-        //List<Attachments> GetBlogList(int pagei);
-        //#endregion
+        List<BlogPostInfo> GetBlogList(int pagei);
+        #endregion
 
 
     }

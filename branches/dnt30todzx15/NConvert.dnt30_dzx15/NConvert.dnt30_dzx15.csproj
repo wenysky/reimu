@@ -59,6 +59,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="Other.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConvertBlogPosts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj">
