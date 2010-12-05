@@ -80,11 +80,15 @@ namespace NConvert.dnt30_dzx15
                     {
                         string extaid = m.Groups[1].Value;
 
-                        string srcExtDbConn = string.Format("Data Source=LINUX-MYMPC\\SQLEXPRESS2008;Initial Catalog=science;User ID=sa;Password=123321qq;");
-                        Yuwen.Tools.TinyData.DBHelper dbhExtattach = new Yuwen.Tools.TinyData.DBHelper(srcExtDbConn, MainForm.srcDbTypeNamespace);
+                        //string srcExtDbConn = string.Format("Data Source={0};Initial Catalog=science;User ID={1};Password={2};", 
+                        //    MainForm.cic.SrcDbAddress,
+                        //    MainForm.cic.SrcDbUsername,
+                        //    MainForm.cic.SrcDbUserpassword
+                        //    );
+                        Yuwen.Tools.TinyData.DBHelper dbhExtattach = MainForm.GetSrcDBH();
                         dbhExtattach.Open();
                         System.Data.Common.DbDataReader drExtattach = dbhExtattach.ExecuteReader(
-                            string.Format("SELECT * FROM kexue_appendix WHERE content='{0}'", extaid)
+                            string.Format("SELECT * FROM [science].[dbo].[kexue_appendix] WHERE content='{0}'", extaid)
                             );
                         if (drExtattach.Read())
                         {

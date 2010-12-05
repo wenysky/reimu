@@ -43,7 +43,7 @@ namespace NConvert
             if (MainForm.IsConvertPosts)
             {
                 MainForm.extAttachList = new List<Attachments>();
-                Yuwen.Tools.TinyData.DBHelper dbhExtattach = MainForm.GetTargetDBH();
+                Yuwen.Tools.Data.DBHelper dbhExtattach = MainForm.GetTargetDBH_OldVer();
                 dbhExtattach.Open();
                 object maxaid = dbhExtattach.ExecuteScalar(
                         string.Format("SELECT MAX(tid) FROM {0}forum_attachment", MainForm.cic.TargetDbTablePrefix)
@@ -52,7 +52,6 @@ namespace NConvert
                 {
                     MainForm.extAttachAidStartIndex = 1 + Convert.ToInt32(maxaid);
                 }
-                dbhExtattach.Close();
                 dbhExtattach.Dispose();
                 ConvertPosts();
                 if (MainForm.extAttachList.Count > 0)
@@ -90,8 +89,12 @@ namespace NConvert
                 ConvertBlogPosts();
             if (MainForm.IsConvertGroups)
                 ConvertGroups();
+
             if (MainForm.IsConvertGroupPosts)
+            {
+                ConvertGroupTopics();
                 ConvertGroupPosts();
+            }
 
 
 
@@ -104,6 +107,7 @@ namespace NConvert
             MainForm.MessageForm.SetButtonStatus(false);
 
         }
+
 
 
         /// <summary>
@@ -1016,13 +1020,10 @@ VALUES (
 
             MainForm.MessageForm.InitTotalProgressBar(1);
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
-
             //清理数据库
             dbhConvertForums.TruncateTable(string.Format("{0}forum_forum", MainForm.cic.TargetDbTablePrefix));
             dbhConvertForums.TruncateTable(string.Format("{0}forum_forumfield", MainForm.cic.TargetDbTablePrefix));
             dbhConvertForums.TruncateTable(string.Format("{0}forum_moderator", MainForm.cic.TargetDbTablePrefix));
-
-
 
             List<Forums> forumList = Provider.Provider.GetInstance().GetForumList();
 
@@ -2482,23 +2483,754 @@ VALUES (
 
 
 
-        /// <summary>
-        /// 转换群组帖子
-        /// </summary>
-        private static void ConvertGroupPosts()
-        {
-
-        }
 
         /// <summary>
         /// 转换群组
         /// </summary>
         private static void ConvertGroups()
         {
+            Yuwen.Tools.Data.DBHelper dbhConvertGroups = MainForm.GetTargetDBH_OldVer();
+            dbhConvertGroups.Open();
+            MainForm.MessageForm.SetMessage("开始转换群组\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetGroupRecordCount();
+
+            MainForm.MessageForm.InitTotalProgressBar(1);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            List<Forums> GroupList = Provider.Provider.GetInstance().GetGroupList();
+
+            dbhConvertGroups.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_forum WHERE fid>=200", MainForm.cic.TargetDbTablePrefix));
+            dbhConvertGroups.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_forumfield WHERE fid>=200", MainForm.cic.TargetDbTablePrefix));
+            dbhConvertGroups.TruncateTable(string.Format("{0}forum_groupuser", MainForm.cic.TargetDbTablePrefix));
+            #region sql语句
+            string sqlForum = string.Format(@"INSERT INTO {0}forum_forum (
+`fid` ,
+`fup` ,
+`type` ,
+`name` ,
+`status` ,
+`displayorder` ,
+`styleid` ,
+`threads` ,
+`posts` ,
+`todayposts` ,
+`lastpost` ,
+`domain` ,
+`allowsmilies` ,
+`allowhtml` ,
+`allowbbcode` ,
+`allowimgcode` ,
+`allowmediacode` ,
+`allowanonymous` ,
+`allowpostspecial` ,
+`allowspecialonly` ,
+`allowappend` ,
+`alloweditrules` ,
+`allowfeed` ,
+`allowside` ,
+`recyclebin` ,
+`modnewposts` ,
+`jammer` ,
+`disablewatermark` ,
+`inheritedmod` ,
+`autoclose` ,
+`forumcolumns` ,
+`threadcaches` ,
+`alloweditpost` ,
+`simple` ,
+`modworks` ,
+`allowtag` ,
+`allowglobalstick` ,
+`level` ,
+`commoncredits` ,
+`archive` ,
+`recommend` ,
+`favtimes` ,
+`sharetimes` 
+)
+VALUES (
+@fid,
+@fup,
+@type,
+@name,
+@status,
+@displayorder,
+@styleid,
+@threads,
+@posts,
+@todayposts,
+@lastpost,
+@domain,
+@allowsmilies,
+@allowhtml,
+@allowbbcode,
+@allowimgcode,
+@allowmediacode,
+@allowanonymous,
+@allowpostspecial,
+@allowspecialonly,
+@allowappend,
+@alloweditrules,
+@allowfeed,
+@allowside,
+@recyclebin,
+@modnewposts,
+@jammer,
+@disablewatermark,
+@inheritedmod,
+@autoclose,
+@forumcolumns,
+@threadcaches,
+@alloweditpost,
+@simple,
+@modworks,
+@allowtag,
+@allowglobalstick,
+@level,
+@commoncredits,
+@archive,
+@recommend,
+@favtimes,
+@sharetimes
+)", MainForm.cic.TargetDbTablePrefix);
+            string sqlForumfields = string.Format(@"INSERT INTO {0}forum_forumfield (
+`fid` ,
+`description` ,
+`password` ,
+`icon` ,
+`redirect` ,
+`attachextensions` ,
+`creditspolicy` ,
+`formulaperm` ,
+`moderators` ,
+`rules` ,
+`threadtypes` ,
+`threadsorts` ,
+`viewperm` ,
+`postperm` ,
+`replyperm` ,
+`getattachperm` ,
+`postattachperm` ,
+`postimageperm` ,
+`spviewperm` ,
+`keywords` ,
+`supe_pushsetting` ,
+`modrecommend` ,
+`threadplugin` ,
+`extra` ,
+`jointype` ,
+`gviewperm` ,
+`membernum` ,
+`dateline` ,
+`lastupdate` ,
+`activity` ,
+`founderuid` ,
+`foundername` ,
+`banner` ,
+`groupnum` ,
+`commentitem` ,
+`hidemenu` 
+)
+VALUES (
+@fid,
+@description,
+@password,
+@icon,
+@redirect,
+@attachextensions,
+@creditspolicy,
+@formulaperm,
+@moderators,
+@rules,
+@threadtypes,
+@threadsorts,
+@viewperm,
+@postperm,
+@replyperm,
+@getattachperm,
+@postattachperm,
+@postimageperm,
+@spviewperm,
+@keywords,
+@supe_pushsetting,
+@modrecommend,
+@threadplugin,
+@extra,
+@jointype,
+@gviewperm,
+@membernum,
+@dateline,
+@lastupdate,
+@activity,
+@founderuid,
+@foundername,
+@banner,
+@groupnum,
+@commentitem,
+@hidemenu
+)
+", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+            foreach (Forums objForum in GroupList)
+            {
+                try
+                {
+                    //清理上次执行的参数
+                    dbhConvertGroups.ParametersClear();
+                    #region dnt_forums表参数
+                    dbhConvertGroups.ParameterAdd("@fid", objForum.fid, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@fup", objForum.fup, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@type", objForum.type, DbType.String, 5);
+                    dbhConvertGroups.ParameterAdd("@name", objForum.name, DbType.String, 50);
+                    dbhConvertGroups.ParameterAdd("@status", objForum.status, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@displayorder", objForum.displayorder, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@styleid", objForum.styleid, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@threads", objForum.threads, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@posts", objForum.posts, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@todayposts", objForum.todayposts, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@lastpost", objForum.lastpost, DbType.String, 110);
+                    dbhConvertGroups.ParameterAdd("@domain", objForum.domain, DbType.String, 15);
+                    dbhConvertGroups.ParameterAdd("@allowsmilies", objForum.allowsmilies, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowhtml", objForum.allowhtml, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowbbcode", objForum.allowbbcode, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowimgcode", objForum.allowimgcode, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowmediacode", objForum.allowmediacode, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowanonymous", objForum.allowanonymous, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowpostspecial", objForum.allowpostspecial, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowspecialonly", objForum.allowspecialonly, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowappend", objForum.allowappend, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@alloweditrules", objForum.alloweditrules, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowfeed", objForum.allowfeed, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowside", objForum.allowside, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@recyclebin", objForum.recyclebin, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@modnewposts", objForum.modnewposts, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@jammer", objForum.jammer, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@disablewatermark", objForum.disablewatermark, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@inheritedmod", objForum.inheritedmod, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@autoclose", objForum.autoclose, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@forumcolumns", objForum.forumcolumns, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@threadcaches", objForum.threadcaches, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@alloweditpost", objForum.alloweditpost, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@simple", objForum.simple, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@modworks", objForum.modworks, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowtag", objForum.allowtag, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@allowglobalstick", objForum.allowglobalstick, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@level", objForum.level, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@commoncredits", objForum.commoncredits, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@archive", objForum.archive, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@recommend", objForum.recommend, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@favtimes", objForum.favtimes, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@sharetimes", objForum.sharetimes, DbType.Int32, 4);
+
+                    dbhConvertGroups.ParameterAdd("@description", objForum.description, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@password", objForum.password, DbType.String, 12);
+                    dbhConvertGroups.ParameterAdd("@icon", objForum.icon, DbType.String, 255);
+                    dbhConvertGroups.ParameterAdd("@redirect", objForum.redirect, DbType.String, 255);
+                    dbhConvertGroups.ParameterAdd("@attachextensions", objForum.attachextensions, DbType.String, 255);
+                    dbhConvertGroups.ParameterAdd("@creditspolicy", objForum.creditspolicy, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@formulaperm", objForum.formulaperm, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@moderators", objForum.moderators, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@rules", objForum.rules, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@threadtypes", objForum.threadtypes, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@threadsorts", objForum.threadsorts, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@viewperm", objForum.viewperm, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@postperm", objForum.postperm, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@replyperm", objForum.replyperm, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@getattachperm", objForum.getattachperm, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@postattachperm", objForum.postattachperm, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@postimageperm", objForum.postimageperm, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@spviewperm", objForum.spviewperm, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@keywords", objForum.keywords, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@supe_pushsetting", objForum.supe_pushsetting, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@modrecommend", objForum.modrecommend, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@threadplugin", objForum.threadplugin, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@extra", objForum.extra, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@jointype", objForum.jointype, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@gviewperm", objForum.gviewperm, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@membernum", objForum.membernum, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@dateline", objForum.dateline, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@lastupdate", objForum.lastupdate, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@activity", objForum.activity, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@founderuid", objForum.founderuid, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@foundername", objForum.foundername, DbType.String, 255);
+                    dbhConvertGroups.ParameterAdd("@banner", objForum.banner, DbType.String, 255);
+                    dbhConvertGroups.ParameterAdd("@groupnum", objForum.groupnum, DbType.Int32, 4);
+                    dbhConvertGroups.ParameterAdd("@commentitem", objForum.commentitem, DbType.String, 5000);
+                    dbhConvertGroups.ParameterAdd("@hidemenu", objForum.hidemenu, DbType.Int32, 4);
+                    #endregion
+                    dbhConvertGroups.ExecuteNonQuery(sqlForum);//插入dnt_forums表
+                    dbhConvertGroups.ExecuteNonQuery(sqlForumfields);//插入dnt_forumfields表
+                    string sqlModer = string.Format("SELECT * FROM [science].[dbo].[group_user] WHERE group_username='{0}'", objForum.domain);
+                    DBHelper dbhGroupUsers = MainForm.GetSrcDBH();
+                    dbhGroupUsers.Open();
+                    System.Data.Common.DbDataReader drGroupUsers = dbhGroupUsers.ExecuteReader(sqlModer);
+
+                    if (drGroupUsers != null)
+                    {
+                        while (drGroupUsers.Read())
+                        {
+                            int uid, status;
+                            string username = drGroupUsers["username"] == null ? "" : drGroupUsers["username"].ToString().Trim();
+                            //0 待审核 1 群组 2副群主 3 明星 4普通
+                            status = 4;
+                            if (drGroupUsers["userlevel"] != DBNull.Value)
+                            {
+                                int userlevel = Convert.ToInt32(drGroupUsers["userlevel"]);
+                                if (userlevel == 1)
+                                {
+                                    status = 3;
+                                }
+                                else if (userlevel == 2)
+                                {
+                                    status = 1;
+                                }
+                                else
+                                {
+                                    if (drGroupUsers["state"] != DBNull.Value)
+                                    {
+                                        int state = Convert.ToInt32(drGroupUsers["state"]);
+                                        if (state == 1 || state == 2)
+                                        {
+                                            status = 0;
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            uid = Convert.ToInt32(dbhConvertGroups.ExecuteScalar(string.Format("SELECT uid FROM {0}common_member WHERE username='{1}'", MainForm.cic.TargetDbTablePrefix, username)));
+                            if (uid > 0)
+                            {
+
+                                string sqlAddModer = string.Format(
+                                    "INSERT INTO {4}forum_groupuser(`fid` ,`uid` ,`username` ,`level` ,`threads` ,`replies` ,`joindateline` ,`lastupdate` ,`privacy` ) VALUES(@fid,{0},'{1}',{2},0,0,{3},{3},0)",
+                                    uid,
+                                    username,
+                                    status,
+                                    Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drGroupUsers["regtime"])),
+                                    MainForm.cic.TargetDbTablePrefix
+                                    );
+                                try
+                                {
+                                    dbhConvertGroups.ExecuteNonQuery(sqlAddModer);
+                                }
+                                catch (Exception e)
+                                {
+                                    MainForm.MessageForm.SetMessage(string.Format("错误,群组用户:{0}.fid={1}，username={2}\r\n", e.Message, objForum.fid, drGroupUsers["username"].ToString()));
+                                }
+                            }
+                        }
+                    }
+
+                    drGroupUsers.Close();
+                    dbhGroupUsers.Dispose();
+                    MainForm.SuccessedRecordCount++;
+                }
+                catch (Exception ex)
+                {
+                    MainForm.MessageForm.SetMessage(string.Format("错误:{0}.fid={1}\r\n", ex.Message, objForum.fid));
+                    MainForm.FailedRecordCount++;
+                }
+                MainForm.MessageForm.CurrentProgressBarNumAdd();
+            }
+            MainForm.MessageForm.TotalProgressBarNumAdd();
+
+            //dbhConvertForums.Close();
+            dbhConvertGroups.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换群组。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
+
         private static void ConvertGroupTopics()
         {
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            dbh.Open();
+            MainForm.MessageForm.SetMessage("开始转换群组主题\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.groupidList = new Dictionary<string, int>();
+            string sqlGroupList = string.Format("SELECT fid,domain FROM {0}forum_forum WHERE status=3 AND type='sub'", MainForm.cic.TargetDbTablePrefix);
+            System.Data.Common.DbDataReader drGroupList = dbh.ExecuteReader(sqlGroupList);
+            while (drGroupList.Read())
+            {
+                MainForm.groupidList.Add(drGroupList["domain"].ToString().Trim(), Convert.ToInt32(drGroupList["fid"]));
+            }
+            drGroupList.Close();
+
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetGroupTopicRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_thread WHERE tid>200000", MainForm.cic.TargetDbTablePrefix));
+            dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_post WHERE pid>600000", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlTopic = string.Format(@"INSERT INTO {0}forum_thread (
+`tid` ,
+`fid` ,
+`posttableid` ,
+`typeid` ,
+`sortid` ,
+`readperm` ,
+`price` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`lastpost` ,
+`lastposter` ,
+`views` ,
+`replies` ,
+`displayorder` ,
+`highlight` ,
+`digest` ,
+`rate` ,
+`special` ,
+`attachment` ,
+`moderated` ,
+`closed` ,
+`stickreply` ,
+`recommends` ,
+`recommend_add` ,
+`recommend_sub` ,
+`heats` ,
+`status` ,
+`isgroup` ,
+`favtimes` ,
+`sharetimes` ,
+`stamp` ,
+`icon` ,
+`pushedaid` 
+
+)
+VALUES (
+@tid,
+@fid,
+@posttableid,
+@typeid,
+@sortid,
+@readperm,
+@price,
+@author,
+@authorid,
+@subject,
+@dateline,
+@lastpost,
+@lastposter,
+@views,
+@replies,
+@displayorder,
+@highlight,
+@digest,
+@rate,
+@special,
+@attachment,
+@moderated,
+@closed,
+@stickreply,
+@recommends,
+@recommend_add,
+@recommend_sub,
+@heats,
+@status,
+@isgroup,
+@favtimes,
+@sharetimes,
+@stamp,
+@icon,
+@pushedaid
+
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            #region sql语句
+            string sqlPost = string.Format(@"INSERT INTO {0}forum_post (
+`pid` ,
+`fid` ,
+`tid` ,
+`first` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`useip` ,
+`invisible` ,
+`anonymous` ,
+`usesig` ,
+`htmlon` ,
+`bbcodeoff` ,
+`smileyoff` ,
+`parseurloff` ,
+`attachment` ,
+`rate` ,
+`ratetimes` ,
+`status` ,
+`tags` ,
+`comment` 
+)
+VALUES (
+@pid,
+@fid,
+@tid,
+@first,
+@author,
+@authorid,
+@subject,
+@dateline,
+@message,
+@useip,
+@invisible,
+@anonymous,
+@usesig,
+@htmlon,
+@bbcodeoff,
+@smileyoff,
+@parseurloff,
+@attachment,
+@rate,
+@ratetimes,
+@status,
+@tags,
+@comment
+)",
+                MainForm.cic.TargetDbTablePrefix);
+            #endregion
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到主题列表
+                List<TopicsP> topicList = Provider.Provider.GetInstance().GetGroupTopicList(pagei);
+                foreach (TopicsP objTopic in topicList)
+                {
+                    try
+                    {
+                        //清理上次执行的参数
+                        dbh.ParametersClear();
+                        #region dnt_topics表参数
+                        dbh.ParameterAdd("@tid", objTopic.tid + 200000, DbType.Int32, 4);
+                        dbh.ParameterAdd("@fid", objTopic.fid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@posttableid", objTopic.posttableid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@typeid", objTopic.typeid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@sortid", objTopic.sortid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@readperm", objTopic.readperm, DbType.Int32, 4);
+                        dbh.ParameterAdd("@price", objTopic.price, DbType.Int32, 4);
+                        dbh.ParameterAdd("@author", objTopic.author, DbType.String, 15);
+                        dbh.ParameterAdd("@authorid", objTopic.authorid, DbType.Int32, 4);
+                        dbh.ParameterAdd("@subject", objTopic.subject, DbType.String, 80);
+                        dbh.ParameterAdd("@dateline", objTopic.dateline, DbType.Int32, 4);
+                        dbh.ParameterAdd("@lastpost", objTopic.lastpost, DbType.Int32, 4);
+                        dbh.ParameterAdd("@lastposter", objTopic.lastposter, DbType.String, 15);
+                        dbh.ParameterAdd("@views", objTopic.views, DbType.Int32, 4);
+                        dbh.ParameterAdd("@replies", objTopic.replies, DbType.Int32, 4);
+                        dbh.ParameterAdd("@displayorder", objTopic.displayorder, DbType.Int32, 4);
+                        dbh.ParameterAdd("@highlight", objTopic.highlight, DbType.Int32, 4);
+                        dbh.ParameterAdd("@digest", objTopic.digest, DbType.Int32, 4);
+                        dbh.ParameterAdd("@rate", objTopic.rate, DbType.Int32, 4);
+                        dbh.ParameterAdd("@special", objTopic.special, DbType.Int32, 4);
+                        dbh.ParameterAdd("@attachment", objTopic.attachment, DbType.Int32, 4);
+                        dbh.ParameterAdd("@moderated", objTopic.moderated, DbType.Int32, 4);
+                        dbh.ParameterAdd("@closed", objTopic.closed, DbType.Int32, 4);
+                        dbh.ParameterAdd("@stickreply", objTopic.stickreply, DbType.Int32, 4);
+                        dbh.ParameterAdd("@recommends", objTopic.recommends, DbType.Int32, 4);
+                        dbh.ParameterAdd("@recommend_add", objTopic.recommend_add, DbType.Int32, 4);
+                        dbh.ParameterAdd("@recommend_sub", objTopic.recommend_sub, DbType.Int32, 4);
+                        dbh.ParameterAdd("@heats", objTopic.heats, DbType.Int32, 4);
+                        dbh.ParameterAdd("@status", objTopic.status, DbType.Int32, 4);
+                        dbh.ParameterAdd("@isgroup", objTopic.isgroup, DbType.Int32, 4);
+                        dbh.ParameterAdd("@favtimes", objTopic.favtimes, DbType.Int32, 4);
+                        dbh.ParameterAdd("@sharetimes", objTopic.sharetimes, DbType.Int32, 4);
+                        dbh.ParameterAdd("@stamp", objTopic.stamp, DbType.Int32, 4);
+                        dbh.ParameterAdd("@icon", objTopic.icon, DbType.Int32, 4);
+                        dbh.ParameterAdd("@pushedaid", objTopic.pushedaid, DbType.Int32, 4);
+                        //dbh.ParameterAdd("@recommend", objTopic.recommend, DbType.Int32, 4);
+                        #endregion
+
+                        #region post参数
+                        dbh.ParameterAdd("@pid", objTopic.tid + 600000, DbType.Int32, 4);
+                        dbh.ParameterAdd("@first", 1, DbType.Int32, 4);
+                        dbh.ParameterAdd("@message", objTopic.message, DbType.String, 10000);
+                        dbh.ParameterAdd("@useip", "127.0.0.1", DbType.String, 15);
+                        dbh.ParameterAdd("@invisible", 0, DbType.Int32, 4);
+                        dbh.ParameterAdd("@anonymous", 0, DbType.Int32, 4);
+                        dbh.ParameterAdd("@usesig", 1, DbType.Int32, 4);
+                        dbh.ParameterAdd("@htmlon", 0, DbType.Int32, 4);
+                        dbh.ParameterAdd("@bbcodeoff", 0, DbType.Int32, 4);
+                        dbh.ParameterAdd("@smileyoff", 0, DbType.Int32, 4);
+                        dbh.ParameterAdd("@parseurloff", 0, DbType.Int32, 4);
+                        dbh.ParameterAdd("@ratetimes", 0, DbType.Int32, 4);
+                        dbh.ParameterAdd("@tags", "", DbType.String, 255);
+                        dbh.ParameterAdd("@comment", 0, DbType.Int32, 4);
+                        #endregion
+
+                        dbh.ExecuteNonQuery(sqlTopic);//插入dnt_topics表
+                        dbh.ExecuteNonQuery(sqlPost);//插入dnt_topics表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.tid={1}\r\n", ex.Message, objTopic.tid));
+                        MainForm.FailedRecordCount++;
+                    }
+
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            dbh.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换群组主题成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
+
+        private static void ConvertGroupPosts()
+        {
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            dbh.Open();
+
+            MainForm.MessageForm.SetMessage("开始转换群组帖子\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetGroupPostRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_post WHERE pid>700000", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlPost = string.Format(@"INSERT INTO {0}forum_post (
+`pid` ,
+`fid` ,
+`tid` ,
+`first` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`useip` ,
+`invisible` ,
+`anonymous` ,
+`usesig` ,
+`htmlon` ,
+`bbcodeoff` ,
+`smileyoff` ,
+`parseurloff` ,
+`attachment` ,
+`rate` ,
+`ratetimes` ,
+`status` ,
+`tags` ,
+`comment` 
+)
+VALUES (
+@pid,
+@fid,
+@tid,
+@first,
+@author,
+@authorid,
+@subject,
+@dateline,
+@message,
+@useip,
+@invisible,
+@anonymous,
+@usesig,
+@htmlon,
+@bbcodeoff,
+@smileyoff,
+@parseurloff,
+@attachment,
+@rate,
+@ratetimes,
+@status,
+@tags,
+@comment
+)",
+                MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到主题列表
+                List<Posts> postList = Provider.Provider.GetInstance().GetPostList(pagei);
+                foreach (Posts objPost in postList)
+                {
+                    //清理上次执行的参数
+                    dbh.ParametersClear();
+                    #region dnt_posts表参数
+                    dbh.ParameterAdd("@pid", objPost.pid + 700000, DbType.Int32, 4);
+                    dbh.ParameterAdd("@fid", objPost.fid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@tid", objPost.tid + 200000, DbType.Int32, 4);
+                    dbh.ParameterAdd("@first", objPost.first, DbType.Int32, 4);
+                    dbh.ParameterAdd("@author", objPost.author, DbType.String, 15);
+                    dbh.ParameterAdd("@authorid", objPost.authorid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@subject", objPost.subject, DbType.String, 80);
+                    dbh.ParameterAdd("@dateline", objPost.dateline, DbType.Int32, 4);
+                    dbh.ParameterAdd("@message", objPost.message, DbType.String, 10000);
+                    dbh.ParameterAdd("@useip", objPost.useip, DbType.String, 15);
+                    dbh.ParameterAdd("@invisible", objPost.invisible, DbType.Int32, 4);
+                    dbh.ParameterAdd("@anonymous", objPost.anonymous, DbType.Int32, 4);
+                    dbh.ParameterAdd("@usesig", objPost.usesig, DbType.Int32, 4);
+                    dbh.ParameterAdd("@htmlon", objPost.htmlon, DbType.Int32, 4);
+                    dbh.ParameterAdd("@bbcodeoff", objPost.bbcodeoff, DbType.Int32, 4);
+                    dbh.ParameterAdd("@smileyoff", objPost.smileyoff, DbType.Int32, 4);
+                    dbh.ParameterAdd("@parseurloff", objPost.parseurloff, DbType.Int32, 4);
+                    dbh.ParameterAdd("@attachment", objPost.attachment, DbType.Int32, 4);
+                    dbh.ParameterAdd("@rate", objPost.rate, DbType.Int32, 4);
+                    dbh.ParameterAdd("@ratetimes", objPost.ratetimes, DbType.Int32, 4);
+                    dbh.ParameterAdd("@status", objPost.status, DbType.Int32, 4);
+                    dbh.ParameterAdd("@tags", objPost.tags, DbType.String, 255);
+                    dbh.ParameterAdd("@comment", objPost.comment, DbType.Int32, 4);
+                    #endregion
+
+                    try
+                    {
+                        dbh.ExecuteNonQuery(sqlPost);//插入dnt_topics表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.pid={1} tid={1}\r\n", ex.Message, objPost.pid, objPost.tid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    //MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                //一次分页完毕
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+            dbh.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换群组帖子。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
         /// <summary>
         /// 转换日志
         /// </summary>
@@ -2674,7 +3406,7 @@ VALUES (
 
                     dbh.ParameterAdd("@pic", objBlogPost.pic, DbType.String, 255);
                     dbh.ParameterAdd("@tag", objBlogPost.tag, DbType.String, 255);
-                    dbh.ParameterAdd("@message", objBlogPost.message, DbType.String, 2555555);
+                    dbh.ParameterAdd("@message", objBlogPost.message, DbType.String, 25555555);
                     dbh.ParameterAdd("@postip", objBlogPost.postip, DbType.String, 255);
                     dbh.ParameterAdd("@related", objBlogPost.related, DbType.String, 255);
                     dbh.ParameterAdd("@relatedtime", objBlogPost.relatedtime, DbType.Int32, 4);

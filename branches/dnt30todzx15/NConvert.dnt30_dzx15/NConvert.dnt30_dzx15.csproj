@@ -60,6 +60,9 @@
     <Compile Include="Other.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConvertBlogPosts.cs" />
+    <Compile Include="ConvertGroups.cs" />
+    <Compile Include="ConvertGroupTopics.cs" />
+    <Compile Include="ConvertGroupPosts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj">

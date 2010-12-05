@@ -151,5 +151,29 @@ namespace NConvert.Provider
         #endregion
 
 
+        #region 转换群组
+        int GetGroupRecordCount();
+
+        List<Forums> GetGroupList();
+        #endregion
+
+
+        #region 转换群组主题
+        int GetGroupTopicRecordCount();
+
+        List<TopicsP> GetGroupTopicList(int pagei);
+        #endregion
+
+
+
+        #region 转换群组主题
+        int GetGroupPostRecordCount();
+
+        List<Posts> GetGroupPostList(int pagei);
+        #endregion
+
+
+
+
     }
 }
