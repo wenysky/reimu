@@ -92,6 +92,7 @@
     <Compile Include="Entity\UserGroupInfo.cs" />
     <Compile Include="Entity\Users.cs" />
     <Compile Include="Entity\BlogPostInfo.cs" />
+    <Compile Include="Entity\TopicsP.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,7 +129,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Data\DBHelper.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
