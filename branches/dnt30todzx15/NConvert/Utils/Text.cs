@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace NConvert.Utils
 {
@@ -194,6 +195,28 @@ namespace NConvert.Utils
             // Regex search and replace
             Regex regex = new Regex(pattern, options);
             return regex.Replace(input, replacement);
+        }
+
+
+
+        /// <summary>
+        /// 移除Html标记
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static string RemoveHtml(string content)
+        {
+            string regexstr = @"<[^>]*>";
+            return Regex.Replace(content, regexstr, string.Empty, RegexOptions.IgnoreCase);
+        }
+        /// <summary>
+        /// 返回 HTML 字符串的解码结果
+        /// </summary>
+        /// <param name="str">字符串</param>
+        /// <returns>解码结果</returns>
+        public static string HtmlDecode(string str)
+        {
+            return HttpUtility.HtmlDecode(str);
         }
     }
 }

@@ -46,7 +46,7 @@ namespace NConvert.dnt30_dzx15
             objDefGroupTopType.lastpost = "";
             objDefGroupTopType.domain = "";
             objDefGroupTopType.allowsmilies = 0;
-            objDefGroupTopType.allowhtml = 0;
+            objDefGroupTopType.allowhtml = 1;
             objDefGroupTopType.allowbbcode = 0;
             objDefGroupTopType.allowimgcode = 0;
             objDefGroupTopType.allowmediacode = 0;

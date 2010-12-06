@@ -2801,7 +2801,7 @@ VALUES (
 
                             }
 
-                            uid = Convert.ToInt32(dbhConvertGroups.ExecuteScalar(string.Format("SELECT uid FROM {0}common_member WHERE username='{1}'", MainForm.cic.TargetDbTablePrefix, username)));
+                            uid = Provider.Provider.GetInstance().GetUIDbyUsername(username);
                             if (uid > 0)
                             {
 
@@ -2843,6 +2843,7 @@ VALUES (
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换群组。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
+
 
         private static void ConvertGroupTopics()
         {
@@ -3068,7 +3069,7 @@ VALUES (
                         dbh.ParameterAdd("@invisible", 0, DbType.Int32, 4);
                         dbh.ParameterAdd("@anonymous", 0, DbType.Int32, 4);
                         dbh.ParameterAdd("@usesig", 1, DbType.Int32, 4);
-                        dbh.ParameterAdd("@htmlon", 0, DbType.Int32, 4);
+                        dbh.ParameterAdd("@htmlon", 1, DbType.Int32, 4);
                         dbh.ParameterAdd("@bbcodeoff", 0, DbType.Int32, 4);
                         dbh.ParameterAdd("@smileyoff", 0, DbType.Int32, 4);
                         dbh.ParameterAdd("@parseurloff", 0, DbType.Int32, 4);
@@ -3179,7 +3180,7 @@ VALUES (
             for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
             {
                 //分段得到主题列表
-                List<Posts> postList = Provider.Provider.GetInstance().GetPostList(pagei);
+                List<Posts> postList = Provider.Provider.GetInstance().GetGroupPostList(pagei);
                 foreach (Posts objPost in postList)
                 {
                     //清理上次执行的参数
