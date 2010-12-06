@@ -173,7 +173,7 @@ namespace NConvert.Provider
         #endregion
 
 
-
+        int GetUIDbyUsername(string username);
 
     }
 }

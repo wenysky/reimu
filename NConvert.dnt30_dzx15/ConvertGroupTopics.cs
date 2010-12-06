@@ -54,7 +54,7 @@ namespace NConvert.dnt30_dzx15
                 objTopic.sortid = 0;
                 objTopic.readperm = 0;
                 objTopic.author = dr["username"].ToString();
-                objTopic.authorid = -1;
+                objTopic.authorid = GetUIDbyUsername(objTopic.author);
                 objTopic.subject = dr["title"].ToString();
                 objTopic.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["posttime"]));
                 objTopic.lastpost = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["posttime"]));
@@ -99,9 +99,10 @@ namespace NConvert.dnt30_dzx15
                     objTopic.recommend = 0;
                 }
 
-                objTopic.message=dr["content"].ToString();
+                objTopic.message = dr["content"].ToString().Replace("<br>", "\r\n").Replace("<br/>", "\r\n").Replace("<br />", "\r\n");
+                objTopic.message = Utils.Text.HtmlDecode(Utils.Text.RemoveHtml(objTopic.message));
                 topiclist.Add(objTopic);
-                
+
             }
             dr.Close();
             dr.Dispose();
