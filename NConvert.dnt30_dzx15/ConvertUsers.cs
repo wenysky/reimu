@@ -46,6 +46,7 @@ namespace NConvert.dnt30_dzx15
             List<Users> userlist = new List<Users>();
             while (dr.Read())
             {
+                DBHelper dbhUserTemp = MainForm.GetSrcDBH_OldVer();
                 Users objUser = new Users();
 
                 objUser.uid = Convert.ToInt32(dr["uid"]);
@@ -88,7 +89,14 @@ namespace NConvert.dnt30_dzx15
                 objUser.albums = 0;
                 objUser.sharings = 0;
                 objUser.attachsize = 0;
-                objUser.views = 0;
+
+                objUser.views = Convert.ToInt32(dbhUserTemp.ExecuteScalar(
+                    string.Format(
+                        "SELECT realname FROM [science].[dbo].[kexue_blogcount] WHERE userid={0}", 
+                        objUser.uid
+                        )
+                    )
+                );
                 objUser.oltime = Convert.ToInt32(dr["oltime"]);
 
                 objUser.publishfeed = 0;
@@ -101,11 +109,15 @@ namespace NConvert.dnt30_dzx15
                 objUser.groups = "";
                 objUser.attentiongroup = "";
 
-                objUser.realname = dr["realname"].ToString();
+                //objUser.realname = dr["realname"].ToString();   
+                object realname = dbhUserTemp.ExecuteScalar(string.Format("SELECT realname FROM [sciencebbs].[dbo].[user] WHERE id={0}", objUser.uid));
+                objUser.realname = (realname != DBNull.Value && realname != null) ? realname.ToString() : "";
+
+
                 objUser.gender = Convert.ToInt32(dr["gender"]);
                 DateTime bdayt;
-                if (dr["bday"] != DBNull.Value 
-                    && dr["bday"].ToString().Trim() != string.Empty 
+                if (dr["bday"] != DBNull.Value
+                    && dr["bday"].ToString().Trim() != string.Empty
                     && DateTime.TryParse(dr["bday"].ToString().Trim(), out bdayt))
                 {
                     objUser.birthyear = bdayt.Year;

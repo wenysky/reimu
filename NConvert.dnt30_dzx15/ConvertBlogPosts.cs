@@ -45,6 +45,10 @@ namespace NConvert.dnt30_dzx15
             List<BlogPostInfo> blogPostlist = new List<BlogPostInfo>();
             while (dr.Read())
             {
+                if (dr["fuurl"] != DBNull.Value && dr["fuurl"].ToString().IndexOf("-曹利军-") > -1)//1:科学网编辑部的博客有外链接不要导入了
+                {
+                    continue;
+                }
                 BlogPostInfo objBlogPostList = new BlogPostInfo();
                 objBlogPostList.blogid = Convert.ToInt32(dr["id"]);
                 objBlogPostList.uid = Convert.ToInt32(dr["homeurl"]);
@@ -58,8 +62,35 @@ namespace NConvert.dnt30_dzx15
                 objBlogPostList.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["writetime"]));
                 objBlogPostList.blogtype = Convert.ToInt32(dr["iszz"]);
                 objBlogPostList.picflag = (dr["upimages"] != DBNull.Value && dr["upimages"].ToString().Trim() != "") ? 1 : 0;
-                objBlogPostList.noreply = (Convert.ToInt32(dr["ifcommen"]) == 0 || Convert.ToInt32(dr["ifcommen"]) == 3) ? 1 : 0;
-                objBlogPostList.friend = 0;
+                if (Convert.ToInt32(dr["ifcommen"]) == 0)//0不允许，1允许所有人，2只允许注册用户，3只允许博主
+                {
+                    objBlogPostList.noreply = 1;
+                }
+                else if (Convert.ToInt32(dr["ifcommen"]) == 1)
+                {
+                    objBlogPostList.noreply = 0;
+                }
+                else if (Convert.ToInt32(dr["ifcommen"]) == 2)
+                {
+                    objBlogPostList.noreply = 3;
+                }
+                else if (Convert.ToInt32(dr["ifcommen"]) == 3)
+                {
+                    objBlogPostList.noreply = 2;
+                }
+                else
+                {
+                    objBlogPostList.noreply = 0;
+                }
+                //3：以前是隐藏kexue_blogarticle[closed]=3的文章和在草稿kexue_blogarticle[del]=1,[closed]=82中的文章都导入到新系统的“仅自己可见”中。
+                if (Convert.ToInt32(dr["closed"]) == 3 || (Convert.ToInt32(dr["del"]) == 1 && Convert.ToInt32(dr["closed"]) == 82))
+                {
+                    objBlogPostList.friend = 3;
+                }
+                else
+                {
+                    objBlogPostList.friend = 0;
+                }
                 objBlogPostList.password = "";
                 objBlogPostList.favtimes = 0;
                 objBlogPostList.sharetimes = 0;
