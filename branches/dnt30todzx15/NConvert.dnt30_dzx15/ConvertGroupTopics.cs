@@ -61,7 +61,7 @@ namespace NConvert.dnt30_dzx15
                 objTopic.lastposter = "";
                 objTopic.views = Convert.ToInt32(dr["hits"]);
                 objTopic.replies = Convert.ToInt32(dr["replies"]);
-                objTopic.displayorder = 0;
+                objTopic.displayorder = Convert.ToInt32(dr["istop"]);
                 if (dr["titlecolor"].ToString() != string.Empty)
                 {
                     //todo
@@ -84,7 +84,7 @@ namespace NConvert.dnt30_dzx15
                 objTopic.heats = 0;
                 //管理操作后  好像都是32
                 objTopic.status = 0;
-                objTopic.isgroup = 0;
+                objTopic.isgroup = 1;
                 objTopic.favtimes = 0;
                 objTopic.sharetimes = 0;
                 objTopic.stamp = -1;
