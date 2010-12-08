@@ -3772,5 +3772,252 @@ VALUES
             MainForm.MessageForm.TotalProgressBarNumAdd();
             MainForm.MessageForm.SetMessage(string.Format("完成更新回复数。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
+
+
+
+
+
+        /// <summary>
+        /// 转换家园个人分类
+        /// </summary>
+        public static void ConvertHomeClass()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertHomeClass = MainForm.GetTargetDBH_OldVer();
+            dbhConvertHomeClass.Open();
+            MainForm.MessageForm.SetMessage("开始转换空间个人分类\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetHomeClassRecordCount();
+
+            MainForm.MessageForm.InitTotalProgressBar(1);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+            //清理数据库
+            dbhConvertHomeClass.TruncateTable(string.Format("{0}home_class", MainForm.cic.TargetDbTablePrefix));
+
+            List<HomeClassInfo> forumList = Provider.Provider.GetInstance().GetHomeClassList();
+
+            #region sql语句
+            string sqlHomeClass = string.Format(@"INSERT INTO {0}home_class (
+`classid` ,
+`classname` ,
+`uid` ,
+`dateline`
+)
+VALUES (
+@classid,
+@classname,
+@uid,
+@dateline
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+            foreach (HomeClassInfo objHomeClassInfo in forumList)
+            {
+                try
+                {
+                    //清理上次执行的参数
+                    dbhConvertHomeClass.ParametersClear();
+                    #region dnt_forums表参数
+                    dbhConvertHomeClass.ParameterAdd("@classid", objHomeClassInfo.classid, DbType.Int32, 4);
+                    dbhConvertHomeClass.ParameterAdd("@classname", objHomeClassInfo.classname, DbType.String, 40);
+                    dbhConvertHomeClass.ParameterAdd("@uid", objHomeClassInfo.uid, DbType.Int32, 4);
+                    dbhConvertHomeClass.ParameterAdd("@dateline", objHomeClassInfo.dateline, DbType.Int32, 4);
+                    #endregion
+                    dbhConvertHomeClass.ExecuteNonQuery(sqlHomeClass);
+
+                    MainForm.SuccessedRecordCount++;
+                }
+                catch (Exception ex)
+                {
+                    MainForm.MessageForm.SetMessage(string.Format("错误:{0}.classid={1}\r\n", ex.Message, objHomeClassInfo.classid));
+                    MainForm.FailedRecordCount++;
+                }
+                MainForm.MessageForm.CurrentProgressBarNumAdd();
+            }
+            MainForm.MessageForm.TotalProgressBarNumAdd();
+
+            //dbhConvertForums.Close();
+            dbhConvertHomeClass.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换空间个人分类。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+            //整理版块
+            //Utils.Forums.ResetForums();
+            //MainForm.MessageForm.SetMessage("完成整理版块\r\n");
+        }
+
+
+        /// <summary>
+        /// 转换好友
+        /// </summary>
+        public static void ConvertFriends()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertUsers = MainForm.GetTargetDBH_OldVer();
+            dbhConvertUsers.Open();
+            MainForm.MessageForm.SetMessage("开始转换好友\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetFriendRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount * 1000);//只能估算
+
+            //清理数据库
+            dbhConvertUsers.TruncateTable(string.Format("{0}home_friend", MainForm.cic.TargetDbTablePrefix));
+
+
+
+            #region sql语句
+            string sqlFriend = string.Format(@"INSERT INTO {0}home_friend (
+`uid` ,
+`fuid` ,
+`fusername` ,
+`gid` ,
+`num` ,
+`dateline` ,
+`note`
+)
+VALUES (
+@uid,
+@fuid,
+@fusername,
+@gid,
+@num,
+@dateline,
+@note
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<FriendInfo> userList = Provider.Provider.GetInstance().GetFriendList(pagei);
+                foreach (FriendInfo objUser in userList)
+                {
+                    try
+                    {
+                        dbhConvertUsers.ParametersClear();
+                        #region users参数
+                        dbhConvertUsers.ParameterAdd("@uid", objUser.uid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@fuid", objUser.fuid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@fusername", objUser.fusername, DbType.String, 15);
+                        dbhConvertUsers.ParameterAdd("@gid", objUser.gid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@num", objUser.num, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@dateline", objUser.dateline, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@note", objUser.note, DbType.String, 255);
+                        #endregion
+                        dbhConvertUsers.ExecuteNonQuery(sqlFriend);//插入dnt_users表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.uid={1}\r\n", ex.Message, objUser.uid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertUsers.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换好友。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+        public static void ConvertUserRecommandBlogs()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertUserRecommandBlogs = MainForm.GetTargetDBH_OldVer();
+            dbhConvertUserRecommandBlogs.Open();
+            MainForm.MessageForm.SetMessage("开始转换博主推荐\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetUserRecommandBlogRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount * 1000);//只能估算
+
+            //清理数据库
+            dbhConvertUserRecommandBlogs.TruncateTable(string.Format("{0}home_recommend", MainForm.cic.TargetDbTablePrefix));
+
+
+
+            #region sql语句
+            string sqlFriend = string.Format(@"INSERT INTO {0}home_recommend (
+`rid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`authorid` ,
+`author` ,
+`ip` ,
+`dateline`
+)
+VALUES (
+NULL ,
+@uid,
+@id,
+@idtype,
+@authorid,
+@author,
+@ip,
+@dateline
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<UserRecommandBlogInfo> recommandList = Provider.Provider.GetInstance().GetUserRecommandBlogList(pagei);
+                foreach (UserRecommandBlogInfo objUser in recommandList)
+                {
+                    try
+                    {
+                        dbhConvertUserRecommandBlogs.ParametersClear();
+                        #region users参数
+                        //dbhConvertUsers.ParameterAdd("@rid", objUser.rid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@uid", objUser.uid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@id", objUser.id, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@idtype", objUser.idtype, DbType.String, 20);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@authorid", objUser.authorid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@author", objUser.author, DbType.String, 15);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@ip", objUser.ip, DbType.String, 20);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@dateline", objUser.dateline, DbType.Int32, 4);
+                        #endregion
+                        dbhConvertUserRecommandBlogs.ExecuteNonQuery(sqlFriend);//插入dnt_users表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.blogid={1}\r\n", ex.Message, objUser.id));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertUserRecommandBlogs.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换博主推荐。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
     }
 }

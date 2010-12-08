@@ -60,7 +60,7 @@ namespace NConvert.dnt30_dzx15
                 objBlogPostList.replynum = Convert.ToInt32(dr["commen"]);
                 objBlogPostList.hot = 0;
                 objBlogPostList.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["writetime"]));
-                objBlogPostList.blogtype = Convert.ToInt32(dr["iszz"]);
+                objBlogPostList.blogtype = Convert.ToInt32(dr["iszz"]) + 1;//原表0是原创 1是转载
                 objBlogPostList.picflag = (dr["upimages"] != DBNull.Value && dr["upimages"].ToString().Trim() != "") ? 1 : 0;
                 if (Convert.ToInt32(dr["ifcommen"]) == 0)//0不允许，1允许所有人，2只允许注册用户，3只允许博主
                 {

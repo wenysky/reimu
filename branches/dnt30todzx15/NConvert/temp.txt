@@ -794,3 +794,69 @@ showtitle
 rfirstid      
 lastchangetime
 recommendnum  
+
+
+
+INSERT INTO `dzx15c`.`pre_home_class` (
+`classid` ,
+`classname` ,
+`uid` ,
+`dateline`
+)
+VALUES (
+NULL , '', '0', '0'
+);
+
+
+classid
+classname
+uid
+dateline
+
+
+INSERT INTO `dzx15c`.`pre_home_friend` (
+`uid` ,
+`fuid` ,
+`fusername` ,
+`gid` ,
+`num` ,
+`dateline` ,
+`note`
+)
+VALUES (
+'0', '0', '', '0', '0', '0', ''
+);
+
+
+uid
+fuid
+fusername
+gid
+num
+dateline
+note
+
+
+INSERT INTO `sno`.`pre_home_recommend` (
+`rid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`authorid` ,
+`author` ,
+`ip` ,
+`dateline`
+)
+VALUES (
+NULL , '0', '0', '', '0', '', '', '0'
+);
+
+
+rid
+uid
+id
+idtype
+authorid
+author
+ip
+dateline
