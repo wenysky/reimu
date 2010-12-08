@@ -175,5 +175,16 @@ namespace NConvert.Provider
 
         int GetUIDbyUsername(string username);
 
+
+
+        int GetHomeClassRecordCount();
+        List<HomeClassInfo> GetHomeClassList();
+
+
+        int GetFriendRecordCount();
+        List<FriendInfo> GetFriendList(int pagei);
+
+        int GetUserRecommandBlogRecordCount();
+        List<UserRecommandBlogInfo> GetUserRecommandBlogList(int pagei);
     }
 }
