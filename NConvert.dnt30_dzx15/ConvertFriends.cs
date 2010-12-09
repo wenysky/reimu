@@ -16,7 +16,7 @@ namespace NConvert.dnt30_dzx15
             return Convert.ToInt32(
                 MainForm.srcDBH.ExecuteScalar(
                 string.Format(
-                "SELECT COUNT(id) FROM [sciencebbs].[dbo].[user]",
+                "SELECT COUNT(id) FROM [sciencebbs].[dbo].[user] WHERE friend>'|'",
                 MainForm.cic.SrcDbTablePrefix)
                 )
                 );
@@ -30,12 +30,12 @@ namespace NConvert.dnt30_dzx15
             if (CurrentPage <= 1)
             {
                 sql = string.Format
-                       ("SELECT TOP {1} * FROM [sciencebbs].[dbo].[user] ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+                       ("SELECT TOP {1} id,friend FROM [sciencebbs].[dbo].[user] WHERE friend>'|' ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
             }
             else
             {
                 sql = string.Format
-                       ("SELECT TOP {1} * FROM [sciencebbs].[dbo].[user] WHERE id NOT IN (SELECT TOP {2} id FROM [sciencebbs].[dbo].[user] ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+                       ("SELECT TOP {1} id,friend FROM [sciencebbs].[dbo].[user] WHERE friend>'|' AND id NOT IN (SELECT TOP {2} id FROM [sciencebbs].[dbo].[user] WHERE friend>'|' ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
             }
             #endregion
 

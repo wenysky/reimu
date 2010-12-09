@@ -100,15 +100,27 @@ namespace NConvert
                 ConvertBlogComments();
             }
 
-            if (MainForm.IsConvertUserGroups)
+            if (MainForm.IsConvertHomeComments)
             {
                 ConvertHomeComments();
             }
 
+            if (MainForm.IsConvertUserBlogClass)
+            {
+                ConvertHomeClass();
+            }
+            if (MainForm.IsConvertFriends)
+            {
+                ConvertFriends();
+            }
+            if (MainForm.IsConvertUserRecommands)
+            {
+                ConvertUserRecommandBlogs();
+            }
+            
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             MainForm.MessageForm.SetButtonStatus(false);
-
         }
 
 
@@ -3445,9 +3457,9 @@ VALUES (
 
 
 
-        private static void ConvertHomeComments()
-        {
 
+        private static void ConvertBlogComments()
+        {
             Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
             dbh.Open();
             MainForm.MessageForm.SetMessage("开始转换日志评论（会清理表 所以要和留言同时进行）\r\n");
@@ -3485,7 +3497,6 @@ VALUES (
 )
 VALUES (
 NULL , 
-@cid,
 @uid,
 @id,
 @idtype,
@@ -3540,10 +3551,98 @@ NULL ,
             MainForm.MessageForm.SetMessage(string.Format("完成转换日志。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
-        private static void ConvertBlogComments()
+        private static void ConvertHomeComments()
         {
-        }
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            dbh.Open();
+            MainForm.MessageForm.SetMessage("开始转换留言\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
 
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetHomeCommentRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbh.TruncateTable(string.Format("{0}home_comment", MainForm.cic.TargetDbTablePrefix));
+            #region sql语句
+            string sqlBlogPost = string.Format(@"INSERT INTO {0}home_comment (
+`cid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`authorid` ,
+`author` ,
+`ip` ,
+`dateline` ,
+`message` ,
+`magicflicker` ,
+`status` 
+)
+VALUES (
+NULL , 
+@uid,
+@id,
+@idtype,
+@authorid,
+@author,
+@ip,
+@dateline,
+@message,
+@magicflicker,
+@status
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到主题列表
+                List<CommentInfo> blogPostList = Provider.Provider.GetInstance().GetHomeCommentList(pagei);
+                foreach (CommentInfo objBlogPost in blogPostList)
+                {
+                    //清理上次执行的参数
+                    dbh.ParametersClear();
+                    #region dnt_attachment表参数
+                    //dbh.ParameterAdd("@cid", objBlogPost.cid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@uid", objBlogPost.uid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@id", objBlogPost.id, DbType.Int32, 4);
+                    dbh.ParameterAdd("@idtype", objBlogPost.idtype, DbType.String, 20);
+                    dbh.ParameterAdd("@authorid", objBlogPost.authorid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@author", objBlogPost.author, DbType.String, 15);
+                    dbh.ParameterAdd("@ip", objBlogPost.ip, DbType.String, 20);
+                    dbh.ParameterAdd("@dateline", objBlogPost.dateline, DbType.Int32, 4);
+                    dbh.ParameterAdd("@message", objBlogPost.message, DbType.String, 65530);
+                    dbh.ParameterAdd("@magicflicker", objBlogPost.magicflicker, DbType.Int32, 4);
+                    dbh.ParameterAdd("@status", objBlogPost.status, DbType.Int32, 4);
+                    #endregion
+
+                    try
+                    {
+                        dbh.ExecuteNonQuery(sqlBlogPost);
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}。id={1}\r\n", ex.Message, objBlogPost.cid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                //一次分页完毕
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+            dbh.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换留言。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
 
 
 

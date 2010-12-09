@@ -80,6 +80,10 @@
             this.lbDllName = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.ckbxIsConvertUserRecommand = new System.Windows.Forms.CheckBox();
+            this.ckbxIsConvertFriend = new System.Windows.Forms.CheckBox();
+            this.ckbxIsConvertUserBlogClass = new System.Windows.Forms.CheckBox();
+            this.ckbxIsConvertPics = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertAblumDir = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertUserComment = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertBlogComment = new System.Windows.Forms.CheckBox();
@@ -102,9 +106,9 @@
             this.ckbxConvertUsers = new System.Windows.Forms.CheckBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.ckbxIsConvertPics = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.plSrcDBSetting_sql.SuspendLayout();
             this.plTargetDBSetting.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -609,9 +613,13 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.checkBox4);
-            this.groupBox4.Controls.Add(this.checkBox7);
+            this.groupBox4.Controls.Add(this.checkBox3);
+            this.groupBox4.Controls.Add(this.checkBox5);
             this.groupBox4.Controls.Add(this.checkBox1);
+            this.groupBox4.Controls.Add(this.checkBox2);
+            this.groupBox4.Controls.Add(this.ckbxIsConvertUserRecommand);
+            this.groupBox4.Controls.Add(this.ckbxIsConvertFriend);
+            this.groupBox4.Controls.Add(this.ckbxIsConvertUserBlogClass);
             this.groupBox4.Controls.Add(this.ckbxIsConvertPics);
             this.groupBox4.Controls.Add(this.ckbxIsConvertAblumDir);
             this.groupBox4.Controls.Add(this.ckbxIsConvertUserComment);
@@ -639,6 +647,46 @@
             this.groupBox4.TabIndex = 30;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "转换项目";
+            // 
+            // ckbxIsConvertUserRecommand
+            // 
+            this.ckbxIsConvertUserRecommand.AutoSize = true;
+            this.ckbxIsConvertUserRecommand.Location = new System.Drawing.Point(5, 235);
+            this.ckbxIsConvertUserRecommand.Name = "ckbxIsConvertUserRecommand";
+            this.ckbxIsConvertUserRecommand.Size = new System.Drawing.Size(72, 16);
+            this.ckbxIsConvertUserRecommand.TabIndex = 23;
+            this.ckbxIsConvertUserRecommand.Text = "博主推荐";
+            this.ckbxIsConvertUserRecommand.UseVisualStyleBackColor = true;
+            // 
+            // ckbxIsConvertFriend
+            // 
+            this.ckbxIsConvertFriend.AutoSize = true;
+            this.ckbxIsConvertFriend.Location = new System.Drawing.Point(95, 212);
+            this.ckbxIsConvertFriend.Name = "ckbxIsConvertFriend";
+            this.ckbxIsConvertFriend.Size = new System.Drawing.Size(72, 16);
+            this.ckbxIsConvertFriend.TabIndex = 22;
+            this.ckbxIsConvertFriend.Text = "转换好友";
+            this.ckbxIsConvertFriend.UseVisualStyleBackColor = true;
+            // 
+            // ckbxIsConvertUserBlogClass
+            // 
+            this.ckbxIsConvertUserBlogClass.AutoSize = true;
+            this.ckbxIsConvertUserBlogClass.Location = new System.Drawing.Point(5, 212);
+            this.ckbxIsConvertUserBlogClass.Name = "ckbxIsConvertUserBlogClass";
+            this.ckbxIsConvertUserBlogClass.Size = new System.Drawing.Size(72, 16);
+            this.ckbxIsConvertUserBlogClass.TabIndex = 21;
+            this.ckbxIsConvertUserBlogClass.Text = "用户分类";
+            this.ckbxIsConvertUserBlogClass.UseVisualStyleBackColor = true;
+            // 
+            // ckbxIsConvertPics
+            // 
+            this.ckbxIsConvertPics.AutoSize = true;
+            this.ckbxIsConvertPics.Location = new System.Drawing.Point(95, 189);
+            this.ckbxIsConvertPics.Name = "ckbxIsConvertPics";
+            this.ckbxIsConvertPics.Size = new System.Drawing.Size(72, 16);
+            this.ckbxIsConvertPics.TabIndex = 20;
+            this.ckbxIsConvertPics.Text = "相册图片";
+            this.ckbxIsConvertPics.UseVisualStyleBackColor = true;
             // 
             // ckbxIsConvertAblumDir
             // 
@@ -847,42 +895,42 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(5, 212);
+            this.checkBox1.Location = new System.Drawing.Point(5, 257);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(48, 16);
-            this.checkBox1.TabIndex = 21;
+            this.checkBox1.TabIndex = 25;
             this.checkBox1.Text = "呵呵";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // ckbxIsConvertPics
+            // checkBox2
             // 
-            this.ckbxIsConvertPics.AutoSize = true;
-            this.ckbxIsConvertPics.Location = new System.Drawing.Point(95, 189);
-            this.ckbxIsConvertPics.Name = "ckbxIsConvertPics";
-            this.ckbxIsConvertPics.Size = new System.Drawing.Size(72, 16);
-            this.ckbxIsConvertPics.TabIndex = 20;
-            this.ckbxIsConvertPics.Text = "相册图片";
-            this.ckbxIsConvertPics.UseVisualStyleBackColor = true;
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(95, 234);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(48, 16);
+            this.checkBox2.TabIndex = 24;
+            this.checkBox2.Text = "呵呵";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // checkBox3
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(5, 235);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(48, 16);
-            this.checkBox4.TabIndex = 23;
-            this.checkBox4.Text = "呵呵";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(5, 279);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(48, 16);
+            this.checkBox3.TabIndex = 27;
+            this.checkBox3.Text = "呵呵";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
-            // checkBox7
+            // checkBox5
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(95, 212);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(48, 16);
-            this.checkBox7.TabIndex = 22;
-            this.checkBox7.Text = "呵呵";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(95, 256);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(48, 16);
+            this.checkBox5.TabIndex = 26;
+            this.checkBox5.Text = "呵呵";
+            this.checkBox5.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -1003,10 +1051,14 @@
         private System.Windows.Forms.CheckBox ckbxIsConvertUserComment;
         private System.Windows.Forms.CheckBox ckbxIsConvertBlogComment;
         private System.Windows.Forms.CheckBox ckbxIsConvertBlogPosts;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox ckbxIsConvertUserRecommand;
+        private System.Windows.Forms.CheckBox ckbxIsConvertFriend;
+        private System.Windows.Forms.CheckBox ckbxIsConvertUserBlogClass;
         private System.Windows.Forms.CheckBox ckbxIsConvertPics;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 

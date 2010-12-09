@@ -24,12 +24,21 @@ namespace NConvert.dnt30_dzx15
             }
         }
 
-        public List<CommentInfo> GetBlogCommentList(int pagei)
+        public List<CommentInfo> GetBlogCommentList(int CurrentPage)
         {
-            string sqlBoard = string.Format(
-                "SELECT * FROM [science].[dbo].[kexue_blogcomment]",
-                MainForm.cic.SrcDbTablePrefix
-                );
+            string sqlBoard;
+            #region 分页语句
+            if (CurrentPage <= 1)
+            {
+                sqlBoard = string.Format
+                       ("SELECT TOP {1} * FROM [science].[dbo].[kexue_blogcomment] ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+            }
+            else
+            {
+                sqlBoard = string.Format
+                       ("SELECT TOP {1} * FROM [science].[dbo].[kexue_blogcomment] WHERE id NOT IN (SELECT TOP {2} id FROM [science].[dbo].[kexue_blogcomment] ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+            }
+            #endregion
 
             System.Data.Common.DbDataReader drBoard = MainForm.srcDBH.ExecuteReader(sqlBoard);
 
@@ -44,7 +53,7 @@ namespace NConvert.dnt30_dzx15
                 objForum.author = drBoard["username"] != DBNull.Value ? drBoard["username"].ToString() : "";
                 objForum.authorid = GetUIDbyUsername(objForum.author);
                 objForum.ip = drBoard["ip"].ToString();
-                objForum.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drBoard[".ToString("]));
+                objForum.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drBoard["updatetime"]));
                 objForum.message = drBoard["commencontent"].ToString();
                 objForum.magicflicker =0;
                 objForum.status = 0;
