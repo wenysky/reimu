@@ -796,7 +796,39 @@ lastchangetime
 recommendnum  
 
 
+INSERT INTO `snp`.`pre_home_comment` (
 
+
+
+`cid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`authorid` ,
+`author` ,
+`ip` ,
+`dateline` ,
+`message` ,
+`magicflicker` ,
+`status` 
+)
+VALUES (
+NULL , '0', '0', '', '0', '', '', '0', '', '0', '0'
+);
+
+
+
+cid
+uid
+id
+idtype
+authorid
+author
+ip
+dateline
+message
+magicflicker
+status
 INSERT INTO `dzx15c`.`pre_home_class` (
 `classid` ,
 `classname` ,
