@@ -16,7 +16,7 @@ namespace NConvert.dnt30_dzx15
             return Convert.ToInt32(
                 MainForm.srcDBH.ExecuteScalar(
                 string.Format(
-                "SELECT COUNT(id) FROM [science].[dbo].[kexue_blogarticle]",
+                "SELECT COUNT(id) FROM [science].[dbo].[kexue_blogarticle] WHERE tuijianren>''",
                 MainForm.cic.SrcDbTablePrefix)
                 )
                 );
@@ -30,12 +30,12 @@ namespace NConvert.dnt30_dzx15
             if (CurrentPage <= 1)
             {
                 sql = string.Format
-                       ("SELECT TOP {1} id,homeurl,tuijianren FROM [science].[dbo].[kexue_blogarticle] ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+                       ("SELECT TOP {1} id,homeurl,tuijianren FROM [science].[dbo].[kexue_blogarticle] WHERE tuijianren>'' ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
             }
             else
             {
                 sql = string.Format
-                       ("SELECT TOP {1} id,homeurl,tuijianren FROM [science].[dbo].[kexue_blogarticle] WHERE id NOT IN (SELECT TOP {2} id FROM [science].[dbo].[kexue_blogarticle] ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+                       ("SELECT TOP {1} id,homeurl,tuijianren FROM [science].[dbo].[kexue_blogarticle] WHERE tuijianren>'' AND id NOT IN (SELECT TOP {2} id FROM [science].[dbo].[kexue_blogarticle] WHERE tuijianren>'' ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
             }
             #endregion
 
@@ -45,7 +45,7 @@ namespace NConvert.dnt30_dzx15
             List<UserRecommandBlogInfo> Recommandlist = new List<UserRecommandBlogInfo>();
             while (dr.Read())
             {
-                string[] recommandUsers = dr["tuijianren"] != DBNull.Value ? dr["friend"].ToString().Trim().Split('|') : new string[0];
+                string[] recommandUsers = dr["tuijianren"] != DBNull.Value ? dr["tuijianren"].ToString().Trim().Split('|') : new string[0];
 
                 foreach (string fname in recommandUsers)
                 {
@@ -61,7 +61,7 @@ namespace NConvert.dnt30_dzx15
                             objFriend.idtype = "blogid";
                             objFriend.author = user[1].Trim();
                             int authorid;
-                            if (objFriend.author != string.Empty || !int.TryParse(user[0].Trim(), out authorid))
+                            if (objFriend.author == string.Empty || !int.TryParse(user[0].Trim(), out authorid))
                             {
                                 continue;
                             }

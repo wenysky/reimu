@@ -123,6 +123,10 @@ namespace NConvert
         public static bool IsConvertAlbumDirs;//转换
         public static bool IsConvertAlbumPics;//转换
 
+        public static bool IsConvertUserBlogClass;//转换
+        public static bool IsConvertFriends;//转换
+        public static bool IsConvertUserRecommands;//转换
+
         /*
         public static bool IsConvert;//转换
         public static bool IsConvert;//转换
@@ -246,6 +250,11 @@ namespace NConvert
             IsConvertHomeComments = ckbxIsConvertUserComment.Checked;
             IsConvertAlbumDirs = ckbxIsConvertAblumDir.Checked;
             IsConvertAlbumPics = ckbxIsConvertPics.Checked;
+
+
+            IsConvertUserBlogClass = ckbxIsConvertUserBlogClass.Checked;
+            IsConvertFriends = ckbxIsConvertFriend.Checked;
+            IsConvertUserRecommands = ckbxIsConvertUserRecommand.Checked;
             #endregion
         }
 
@@ -374,7 +383,14 @@ namespace NConvert
             }
             else
             {
-                this.pbCurrent.Value++;
+                if (this.pbCurrent.Value < this.pbCurrent.Maximum)
+                {
+                    this.pbCurrent.Value++;
+                }
+                else
+                {
+                    SetMessage("CurrentProgressBarNumAdd ERR");
+                }
                 this.lbCurrentRecord.Text = this.pbCurrent.Value.ToString();
             }
         }

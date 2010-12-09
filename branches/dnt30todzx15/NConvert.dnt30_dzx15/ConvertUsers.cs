@@ -199,7 +199,16 @@ namespace NConvert.dnt30_dzx15
         public int GetUIDbyUsername(string username)
         {
             Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
-            return Convert.ToInt32(dbh.ExecuteScalar(string.Format("SELECT uid FROM {0}common_member WHERE username='{1}'", MainForm.cic.TargetDbTablePrefix, username)));
+            int uid;
+            try
+            {
+                uid = Convert.ToInt32(dbh.ExecuteScalar(string.Format("SELECT uid FROM {0}common_member WHERE username='{1}'", MainForm.cic.TargetDbTablePrefix, username)));
+            }
+            catch
+            {
+                uid = 0;
+            }
+            return uid;
         }
     }
 }
