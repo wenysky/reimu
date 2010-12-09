@@ -118,6 +118,10 @@ namespace NConvert
         public static bool IsConvertGroups;//转换
         public static bool IsConvertGroupPosts;//转换
         public static bool IsConvertBlogPosts;//转换
+        public static bool IsConvertBlogComments;//转换
+        public static bool IsConvertHomeComments;//转换
+        public static bool IsConvertAlbumDirs;//转换
+        public static bool IsConvertAlbumPics;//转换
 
         /*
         public static bool IsConvert;//转换
@@ -238,6 +242,10 @@ namespace NConvert
             IsConvertBlogPosts = ckbxIsConvertBlogPosts.Checked;
             IsConvertGroups = ckbxIsConvertGroups.Checked;
             IsConvertGroupPosts = ckbxIsConvertGroupPost.Checked;
+            IsConvertBlogComments = ckbxIsConvertBlogComment.Checked;
+            IsConvertHomeComments = ckbxIsConvertUserComment.Checked;
+            IsConvertAlbumDirs = ckbxIsConvertAblumDir.Checked;
+            IsConvertAlbumPics = ckbxIsConvertPics.Checked;
             #endregion
         }
 

@@ -172,6 +172,19 @@ namespace NConvert.Provider
         List<Posts> GetGroupPostList(int pagei);
         #endregion
 
+        #region 日志评论
+        int GetBlogCommentRecordCount();
+        List<CommentInfo> GetBlogCommentList(int pagei);
+        #endregion
+
+
+        #region 空间留言
+        int GetHomeCommentRecordCount();
+        List<CommentInfo> GetHomeCommentList(int pagei);
+        #endregion
+
+
+
 
         int GetUIDbyUsername(string username);
 

@@ -93,6 +93,7 @@
     <Compile Include="Entity\Users.cs" />
     <Compile Include="Entity\BlogPostInfo.cs" />
     <Compile Include="Entity\TopicsP.cs" />
+    <Compile Include="Entity\CommentInfo.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
