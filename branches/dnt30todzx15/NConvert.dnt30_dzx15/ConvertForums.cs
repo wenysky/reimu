@@ -48,7 +48,7 @@ namespace NConvert.dnt30_dzx15
                 objForum.lastpost = drBoard["lastpost"].ToString();
                 objForum.domain = "";
                 objForum.allowsmilies = Convert.ToInt32(drBoard["allowsmilies"]);
-                objForum.allowhtml = Convert.ToInt32(drBoard["allowhtml"]);
+                objForum.allowhtml = 1;//Convert.ToInt32(drBoard["allowhtml"]);
                 objForum.allowbbcode = Convert.ToInt32(drBoard["allowbbcode"]);
                 objForum.allowimgcode = Convert.ToInt32(drBoard["allowimgcode"]);
                 objForum.allowmediacode = 1;

@@ -117,7 +117,7 @@ namespace NConvert
             {
                 ConvertUserRecommandBlogs();
             }
-            
+
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             MainForm.MessageForm.SetButtonStatus(false);
@@ -1356,7 +1356,7 @@ VALUES (
         /// </summary>
         public static void ConvertTopicTypes()
         {
-            DBHelper dbhConvertTopicTypes = new DBHelper(MainForm.targetDbConn, "System.Data.SqlClient");
+            Yuwen.Tools.Data.DBHelper dbhConvertTopicTypes = MainForm.GetTargetDBH_OldVer(); 
             dbhConvertTopicTypes.Open();
             MainForm.MessageForm.SetMessage("开始转换主题分类\r\n");
             MainForm.SuccessedRecordCount = 0;
@@ -1368,37 +1368,39 @@ VALUES (
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
             //清理数据库
-            dbhConvertTopicTypes.TruncateTable(string.Format("{0}topictypes", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertTopicTypes.SetIdentityInsertON(string.Format("{0}topictypes", MainForm.cic.TargetDbTablePrefix));
+            dbhConvertTopicTypes.TruncateTable(string.Format("{0}forum_threadclass", MainForm.cic.TargetDbTablePrefix));
 
 
             //得到主题列表
             List<TopicTypes> topictypeList = Provider.Provider.GetInstance().GetTopicTypeList();
+            MainForm.RecordCount = topictypeList.Count;
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
             foreach (TopicTypes objTopicType in topictypeList)
             {
                 #region sql语句
-                string sqlTopicType = string.Format(@"INSERT INTO {0}topictypes
-(
-typeid, 
-displayorder,
-name, 
-description
+                string sqlTopicType = string.Format(@"INSERT INTO {0}forum_threadclass (
+`typeid` ,
+`fid` ,
+`name` ,
+`displayorder` ,
+`icon` 
 )
-VALUES 
-(
-@typeid, 
+VALUES (
+@typeid,
+@fid,
+@name,
 @displayorder,
-@name, 
-@description
+@icon
 )", MainForm.cic.TargetDbTablePrefix);
                 #endregion
                 //清理上次执行的参数
                 dbhConvertTopicTypes.ParametersClear();
                 #region dnt_topictypes表参数
                 dbhConvertTopicTypes.ParameterAdd("@typeid", objTopicType.typeid, DbType.Int32, 4);
+                dbhConvertTopicTypes.ParameterAdd("@fid", objTopicType.fid, DbType.Int32, 4);
+                dbhConvertTopicTypes.ParameterAdd("@name", objTopicType.name, DbType.String, 255);
                 dbhConvertTopicTypes.ParameterAdd("@displayorder", objTopicType.displayorder, DbType.Int32, 4);
-                dbhConvertTopicTypes.ParameterAdd("@name", objTopicType.name, DbType.String, 30);
-                dbhConvertTopicTypes.ParameterAdd("@description", objTopicType.description, DbType.String, 500);
+                dbhConvertTopicTypes.ParameterAdd("@icon", objTopicType.icon, DbType.String, 255);
                 #endregion
 
                 try
@@ -1417,7 +1419,6 @@ VALUES
             MainForm.MessageForm.TotalProgressBarNumAdd();
 
 
-            dbhConvertTopicTypes.SetIdentityInsertOFF(string.Format("{0}topictypes", MainForm.cic.TargetDbTablePrefix));
             dbhConvertTopicTypes.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换主题分类。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
@@ -1450,6 +1451,10 @@ VALUES
 
             //清理数据库
             dbh.ExecuteNonQuery(string.Format("TRUNCATE TABLE {0}forum_thread", MainForm.cic.TargetDbTablePrefix));
+            dbh.ExecuteNonQuery(string.Format("ALTER TABLE {0}forum_thread CHANGE `typeid` `typeid` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0'",
+                MainForm.cic.TargetDbTablePrefix
+                )
+                );
 
             #region sql语句
             string sqlTopic = string.Format(@"INSERT INTO {0}forum_thread (
@@ -3276,6 +3281,8 @@ VALUES (
             //清理数据库
             dbh.TruncateTable(string.Format("{0}home_blog", MainForm.cic.TargetDbTablePrefix));
             dbh.TruncateTable(string.Format("{0}home_blogfield", MainForm.cic.TargetDbTablePrefix));
+            //classid默认为smallint 最多只能存放65535条记录
+            dbh.ExecuteNonQuery(string.Format("ALTER TABLE {0}home_blog CHANGE `classid` `classid` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0'", MainForm.cic.TargetDbTablePrefix));
             #region sql语句
             string sqlBlogPost = string.Format(@"INSERT INTO {0}home_blog (
 `blogid` ,
@@ -3538,7 +3545,7 @@ NULL ,
                     }
                     catch (Exception ex)
                     {
-                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}。id={1}\r\n", ex.Message, objBlogPost.cid));
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}。blogid={1}\r\n", ex.Message, objBlogPost.cid));
                         MainForm.FailedRecordCount++;
                     }
                     MainForm.MessageForm.CurrentProgressBarNumAdd();
@@ -3548,7 +3555,7 @@ NULL ,
             }
             dbh.Dispose();
             MainForm.RecordCount = -1;
-            MainForm.MessageForm.SetMessage(string.Format("完成转换日志。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+            MainForm.MessageForm.SetMessage(string.Format("完成转换日志评论。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
         private static void ConvertHomeComments()
@@ -3573,7 +3580,7 @@ NULL ,
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
             //清理数据库
-            dbh.TruncateTable(string.Format("{0}home_comment", MainForm.cic.TargetDbTablePrefix));
+            //dbh.TruncateTable(string.Format("{0}home_comment", MainForm.cic.TargetDbTablePrefix));
             #region sql语句
             string sqlBlogPost = string.Format(@"INSERT INTO {0}home_comment (
 `cid` ,

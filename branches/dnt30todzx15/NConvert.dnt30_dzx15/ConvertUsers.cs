@@ -92,7 +92,7 @@ namespace NConvert.dnt30_dzx15
 
                 objUser.views = Convert.ToInt32(dbhUserTemp.ExecuteScalar(
                     string.Format(
-                        "SELECT realname FROM [science].[dbo].[kexue_blogcount] WHERE userid={0}", 
+                        "SELECT count1 FROM [science].[dbo].[kexue_blogcount] WHERE userid={0}", 
                         objUser.uid
                         )
                     )

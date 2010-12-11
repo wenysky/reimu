@@ -198,6 +198,19 @@ namespace NConvert.Utils
         }
 
 
+        public static bool IsIncludeHtmlTag(string content)
+        {
+            string regexstr = @"<[^>]*>";
+            MatchCollection mc = GetMatchFull(content, regexstr);
+            if (mc != null && mc.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// 移除Html标记
