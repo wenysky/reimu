@@ -45,6 +45,9 @@ namespace NConvert.dnt30_dzx15
             List<CommentInfo> forumList = new List<CommentInfo>();
             while (drBoard.Read())
             {
+                //悄悄话不导入
+                if (Convert.ToInt32(drBoard["hide"]) == 1)
+                    continue;
                 CommentInfo objForum = new CommentInfo();
                 objForum.cid = Convert.ToInt32(drBoard["id"]);
                 objForum.uid = Convert.ToInt32(drBoard["userid"]);

@@ -55,7 +55,7 @@ namespace NConvert.dnt30_dzx15
                 objBlogPostList.username = dr["username"].ToString();
                 objBlogPostList.subject = dr["title"].ToString();
                 objBlogPostList.classid = Convert.ToInt32(dr["typeid"]);
-                objBlogPostList.catid = Convert.ToInt32(dr["classid"]);
+                objBlogPostList.catid = Convert.ToInt32(dr["field"]);
                 objBlogPostList.viewnum = Convert.ToInt32(dr["hits"]);
                 objBlogPostList.replynum = Convert.ToInt32(dr["commen"]);
                 objBlogPostList.hot = 0;

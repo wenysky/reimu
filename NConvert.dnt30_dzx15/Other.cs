@@ -10,17 +10,6 @@ namespace NConvert.dnt30_dzx15
     {
         #region IProvider 成员
 
-
-        public int GetTopicTypesRecordCount()
-        {
-            return 0;
-        }
-
-        public List<TopicTypes> GetTopicTypeList()
-        {
-            return new List<TopicTypes>();
-        }
-
         public int GetForumLinksRecordCount()
         {
             return 0;

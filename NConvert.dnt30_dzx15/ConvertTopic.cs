@@ -63,7 +63,7 @@ namespace NConvert.dnt30_dzx15
                 objTopic.fid = Convert.ToInt32(dr["fid"]);
                 //todo 分表
                 objTopic.posttableid = 0;
-                objTopic.typeid = Convert.ToInt32(string.Format("{0}{1}", objTopic.fid, dr["typeid"].ToString()));
+                objTopic.typeid = Convert.ToInt32(string.Format("{0}", objTopic.fid * 100 + Convert.ToInt32(dr["typeid"])));
                 objTopic.sortid = 0;
                 objTopic.readperm = Convert.ToInt32(dr["readperm"]);
                 objTopic.author = dr["poster"].ToString();

@@ -67,7 +67,7 @@ namespace NConvert.dnt30_dzx15
                 objPost.invisible = Convert.ToInt32(dr["invisible"]) == 1 ? -1 : 0;
                 objPost.anonymous = 0;
                 objPost.usesig = Convert.ToInt32(dr["usesig"]);
-                objPost.htmlon = Convert.ToInt32(dr["htmlon"]);
+                objPost.htmlon = Utils.Text.IsIncludeHtmlTag(objPost.message) ? 1 : 0;//Convert.ToInt32(dr["htmlon"]);
                 objPost.bbcodeoff = Convert.ToInt32(dr["bbcodeoff"]);
                 objPost.smileyoff = Convert.ToInt32(dr["smileyoff"]);
                 objPost.parseurloff = Convert.ToInt32(dr["parseurloff"]);

@@ -892,3 +892,23 @@ authorid
 author
 ip
 dateline
+
+
+
+INSERT INTO `sno`.`pre_forum_threadclass` (
+`typeid` ,
+`fid` ,
+`name` ,
+`displayorder` ,
+`icon` 
+)
+VALUES (
+NULL , '', '', '', ''
+);
+
+
+typeid
+fid
+name
+displayorder
+icon
