@@ -94,6 +94,13 @@
     <Compile Include="Entity\BlogPostInfo.cs" />
     <Compile Include="Entity\TopicsP.cs" />
     <Compile Include="Entity\CommentInfo.cs" />
+    <Compile Include="Entity\HomeClassInfo.cs" />
+    <Compile Include="Entity\FriendInfo.cs" />
+    <Compile Include="Entity\UserRecommandBlogInfo.cs" />
+    <Compile Include="Entity\AlbumPicInfo.cs" />
+    <Compile Include="Entity\GroupBlogTypeInfo.cs" />
+    <Compile Include="Entity\GroupShowBlogInfo.cs" />
+    <Compile Include="Entity\BlogFavoriteInfo.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +137,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Entity\AlbumCategoryInfo.cs" />
+    <Compile Include="Entity\AlbumInfo.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

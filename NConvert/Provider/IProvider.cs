@@ -199,5 +199,28 @@ namespace NConvert.Provider
 
         int GetUserRecommandBlogRecordCount();
         List<UserRecommandBlogInfo> GetUserRecommandBlogList(int pagei);
+
+
+        int GetAlbumCategoryRecordCount();
+        List<AlbumCategoryInfo> GetAlbumCategoryList(int pagei);
+
+
+        int GetAlbumRecordCount();
+        List<AlbumInfo> GetAlbumList(int pagei);
+
+
+        int GetAlbumPicRecordCount();
+        List<AlbumPicInfo> GetAlbumPicList(int pagei);
+
+
+        int GetGroupBlogTypeRecordCount();
+        List<GroupBlogTypeInfo> GetGroupBlogTypeList(int pagei);
+
+
+        int GetGroupShowBlogRecordCount();
+        List<GroupShowBlogInfo> GetGroupShowBlogList(int pagei);
+
+        int GetBlogFavoriteRecordCount();
+        List<BlogFavoriteInfo> GetBlogFavoriteList(int pagei);
     }
 }

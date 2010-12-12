@@ -84,7 +84,11 @@ namespace NConvert
                 ResetTopicReplyCount();
 
             if (MainForm.IsConvertBlogPosts)
+            {
+                MainForm.trashBlogPostList = new List<BlogPostInfo>();
                 ConvertBlogPosts();
+                ConvertTrashBlogPosts();
+            }
             if (MainForm.IsConvertGroups)
                 ConvertGroups();
 
@@ -117,6 +121,14 @@ namespace NConvert
             {
                 ConvertUserRecommandBlogs();
             }
+
+
+            ConvertAlbumCategories();
+            ConvertAlbums();
+            ConvertAlbumPics();
+            ConvertGroupBlogTypes();
+            ConvertGroupShowBlogs();
+            ConvertBlogPostFavorites();
 
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
@@ -559,15 +571,19 @@ values
             MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
-            //清理数据库
-            dbhConvertUsers.TruncateTable(string.Format("{0}ucenter_members", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertUsers.TruncateTable(string.Format("{0}ucenter_memberfields", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertUsers.TruncateTable(string.Format("{0}common_member", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertUsers.TruncateTable(string.Format("{0}common_member_count", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertUsers.TruncateTable(string.Format("{0}common_member_field_forum", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertUsers.TruncateTable(string.Format("{0}common_member_profile", MainForm.cic.TargetDbTablePrefix));
-            dbhConvertUsers.TruncateTable(string.Format("{0}common_member_status", MainForm.cic.TargetDbTablePrefix));
-
+            int pageid = 1;
+            if (pageid <= 1)
+            {
+                //清理数据库
+                dbhConvertUsers.TruncateTable(string.Format("{0}ucenter_members", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}ucenter_memberfields", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_count", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_field_forum", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_profile", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_status", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_education", MainForm.cic.TargetDbTablePrefix));
+            }
 
 
             #region sql语句
@@ -629,7 +645,11 @@ VALUES (
 `newpm` ,
 `newprompt` ,
 `accessmasks` ,
-`allowadmincp` 
+`allowadmincp` ,
+`usertype` ,
+`blogShowStatus` ,
+`organblog` ,
+`userlevel` 
 )
 VALUES (
 @uid,
@@ -651,7 +671,11 @@ VALUES (
 @newpm,
 @newprompt,
 @accessmasks,
-@allowadmincp
+@allowadmincp,
+@usertype,
+@blogShowStatus,
+@organblog,
+@userlevel
 )", MainForm.cic.TargetDbTablePrefix);
             string sqlMembercount = string.Format(@"INSERT INTO {0}common_member_count (
 `uid` ,
@@ -766,7 +790,7 @@ VALUES (
 `site` ,
 `bio` ,
 `interest` ,
-`realmtiny3` ,
+`realm` ,
 `field2` ,
 `field3` ,
 `field4` ,
@@ -863,9 +887,30 @@ VALUES (
 @favtimes,
 @sharetimes
 )", MainForm.cic.TargetDbTablePrefix);
+
+            string sqlMemberEducation = string.Format(@"INSERT INTO {0}common_member_education (
+`uid` ,
+`username` ,
+`university` ,
+`universityid` ,
+`laboratory` ,
+`initialstudyear` ,
+`educational` ,
+`grade` 
+)
+VALUES (
+@uid,
+@username,
+@university,
+@universityid,
+@laboratory,
+@initialstudyear,
+@educational,
+@grade
+)", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
-            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            for (int pagei = pageid; pagei <= MainForm.PageCount; pagei++)
             {
                 //分段得到用户列表
                 List<Users> userList = Provider.Provider.GetInstance().GetUserList(pagei);
@@ -995,6 +1040,18 @@ VALUES (
                         dbhConvertUsers.ParameterAdd("@sellercredit", objUser.sellercredit, DbType.Int32, 4);
                         dbhConvertUsers.ParameterAdd("@favtimes", objUser.favtimes, DbType.Int32, 4);
                         dbhConvertUsers.ParameterAdd("@sharetimes", objUser.sharetimes, DbType.Int32, 4);
+
+                        //额外
+                        dbhConvertUsers.ParameterAdd("@university", objUser.university, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@universityid", objUser.universityid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@laboratory", objUser.laboratory, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@initialstudyear", objUser.initialstudyear, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@educational", objUser.educational, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@grade", objUser.grade, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@usertype", objUser.usertype, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@blogShowStatus", objUser.blogShowStatus, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@organblog", objUser.organblog, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@userlevel", objUser.userlevel, DbType.Int32, 4);
                         #endregion
                         dbhConvertUsers.ExecuteNonQuery(sqlUCUser);//插入dnt_users表
                         dbhConvertUsers.ExecuteNonQuery(sqlUCUserfield);//插入dnt_users表
@@ -1003,6 +1060,8 @@ VALUES (
                         dbhConvertUsers.ExecuteNonQuery(sqlMemberfieldforum);//插入dnt_userfields表
                         dbhConvertUsers.ExecuteNonQuery(sqlMemberprofile);//插入dnt_userfields表
                         dbhConvertUsers.ExecuteNonQuery(sqlMemberstatus);//插入dnt_userfields表
+
+                        dbhConvertUsers.ExecuteNonQuery(sqlMemberEducation);//插入额外表
                         MainForm.SuccessedRecordCount++;
                     }
                     catch (Exception ex)
@@ -1356,7 +1415,7 @@ VALUES (
         /// </summary>
         public static void ConvertTopicTypes()
         {
-            Yuwen.Tools.Data.DBHelper dbhConvertTopicTypes = MainForm.GetTargetDBH_OldVer(); 
+            Yuwen.Tools.Data.DBHelper dbhConvertTopicTypes = MainForm.GetTargetDBH_OldVer();
             dbhConvertTopicTypes.Open();
             MainForm.MessageForm.SetMessage("开始转换主题分类\r\n");
             MainForm.SuccessedRecordCount = 0;
@@ -2502,9 +2561,6 @@ VALUES (
             MainForm.MessageForm.SetMessage(string.Format("完成转换短消息。成功(有效条数){0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
-
-
-
         /// <summary>
         /// 转换群组
         /// </summary>
@@ -2864,7 +2920,6 @@ VALUES (
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换群组。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
-
 
         private static void ConvertGroupTopics()
         {
@@ -3252,7 +3307,6 @@ VALUES (
             MainForm.MessageForm.SetMessage(string.Format("完成转换群组帖子。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
-
         /// <summary>
         /// 转换日志
         /// </summary>
@@ -3423,7 +3477,7 @@ VALUES (
                     dbh.ParameterAdd("@stickstatus", objBlogPost.stickstatus, DbType.Int32, 4);
                     dbh.ParameterAdd("@recommendstatus", objBlogPost.recommendstatus, DbType.Int32, 4);
 
-                    dbh.ParameterAdd("@showtitle", objBlogPost.showtitle, DbType.String, 80);
+                    dbh.ParameterAdd("@showtitle", objBlogPost.showtitle, DbType.String, 18);
                     dbh.ParameterAdd("@rfirstid", objBlogPost.rfirstid, DbType.Int32, 4);
                     dbh.ParameterAdd("@lastchangetime", objBlogPost.lastchangetime, DbType.Int32, 4);
                     dbh.ParameterAdd("@recommendnum", objBlogPost.recommendnum, DbType.Int32, 4);
@@ -3462,8 +3516,77 @@ VALUES (
             MainForm.MessageForm.SetMessage(string.Format("完成转换日志。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
+        private static void ConvertTrashBlogPosts()
+        {
 
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            dbh.Open();
+            MainForm.MessageForm.SetMessage("开始导入日志回收站\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
 
+            MainForm.RecordCount = MainForm.trashBlogPostList.Count;
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbh.TruncateTable(string.Format("{0}home_blog_trash", MainForm.cic.TargetDbTablePrefix));
+            #region sql语句
+            string sqlTrashBlogPost = string.Format(@"INSERT INTO {0}home_blog_trash (
+`blogid` ,
+`content` 
+)
+VALUES (
+@blogid,
+@content
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            foreach (BlogPostInfo objBlogPost in MainForm.trashBlogPostList)
+            {
+                //清理上次执行的参数
+                dbh.ParametersClear();
+                #region 参数
+                dbh.ParameterAdd("@blogid", objBlogPost.blogid, DbType.Int32, 4);
+                string content = string.Format(
+                    "uid:{0}||username:{1}||postdate:{2}||ip:{3}||message:{4}",
+                    objBlogPost.uid,
+                    objBlogPost.username,
+                    objBlogPost.dateline,
+                    objBlogPost.postip,
+                    objBlogPost.message
+                    );
+                dbh.ParameterAdd("@content", content, DbType.String, 955350000);
+                #endregion
+
+                try
+                {
+                    dbh.ExecuteNonQuery(sqlTrashBlogPost);
+                    MainForm.SuccessedRecordCount++;
+                }
+                catch (Exception ex)
+                {
+                    MainForm.MessageForm.SetMessage(string.Format("错误:{0}。blogid={1}\r\n", ex.Message, objBlogPost.blogid));
+                    MainForm.FailedRecordCount++;
+                }
+                MainForm.MessageForm.CurrentProgressBarNumAdd();
+            }
+            //一次分页完毕
+            MainForm.MessageForm.TotalProgressBarNumAdd();
+
+            dbh.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成日志回收站的导入。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
 
         private static void ConvertBlogComments()
         {
@@ -3655,18 +3778,6 @@ NULL ,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// 转换友情链接
         /// </summary>
@@ -3744,16 +3855,6 @@ VALUES
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换友情链接。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
-
-
-
-
-
-
-
-
-
-
 
 
         /// <summary>
@@ -4072,8 +4173,6 @@ VALUES (
             //Utils.Forums.ResetForums();
             //MainForm.MessageForm.SetMessage("完成整理版块\r\n");
         }
-
-
         /// <summary>
         /// 转换好友
         /// </summary>
@@ -4160,7 +4259,6 @@ VALUES (
             MainForm.MessageForm.SetMessage(string.Format("完成转换好友。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
-
         public static void ConvertUserRecommandBlogs()
         {
             Yuwen.Tools.Data.DBHelper dbhConvertUserRecommandBlogs = MainForm.GetTargetDBH_OldVer();
@@ -4246,6 +4344,562 @@ NULL ,
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换博主推荐。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
+                
 
+
+
+
+        private static void ConvertAlbumCategories()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertAlbumCategories = MainForm.GetTargetDBH_OldVer();
+            dbhConvertAlbumCategories.Open();
+            MainForm.MessageForm.SetMessage("开始转相册系统分类\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetAlbumCategoryRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbhConvertAlbumCategories.TruncateTable(string.Format("{0}home_album_category", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlAlbumCategory = string.Format(@"INSERT INTO {0}home_album_category (
+`catid` ,
+`upid` ,
+`catname` ,
+`num` ,
+`displayorder` 
+)
+VALUES (
+@catid,
+@upid,
+@catname,
+@num,
+@displayorder
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<AlbumCategoryInfo> recommandList = Provider.Provider.GetInstance().GetAlbumCategoryList(pagei);
+                foreach (AlbumCategoryInfo objAlbumCategoryInfo in recommandList)
+                {
+                    try
+                    {
+                        dbhConvertAlbumCategories.ParametersClear();
+                        #region users参数
+                        dbhConvertAlbumCategories.ParameterAdd("@catid", objAlbumCategoryInfo.catid, DbType.Int32, 4);
+                        dbhConvertAlbumCategories.ParameterAdd("@upid", objAlbumCategoryInfo.upid, DbType.Int32, 4);
+                        dbhConvertAlbumCategories.ParameterAdd("@catname", objAlbumCategoryInfo.catname, DbType.String, 255);
+                        dbhConvertAlbumCategories.ParameterAdd("@num", objAlbumCategoryInfo.num, DbType.Int32, 4);
+                        dbhConvertAlbumCategories.ParameterAdd("@displayorder", objAlbumCategoryInfo.displayorder, DbType.Int32, 4);
+                        #endregion
+                        dbhConvertAlbumCategories.ExecuteNonQuery(sqlAlbumCategory);//插入
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.catid={1}\r\n", ex.Message, objAlbumCategoryInfo.catid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertAlbumCategories.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换相册系统分类。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+        private static void ConvertAlbums()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertAlbums = MainForm.GetTargetDBH_OldVer();
+            dbhConvertAlbums.Open();
+            MainForm.MessageForm.SetMessage("开始转相册\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetAlbumRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbhConvertAlbums.TruncateTable(string.Format("{0}home_album", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlAlbum = string.Format(@"INSERT INTO {0}home_album (
+`albumid` ,
+`albumname` ,
+`catid` ,
+`uid` ,
+`username` ,
+`dateline` ,
+`updatetime` ,
+`picnum` ,
+`pic` ,
+`picflag` ,
+`friend` ,
+`password` ,
+`target_ids` ,
+`favtimes` ,
+`sharetimes` 
+)
+VALUES (
+@albumid,
+@albumname,
+@catid,
+@uid,
+@username,
+@dateline,
+@updatetime,
+@picnum,
+@pic,
+@picflag,
+@friend,
+@password,
+@target_ids,
+@favtimes,
+@sharetimes
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<AlbumInfo> albumList = Provider.Provider.GetInstance().GetAlbumList(pagei);
+                foreach (AlbumInfo objAlbumInfo in albumList)
+                {
+                    try
+                    {
+                        dbhConvertAlbums.ParametersClear();
+                        #region users参数
+                        dbhConvertAlbums.ParameterAdd("@albumid", objAlbumInfo.albumid, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@albumname", objAlbumInfo.albumname, DbType.String, 50);
+                        dbhConvertAlbums.ParameterAdd("@catid", objAlbumInfo.catid, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@uid", objAlbumInfo.uid, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@username", objAlbumInfo.username, DbType.String, 15);
+                        dbhConvertAlbums.ParameterAdd("@dateline", objAlbumInfo.dateline, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@updatetime", objAlbumInfo.updatetime, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@picnum", objAlbumInfo.picnum, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@pic", objAlbumInfo.pic, DbType.String, 60);
+                        dbhConvertAlbums.ParameterAdd("@picflag", objAlbumInfo.picflag, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@friend", objAlbumInfo.friend, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@password", objAlbumInfo.password, DbType.String, 10);
+                        dbhConvertAlbums.ParameterAdd("@target_ids", objAlbumInfo.target_ids, DbType.String, 655350000);
+                        dbhConvertAlbums.ParameterAdd("@favtimes", objAlbumInfo.favtimes, DbType.Int32, 4);
+                        dbhConvertAlbums.ParameterAdd("@sharetimes", objAlbumInfo.sharetimes, DbType.Int32, 4);
+                        #endregion
+                        dbhConvertAlbums.ExecuteNonQuery(sqlAlbum);//插入
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.albumid={1}\r\n", ex.Message, objAlbumInfo.albumid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertAlbums.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换相册。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+        private static void ConvertAlbumPics()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertAlbumPics = MainForm.GetTargetDBH_OldVer();
+            dbhConvertAlbumPics.Open();
+            MainForm.MessageForm.SetMessage("开始转相册图片\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetAlbumPicRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbhConvertAlbumPics.TruncateTable(string.Format("{0}home_pic", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlAlbum = string.Format(@"INSERT INTO {0}home_pic (
+`picid` ,
+`albumid` ,
+`uid` ,
+`username` ,
+`dateline` ,
+`postip` ,
+`filename` ,
+`title` ,
+`type` ,
+`size` ,
+`filepath` ,
+`thumb` ,
+`remote` ,
+`hot` ,
+`sharetimes` ,
+`click1` ,
+`click2` ,
+`click3` ,
+`click4` ,
+`click5` ,
+`click6` ,
+`click7` ,
+`click8` ,
+`magicframe` ,
+`status` 
+)
+VALUES (
+@picid,
+@albumid,
+@uid,
+@username,
+@dateline,
+@postip,
+@filename,
+@title,
+@type,
+@size,
+@filepath,
+@thumb,
+@remote,
+@hot,
+@sharetimes,
+@click1,
+@click2,
+@click3,
+@click4,
+@click5,
+@click6,
+@click7,
+@click8,
+@magicframe,
+@status
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<AlbumPicInfo> albumList = Provider.Provider.GetInstance().GetAlbumPicList(pagei);
+                foreach (AlbumPicInfo objAlbumInfo in albumList)
+                {
+                    try
+                    {
+                        dbhConvertAlbumPics.ParametersClear();
+                        #region users参数
+                        dbhConvertAlbumPics.ParameterAdd("@picid", objAlbumInfo.picid, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@albumid", objAlbumInfo.albumid, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@uid", objAlbumInfo.uid, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@username", objAlbumInfo.username, DbType.String, 15);
+                        dbhConvertAlbumPics.ParameterAdd("@dateline", objAlbumInfo.dateline, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@postip", objAlbumInfo.postip, DbType.String, 255);
+                        dbhConvertAlbumPics.ParameterAdd("@filename", objAlbumInfo.filename, DbType.String, 255);
+                        dbhConvertAlbumPics.ParameterAdd("@title", objAlbumInfo.title, DbType.String, 255);
+                        dbhConvertAlbumPics.ParameterAdd("@type", objAlbumInfo.type, DbType.String, 255);
+                        dbhConvertAlbumPics.ParameterAdd("@size", objAlbumInfo.size, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@filepath", objAlbumInfo.filepath, DbType.String, 255);
+                        dbhConvertAlbumPics.ParameterAdd("@thumb", objAlbumInfo.thumb, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@remote", objAlbumInfo.remote, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@hot", objAlbumInfo.hot, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@sharetimes", objAlbumInfo.sharetimes, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@click1", objAlbumInfo.click1, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@click2", objAlbumInfo.click2, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@click3", objAlbumInfo.click3, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@click4", objAlbumInfo.click4, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@click5", objAlbumInfo.click5, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@click6", objAlbumInfo.click6, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@click7", objAlbumInfo.click7, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@click8", objAlbumInfo.click8, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@magicframe", objAlbumInfo.magicframe, DbType.Int32, 4);
+                        dbhConvertAlbumPics.ParameterAdd("@status", objAlbumInfo.status, DbType.Int32, 4);
+                        #endregion
+                        dbhConvertAlbumPics.ExecuteNonQuery(sqlAlbum);//插入
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.pic={1}\r\n", ex.Message, objAlbumInfo.picid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertAlbumPics.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换相册图片。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+        private static void ConvertGroupBlogTypes()
+        {
+            Yuwen.Tools.Data.DBHelper dbhGroupBlogTypes = MainForm.GetTargetDBH_OldVer();
+            dbhGroupBlogTypes.Open();
+            MainForm.MessageForm.SetMessage("开始转推荐日志在群组内的分类\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetGroupBlogTypeRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbhGroupBlogTypes.TruncateTable(string.Format("{0}forum_groupblogtype", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlGroupBlogType = string.Format(@"INSERT INTO {0}forum_groupblogtype (
+`gtid` ,
+`typename` ,
+`groupid` ,
+`createtime` 
+)
+VALUES (
+@gtid,
+@typename,
+@groupid,
+@createtime
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<GroupBlogTypeInfo> recommandList = Provider.Provider.GetInstance().GetGroupBlogTypeList(pagei);
+                foreach (GroupBlogTypeInfo objAlbumCategoryInfo in recommandList)
+                {
+                    try
+                    {
+                        dbhGroupBlogTypes.ParametersClear();
+                        #region users参数
+                        dbhGroupBlogTypes.ParameterAdd("@gtid", objAlbumCategoryInfo.gtid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@typename", objAlbumCategoryInfo.typename, DbType.String, 60);
+                        dbhGroupBlogTypes.ParameterAdd("@groupid", objAlbumCategoryInfo.groupid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@createtime", objAlbumCategoryInfo.createtime, DbType.Int32, 4);
+                        #endregion
+                        dbhGroupBlogTypes.ExecuteNonQuery(sqlGroupBlogType);//插入
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.gtid={1}\r\n", ex.Message, objAlbumCategoryInfo.gtid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhGroupBlogTypes.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换推荐日志在群组内的分类。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+        private static void ConvertGroupShowBlogs()
+        {
+            Yuwen.Tools.Data.DBHelper dbhGroupBlogTypes = MainForm.GetTargetDBH_OldVer();
+            dbhGroupBlogTypes.Open();
+            MainForm.MessageForm.SetMessage("开始转群组的日志推送\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetGroupShowBlogRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbhGroupBlogTypes.TruncateTable(string.Format("{0}forum_groupshowblog", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlGroupBlogType = string.Format(@"INSERT INTO {0}forum_groupshowblog (
+`gid` ,
+`blogid` ,
+`fid` ,
+`commend` ,
+`senduser` ,
+`status` ,
+`sendtime` ,
+`grouptype` 
+)
+VALUES (
+@blogid,
+@fid,
+@commend,
+@senduser,
+@status,
+@sendtime,
+@grouptype
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<GroupShowBlogInfo> recommandList = Provider.Provider.GetInstance().GetGroupShowBlogList(pagei);
+                foreach (GroupShowBlogInfo objAlbumCategoryInfo in recommandList)
+                {
+                    try
+                    {
+                        dbhGroupBlogTypes.ParametersClear();
+                        #region users参数
+                        dbhGroupBlogTypes.ParameterAdd("@blogid", objAlbumCategoryInfo.blogid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@fid", objAlbumCategoryInfo.fid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@commend", objAlbumCategoryInfo.commend, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@senduser", objAlbumCategoryInfo.senduser, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@status", objAlbumCategoryInfo.status, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@sendtime", objAlbumCategoryInfo.sendtime, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@grouptype", objAlbumCategoryInfo.grouptype, DbType.Int32, 4);
+                        #endregion
+                        dbhGroupBlogTypes.ExecuteNonQuery(sqlGroupBlogType);//插入
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.blogid={1}\r\n", ex.Message, objAlbumCategoryInfo.blogid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhGroupBlogTypes.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换群组的日志推送。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+        private static void ConvertBlogPostFavorites()
+        {
+            Yuwen.Tools.Data.DBHelper dbhGroupBlogTypes = MainForm.GetTargetDBH_OldVer();
+            dbhGroupBlogTypes.Open();
+            MainForm.MessageForm.SetMessage("开始日志收藏\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetGroupShowBlogRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbhGroupBlogTypes.TruncateTable(string.Format("{0}home_favorite", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlGroupBlogType = string.Format(@"INSERT INTO {0}home_favorite (
+`favid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`spaceuid` ,
+`title` ,
+`description` ,
+`dateline` 
+)
+VALUES (
+@favid,
+@uid,
+@id,
+@idtype,
+@spaceuid,
+@title,
+@description,
+@datelin
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<BlogFavoriteInfo> recommandList = Provider.Provider.GetInstance().GetBlogFavoriteList(pagei);
+                foreach (BlogFavoriteInfo objAlbumCategoryInfo in recommandList)
+                {
+                    try
+                    {
+                        dbhGroupBlogTypes.ParametersClear();
+                        #region users参数
+                        dbhGroupBlogTypes.ParameterAdd("@favid", objAlbumCategoryInfo.favid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@uid", objAlbumCategoryInfo.uid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@id", objAlbumCategoryInfo.id, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@idtype", objAlbumCategoryInfo.idtype, DbType.String, 255);
+                        dbhGroupBlogTypes.ParameterAdd("@spaceuid", objAlbumCategoryInfo.spaceuid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@title", objAlbumCategoryInfo.title, DbType.String, 255);
+                        dbhGroupBlogTypes.ParameterAdd("@description", objAlbumCategoryInfo.description, DbType.String, 655350000);
+                        dbhGroupBlogTypes.ParameterAdd("@dateline", objAlbumCategoryInfo.dateline, DbType.Int32, 4);
+                        #endregion
+                        dbhGroupBlogTypes.ExecuteNonQuery(sqlGroupBlogType);//插入
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.blogid={1}\r\n", ex.Message, objAlbumCategoryInfo.id));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhGroupBlogTypes.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换日志收藏。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
     }
 }

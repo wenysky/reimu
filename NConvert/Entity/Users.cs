@@ -288,5 +288,51 @@ namespace NConvert.Entity
         public int sellercredit { get; set; }
         public int favtimes { get; set; }
         public int sharetimes { get; set; }
+
+
+
+        #region 额外的
+        /// <summary>
+        /// 用户类型(0:匿名;1:博客)  [user]blogshen   -1,-2 处理为0 (-1时插入用户到common_member_verify  | common_member_verify_info 对应 flag -1, -2跳过)
+        /// </summary>
+        public int usertype { get; set; }
+        /// <summary>
+        /// 该用户博文是否在博客首页显示 1:显示(默认) 0:不显示  （原数据库[user][ifgood]-1对应文章不显示）
+        /// </summary>
+        public int blogShowStatus { get; set; }
+        /// <summary>
+        /// 机构博客(0:否；1：是) 对应jigoublog
+        /// </summary>
+        public int organblog { get; set; }
+        /// <summary>
+        /// 用户级别(0:普通博主;1:专家名录;2:特别推荐;-1:受限博主)
+        /// </summary>
+        public int userlevel { get; set; }
+
+        /// <summary>
+        /// varchar(255) 高校   对应[user]-UserInfo
+        /// </summary>
+        public string university { get; set; }
+        /// <summary>
+        /// 大学或机构id  X
+        /// </summary>
+        public int universityid { get; set; }
+        /// <summary>
+        /// varchar(255) 院系X
+        /// </summary>
+        public string laboratory { get; set; }
+        /// <summary>
+        /// 入学年份X
+        /// </summary>
+        public int initialstudyear { get; set; }
+        /// <summary>
+        /// varchar(255) 学历 对应[user]-UserInfo
+        /// </summary>
+        public string educational { get; set; }
+        /// <summary>
+        /// 属于那一级（第一个高校为1，第二高校为2，第三个高校为3）   默认置为1
+        /// </summary>
+        public int grade { get; set; }
+        #endregion
     }
 }
