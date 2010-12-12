@@ -43,12 +43,13 @@ namespace NConvert.dnt30_dzx15
             while (drGroupBlogType.Read())
             {
                 GroupShowBlogInfo objGroupBlogTypeInfo = new GroupShowBlogInfo();
+                objGroupBlogTypeInfo.gid = Convert.ToInt32(drGroupBlogType["id"]);
                 objGroupBlogTypeInfo.blogid = Convert.ToInt32(drGroupBlogType["oldid"]);
                 objGroupBlogTypeInfo.fid = drGroupBlogType["group_username"] != DBNull.Value ? MainForm.groupidList[drGroupBlogType["group_username"].ToString()] : 0;
                 objGroupBlogTypeInfo.commend = Convert.ToInt32(drGroupBlogType["good"]);
-                objGroupBlogTypeInfo.senduser = drGroupBlogType["senduser"] != DBNull.Value ? GetUIDbyUsername(drGroupBlogType["senduser"].ToString()) : 0;
+                objGroupBlogTypeInfo.senduser = drGroupBlogType["username"] != DBNull.Value ? GetUIDbyUsername(drGroupBlogType["username"].ToString()) : 0;
                 objGroupBlogTypeInfo.status = 1;
-                objGroupBlogTypeInfo.sendtime = Convert.ToInt32(drGroupBlogType["updatetime"]);
+                objGroupBlogTypeInfo.sendtime = drGroupBlogType["updatetime"] != DBNull.Value ? Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drGroupBlogType["updatetime"])) : 0;
                 objGroupBlogTypeInfo.grouptype = Convert.ToInt32(drGroupBlogType["nclass"]);
                 forumList.Add(objGroupBlogTypeInfo);
             }

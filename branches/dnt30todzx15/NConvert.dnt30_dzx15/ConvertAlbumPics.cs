@@ -47,7 +47,18 @@ namespace NConvert.dnt30_dzx15
                 objAlbumPicInfo.albumid = Convert.ToInt32(drAlbumPic["class1"]);
                 objAlbumPicInfo.username = drAlbumPic["username"].ToString();
                 objAlbumPicInfo.uid = GetUIDbyUsername(objAlbumPicInfo.username);
-                objAlbumPicInfo.dateline = Convert.ToInt32(drAlbumPic["posttime"]);
+                DateTime dt;
+                if (drAlbumPic["posttime"] != DBNull.Value
+                    && drAlbumPic["posttime"].ToString().Trim() != string.Empty
+                    && DateTime.TryParse(drAlbumPic["posttime"].ToString().Trim(), out dt)
+                    )
+                {
+                    objAlbumPicInfo.dateline = Utils.TypeParse.DateTime2TimeStamp(dt);
+                }
+                else
+                {
+                    objAlbumPicInfo.dateline = 0;
+                }
                 objAlbumPicInfo.postip = "";
                 if (drAlbumPic["address"] != DBNull.Value && drAlbumPic["address"].ToString().Trim() != string.Empty)
                 {

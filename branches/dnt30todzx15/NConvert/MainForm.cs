@@ -72,11 +72,11 @@ namespace NConvert
         /// 源数据库连接字符串
         /// </summary>
         public static string srcDbConn = "Data Source=localhost;Initial Catalog=cvc2;User ID=web;Password=itca;";
-        
+
         //public static string srcDbTyep = "SqlServer";
 
         public static string srcDbTypeNamespace = "System.Data.SqlClient";
-        
+
         //public static string srcDbTableProfix = "CVC_";
         /// <summary>
         /// 源数据库DBH对象
@@ -89,11 +89,11 @@ namespace NConvert
         /// 目标数据库连接字符串
         /// </summary>
         public static string targetDbConn = "Data Source=localhost;Initial Catalog=dnt2_dadach;User ID=web;Password=itca;";
-        
+
         //public static string targetDbTyep = "SqlServer";
 
         public static string targetDbTypeNamespace = "System.Data.SqlClient";
-        
+
         //public static string targetDbTableProfix = "dnt_";
         /// <summary>
         /// 目标数据库DBH对象
@@ -122,8 +122,13 @@ namespace NConvert
         public static bool IsConvertBlogPosts;//转换
         public static bool IsConvertBlogComments;//转换
         public static bool IsConvertHomeComments;//转换
-        public static bool IsConvertAlbumDirs;//转换
+        public static bool IsConvertAlbumCategories;//转换
+        public static bool IsConvertAlbums;//转换
         public static bool IsConvertAlbumPics;//转换
+        public static bool IsConvertGroupBlogTypes;//转换
+        public static bool IsConvertGroupBlogs;//转换
+        public static bool IsConvertBlogFavorites;//转换
+        public static bool IsConvertRateLogs;//转换
 
         public static bool IsConvertUserBlogClass;//转换
         public static bool IsConvertFriends;//转换
@@ -171,7 +176,7 @@ namespace NConvert
             }
             catch (Exception ex)
             {
-                MessageBox.Show("目标数据库链接失败，"+ ex.Message);
+                MessageBox.Show("目标数据库链接失败，" + ex.Message);
                 return false;
             }
         }
@@ -250,8 +255,17 @@ namespace NConvert
             IsConvertGroupPosts = ckbxIsConvertGroupPost.Checked;
             IsConvertBlogComments = ckbxIsConvertBlogComment.Checked;
             IsConvertHomeComments = ckbxIsConvertUserComment.Checked;
-            IsConvertAlbumDirs = ckbxIsConvertAblumDir.Checked;
+
+            IsConvertAlbumCategories = ckbxIsConvertAlbumCategory.Checked;
+            IsConvertAlbums = ckbxIsConvertAlbum.Checked;
             IsConvertAlbumPics = ckbxIsConvertPics.Checked;
+
+
+            IsConvertGroupBlogTypes = ckbxIsConvertGroupBlogType.Checked;//转换
+            IsConvertGroupBlogs = ckbxIsConvertGroupBlog.Checked;//转换
+            IsConvertBlogFavorites = ckbxIsConvertBlogPostFavorite.Checked;//转换
+
+            IsConvertRateLogs = ckbxIsConvertRateLogs.Checked;
 
 
             IsConvertUserBlogClass = ckbxIsConvertUserBlogClass.Checked;

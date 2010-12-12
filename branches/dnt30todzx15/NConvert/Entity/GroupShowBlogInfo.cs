@@ -9,6 +9,7 @@ namespace NConvert.Entity
     /// </summary>
     public class GroupShowBlogInfo
     {
+        public int gid { get; set; }
         /// <summary>
         /// 被推送的日志ID[group_article]oldid
         /// </summary>

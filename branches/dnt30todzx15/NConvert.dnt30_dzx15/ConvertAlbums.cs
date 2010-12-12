@@ -51,7 +51,7 @@ namespace NConvert.dnt30_dzx15
                 objAlbumInfo.dateline = drAlbumCategory["updatetime"] != DBNull.Value ? Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drAlbumCategory["updatetime"])) : 0;
                 objAlbumInfo.updatetime = objAlbumInfo.dateline;
                 objAlbumInfo.picnum = Convert.ToInt32(drAlbumCategory["shu"]);
-                objAlbumInfo.pic = drAlbumCategory["pic"].ToString();
+                objAlbumInfo.pic = drAlbumCategory["imgs"] != DBNull.Value ? drAlbumCategory["imgs"].ToString() : "";
                 objAlbumInfo.picflag = objAlbumInfo.picnum > 0 ? 1 : 0;
                 objAlbumInfo.friend = Convert.ToInt32(drAlbumCategory["hide"]) == 1 ? 3 : 0;
                 objAlbumInfo.password = "";

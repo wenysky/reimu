@@ -115,7 +115,7 @@ namespace NConvert.dnt30_dzx15
                 objTopic.icon = -1;
                 objTopic.pushedaid = 0;
                 DateTime recommenddate;
-                if (Convert.ToInt32(dr["tuijiantime"]) > 0 && dr["tuijiantime"] != DBNull.Value
+                if (Convert.ToInt32(dr["tuijian"]) > 0 && dr["tuijiantime"] != DBNull.Value
                     && DateTime.TryParse(
                           dr["tuijiantime"].ToString().Trim(),
                           out recommenddate
