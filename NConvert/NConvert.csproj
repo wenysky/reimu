@@ -101,6 +101,7 @@
     <Compile Include="Entity\GroupBlogTypeInfo.cs" />
     <Compile Include="Entity\GroupShowBlogInfo.cs" />
     <Compile Include="Entity\BlogFavoriteInfo.cs" />
+    <Compile Include="Entity\RateLogInfo.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

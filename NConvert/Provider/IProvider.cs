@@ -188,7 +188,7 @@ namespace NConvert.Provider
 
         int GetUIDbyUsername(string username);
 
-
+        Dictionary<string, int> GetGroupDic();
 
         int GetHomeClassRecordCount();
         List<HomeClassInfo> GetHomeClassList();
@@ -222,5 +222,9 @@ namespace NConvert.Provider
 
         int GetBlogFavoriteRecordCount();
         List<BlogFavoriteInfo> GetBlogFavoriteList(int pagei);
+
+
+        int GetRateLogRecordCount();
+        List<RateLogInfo> GetRateLogList(int pagei);
     }
 }

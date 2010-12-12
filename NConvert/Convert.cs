@@ -122,18 +122,40 @@ namespace NConvert
                 ConvertUserRecommandBlogs();
             }
 
-
-            ConvertAlbumCategories();
-            ConvertAlbums();
-            ConvertAlbumPics();
-            ConvertGroupBlogTypes();
-            ConvertGroupShowBlogs();
-            ConvertBlogPostFavorites();
+            if (MainForm.IsConvertAlbumCategories)
+            {
+                ConvertAlbumCategories();
+            }
+            if (MainForm.IsConvertAlbums)
+            {
+                ConvertAlbums();
+            }
+            if (MainForm.IsConvertAlbumPics)
+            {
+                ConvertAlbumPics();
+            }
+            if (MainForm.IsConvertGroupBlogTypes)
+            {
+                ConvertGroupBlogTypes();
+            }
+            if (MainForm.IsConvertGroupBlogs)
+            {
+                ConvertGroupShowBlogs();
+            }
+            if (MainForm.IsConvertBlogFavorites)
+            {
+                ConvertBlogPostFavorites();
+            }
+            if (MainForm.IsConvertRateLogs)
+            {
+                ConvertRateLogs();
+            }
 
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             MainForm.MessageForm.SetButtonStatus(false);
         }
+
 
 
 
@@ -2929,14 +2951,7 @@ VALUES (
             MainForm.SuccessedRecordCount = 0;
             MainForm.FailedRecordCount = 0;
 
-            MainForm.groupidList = new Dictionary<string, int>();
-            string sqlGroupList = string.Format("SELECT fid,domain FROM {0}forum_forum WHERE status=3 AND type='sub'", MainForm.cic.TargetDbTablePrefix);
-            System.Data.Common.DbDataReader drGroupList = dbh.ExecuteReader(sqlGroupList);
-            while (drGroupList.Read())
-            {
-                MainForm.groupidList.Add(drGroupList["domain"].ToString().Trim(), Convert.ToInt32(drGroupList["fid"]));
-            }
-            drGroupList.Close();
+            MainForm.groupidList = Provider.Provider.GetInstance().GetGroupDic();
 
 
             MainForm.RecordCount = Provider.Provider.GetInstance().GetGroupTopicRecordCount();
@@ -4344,7 +4359,7 @@ NULL ,
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换博主推荐。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
-                
+
 
 
 
@@ -4666,6 +4681,8 @@ VALUES (
 
         private static void ConvertGroupBlogTypes()
         {
+            MainForm.groupidList = Provider.Provider.GetInstance().GetGroupDic();
+
             Yuwen.Tools.Data.DBHelper dbhGroupBlogTypes = MainForm.GetTargetDBH_OldVer();
             dbhGroupBlogTypes.Open();
             MainForm.MessageForm.SetMessage("开始转推荐日志在群组内的分类\r\n");
@@ -4738,6 +4755,7 @@ VALUES (
 
         private static void ConvertGroupShowBlogs()
         {
+            MainForm.groupidList = Provider.Provider.GetInstance().GetGroupDic();
             Yuwen.Tools.Data.DBHelper dbhGroupBlogTypes = MainForm.GetTargetDBH_OldVer();
             dbhGroupBlogTypes.Open();
             MainForm.MessageForm.SetMessage("开始转群组的日志推送\r\n");
@@ -4771,6 +4789,7 @@ VALUES (
 `grouptype` 
 )
 VALUES (
+@gid,
 @blogid,
 @fid,
 @commend,
@@ -4791,6 +4810,7 @@ VALUES (
                     {
                         dbhGroupBlogTypes.ParametersClear();
                         #region users参数
+                        dbhGroupBlogTypes.ParameterAdd("@gid", objAlbumCategoryInfo.gid, DbType.Int32, 4);
                         dbhGroupBlogTypes.ParameterAdd("@blogid", objAlbumCategoryInfo.blogid, DbType.Int32, 4);
                         dbhGroupBlogTypes.ParameterAdd("@fid", objAlbumCategoryInfo.fid, DbType.Int32, 4);
                         dbhGroupBlogTypes.ParameterAdd("@commend", objAlbumCategoryInfo.commend, DbType.Int32, 4);
@@ -4826,7 +4846,7 @@ VALUES (
             MainForm.SuccessedRecordCount = 0;
             MainForm.FailedRecordCount = 0;
 
-            MainForm.RecordCount = Provider.Provider.GetInstance().GetGroupShowBlogRecordCount();
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetBlogFavoriteRecordCount();
             if (MainForm.RecordCount % MainForm.PageSize != 0)
             {
                 MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
@@ -4842,7 +4862,7 @@ VALUES (
             dbhGroupBlogTypes.TruncateTable(string.Format("{0}home_favorite", MainForm.cic.TargetDbTablePrefix));
 
             #region sql语句
-            string sqlGroupBlogType = string.Format(@"INSERT INTO {0}home_favorite (
+            string sqlBlogFavorite = string.Format(@"INSERT INTO {0}home_favorite (
 `favid` ,
 `uid` ,
 `id` ,
@@ -4860,7 +4880,7 @@ VALUES (
 @spaceuid,
 @title,
 @description,
-@datelin
+@dateline
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
@@ -4883,7 +4903,7 @@ VALUES (
                         dbhGroupBlogTypes.ParameterAdd("@description", objAlbumCategoryInfo.description, DbType.String, 655350000);
                         dbhGroupBlogTypes.ParameterAdd("@dateline", objAlbumCategoryInfo.dateline, DbType.Int32, 4);
                         #endregion
-                        dbhGroupBlogTypes.ExecuteNonQuery(sqlGroupBlogType);//插入
+                        dbhGroupBlogTypes.ExecuteNonQuery(sqlBlogFavorite);//插入
                         MainForm.SuccessedRecordCount++;
                     }
                     catch (Exception ex)
@@ -4900,6 +4920,88 @@ VALUES (
             dbhGroupBlogTypes.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换日志收藏。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+        private static void ConvertRateLogs()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertRateLogs = MainForm.GetTargetDBH_OldVer();
+            dbhConvertRateLogs.Open();
+            MainForm.MessageForm.SetMessage("开始转评分记录\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetRateLogRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbhConvertRateLogs.TruncateTable(string.Format("{0}forum_ratelog", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlAlbumCategory = string.Format(@"INSERT INTO {0}forum_ratelog (
+`pid` ,
+`uid` ,
+`username` ,
+`extcredits` ,
+`dateline` ,
+`score` ,
+`reason`
+)
+VALUES (
+@pid,
+@uid,
+@username,
+@extcredits,
+@dateline,
+@score,
+@reason
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<RateLogInfo> recommandList = Provider.Provider.GetInstance().GetRateLogList(pagei);
+                foreach (RateLogInfo objRateLogInfo in recommandList)
+                {
+                    try
+                    {
+                        dbhConvertRateLogs.ParametersClear();
+                        #region users参数
+                        dbhConvertRateLogs.ParameterAdd("@pid", objRateLogInfo.pid, DbType.Int32, 4);
+                        dbhConvertRateLogs.ParameterAdd("@uid", objRateLogInfo.uid, DbType.Int32, 4);
+                        dbhConvertRateLogs.ParameterAdd("@username", objRateLogInfo.username, DbType.String, 15);
+                        dbhConvertRateLogs.ParameterAdd("@extcredits", objRateLogInfo.extcredits, DbType.Int32, 4);
+                        dbhConvertRateLogs.ParameterAdd("@dateline", objRateLogInfo.dateline, DbType.Int32, 4);
+                        dbhConvertRateLogs.ParameterAdd("@score", objRateLogInfo.score, DbType.Int32, 4);
+                        dbhConvertRateLogs.ParameterAdd("@reason", objRateLogInfo.reason, DbType.String, 40);
+                        #endregion
+                        dbhConvertRateLogs.ExecuteNonQuery(sqlAlbumCategory);//插入
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.pid={1}\r\n", ex.Message, objRateLogInfo.pid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertRateLogs.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换评分记录。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
     }
 }

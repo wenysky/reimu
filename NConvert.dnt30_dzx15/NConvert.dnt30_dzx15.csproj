@@ -75,6 +75,7 @@
     <Compile Include="ConvertGroupBlogTypes.cs" />
     <Compile Include="ConvertGroupShowBlogs.cs" />
     <Compile Include="ConvertBlogFavorites.cs" />
+    <Compile Include="ConvertRateLogs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj">

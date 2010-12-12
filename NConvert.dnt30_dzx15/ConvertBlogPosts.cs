@@ -51,8 +51,8 @@ namespace NConvert.dnt30_dzx15
                 }
                 BlogPostInfo objBlogPostInfo = new BlogPostInfo();
                 objBlogPostInfo.blogid = Convert.ToInt32(dr["id"]);
-                objBlogPostInfo.uid = Convert.ToInt32(dr["homeurl"]);
                 objBlogPostInfo.username = dr["username"].ToString();
+                objBlogPostInfo.uid = dr["homeurl"] != DBNull.Value ? Convert.ToInt32(dr["homeurl"]) : GetUIDbyUsername(objBlogPostInfo.username);
                 objBlogPostInfo.subject = dr["title"].ToString();
                 objBlogPostInfo.classid = Convert.ToInt32(dr["typeid"]);
                 objBlogPostInfo.catid = Convert.ToInt32(dr["field"]);

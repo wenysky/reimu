@@ -9,6 +9,7 @@ namespace NConvert.dnt30_dzx15
 {
     public partial class Provider : IProvider
     {
+        #region IProvider 成员
         public int GetGroupRecordCount()
         {
             if (MainForm.RecordCount == -1)
@@ -286,5 +287,23 @@ namespace NConvert.dnt30_dzx15
             drBoard.Dispose();
             return forumList;
         }
+
+        public Dictionary<string, int> GetGroupDic()
+        {
+            Dictionary<string, int> GroupDic = new Dictionary<string, int>();
+
+            string sqlGroupList = string.Format("SELECT fid,domain FROM {0}forum_forum WHERE status=3 AND type='sub'", MainForm.cic.TargetDbTablePrefix);
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            System.Data.Common.DbDataReader drGroupList = dbh.ExecuteReader(sqlGroupList);
+            while (drGroupList.Read())
+            {
+                GroupDic.Add(drGroupList["domain"].ToString().Trim(), Convert.ToInt32(drGroupList["fid"]));
+            }
+            drGroupList.Close();
+            drGroupList.Dispose();
+            return GroupDic;
+        }
+
+        #endregion
     }
 }

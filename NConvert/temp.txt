@@ -1270,3 +1270,34 @@ spaceuid
 title
 description
 dateline
+
+
+
+INSERT INTO `sno`.`pre_forum_ratelog` (
+`pid` ,
+`uid` ,
+`username` ,
+`extcredits` ,
+`dateline` ,
+`score` ,
+`reason`
+)
+VALUES (
+@pid,
+@uid,
+@username,
+@extcredits,
+@dateline,
+@score,
+@reason
+);
+
+
+
+pid
+uid
+username
+extcredits
+dateline
+score
+reason
