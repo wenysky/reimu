@@ -57,6 +57,9 @@ namespace Yuwen.Tools.Data
             MyConnection = MyFactory.CreateConnection();
             MyConnection.ConnectionString = (databasetype.ToString() == "System.Data.OleDb") ? ("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + GetDataPath(connectionstring) + ";") : (connectionstring);
             MyCommand = MyConnection.CreateCommand();
+
+            //System.Diagnostics.Debug.WriteLine(MyConnection.ConnectionTimeout);
+            MyCommand.CommandTimeout = 180;//wysky 2010-12-12修改  避免大数据翻页超时
         }
         #endregion
 

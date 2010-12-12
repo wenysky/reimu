@@ -65,6 +65,8 @@ namespace NConvert
 
         public static Dictionary<string, int> groupidList;
 
+        public static List<BlogPostInfo> trashBlogPostList;
+
         #region 数据库连接信息
         /// <summary>
         /// 源数据库连接字符串

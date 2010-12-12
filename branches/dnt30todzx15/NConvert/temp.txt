@@ -912,3 +912,361 @@ fid
 name
 displayorder
 icon
+
+
+INSERT INTO `sn`.`pre_common_member_education` (
+`uid` ,
+`username` ,
+`university` ,
+`universityid` ,
+`laboratory` ,
+`initialstudyear` ,
+`educational` ,
+`grade` 
+)
+VALUES (
+'', '', '', '', '', '', '', ''
+);
+
+
+uid
+username
+university
+universityid
+laboratory
+initialstudyear
+educational
+grade
+
+@uid,
+@username,
+@university,
+@universityid,
+@laboratory,
+@initialstudyear,
+@educational,
+@grade
+
+
+
+INSERT INTO `sn`.`pre_common_member` (
+`uid` ,
+`email` ,
+`username` ,
+`password` ,
+`status` ,
+`emailstatus` ,
+`avatarstatus` ,
+`videophotostatus` ,
+`adminid` ,
+`groupid` ,
+`groupexpiry` ,
+`extgroupids` ,
+`regdate` ,
+`credits` ,
+`notifysound` ,
+`timeoffset` ,
+`newpm` ,
+`newprompt` ,
+`accessmasks` ,
+`allowadmincp` ,
+`usertype` ,
+`blogShowStatus` ,
+`organblog` ,
+`userlevel` 
+)
+VALUES (
+NULL , '', '', '0', '', '0', '0', '0', '0', '0', '0', '0', '', '0', '0', '0', '', '0', '0', '0', '0', '1', '0', ''
+);
+
+
+
+
+@usertype,
+@blogShowStatus,
+@organblog,
+@userlevel
+
+
+usertype
+blogShowStatus
+organblog
+userlevel
+
+
+uid
+username
+
+university
+universityid
+laboratory
+initialstudyear
+educational
+grade
+usertype
+blogShowStatus
+organblog
+userlevel
+
+
+INSERT INTO `sn`.`pre_home_album_category` (
+`catid` ,
+`upid` ,
+`catname` ,
+`num` ,
+`displayorder` 
+)
+VALUES (
+NULL , '0', '', '0', '0'
+);
+
+catid
+upid
+catname
+num
+displayorder
+
+@catid,
+@upid,
+@catname,
+@num,
+@displayorder
+
+
+INSERT INTO `sn`.`pre_home_album` (
+`albumid` ,
+`albumname` ,
+`catid` ,
+`uid` ,
+`username` ,
+`dateline` ,
+`updatetime` ,
+`picnum` ,
+`pic` ,
+`picflag` ,
+`friend` ,
+`password` ,
+`target_ids` ,
+`favtimes` ,
+`sharetimes` 
+)
+VALUES (
+@albumid,
+@albumname,
+@catid,
+@uid,
+@username,
+@dateline,
+@updatetime,
+@picnum,
+@pic,
+@picflag,
+@friend,
+@password,
+@target_ids,
+@favtimes,
+@sharetimes
+);
+
+
+
+
+
+@albumid,
+@albumname,
+@catid,
+@uid,
+@username,
+@dateline,
+@updatetime,
+@picnum,
+@pic,
+@picflag,
+@friend,
+@password,
+@target_ids,
+@favtimes,
+@sharetimes
+
+
+albumid
+albumname
+catid
+uid
+username
+dateline
+updatetime
+picnum
+pic
+picflag
+friend
+password
+target_ids
+favtimes
+sharetimes
+
+
+
+INSERT INTO `sn`.`pre_home_pic` (
+`picid` ,
+`albumid` ,
+`uid` ,
+`username` ,
+`dateline` ,
+`postip` ,
+`filename` ,
+`title` ,
+`type` ,
+`size` ,
+`filepath` ,
+`thumb` ,
+`remote` ,
+`hot` ,
+`sharetimes` ,
+`click1` ,
+`click2` ,
+`click3` ,
+`click4` ,
+`click5` ,
+`click6` ,
+`click7` ,
+`click8` ,
+`magicframe` ,
+`status` 
+)
+VALUES (
+@picid,
+@albumid,
+@uid,
+@username,
+@dateline,
+@postip,
+@filename,
+@title,
+@type,
+@size,
+@filepath,
+@thumb,
+@remote,
+@hot,
+@sharetimes,
+@click1,
+@click2,
+@click3,
+@click4,
+@click5,
+@click6,
+@click7,
+@click8,
+@magicframe,
+@status
+);
+
+picid
+albumid
+uid
+username
+dateline
+postip
+filename
+title
+type
+size
+filepath
+thumb
+remote
+hot
+sharetimes
+click1
+click2
+click3
+click4
+click5
+click6
+click7
+click8
+magicframe
+status
+
+
+INSERT INTO `sn`.`pre_forum_groupblogtype` (
+`gtid` ,
+`typename` ,
+`groupid` ,
+`createtime` 
+)
+VALUES (
+@gtid,
+@typename,
+@groupid,
+@createtime
+);
+
+
+
+
+gtid
+typename
+groupid
+createtime
+
+
+INSERT INTO `sn`.`pre_forum_groupshowblog` (
+`gid` ,
+`blogid` ,
+`fid` ,
+`commend` ,
+`senduser` ,
+`status` ,
+`sendtime` ,
+`grouptype` 
+)
+VALUES (
+@blogid,
+@fid,
+@commend,
+@senduser,
+@status,
+@sendtime,
+@grouptype
+);
+
+blogid
+fid
+commend
+senduser
+status
+sendtime
+grouptype
+
+
+INSERT INTO `sn`.`pre_home_favorite` (
+`favid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`spaceuid` ,
+`title` ,
+`description` ,
+`dateline` 
+)
+VALUES (
+@favid,
+@uid,
+@id,
+@idtype,
+@spaceuid,
+@title,
+@description,
+@datelin
+);
+
+
+favid
+uid
+id
+idtype
+spaceuid
+title
+description
+dateline

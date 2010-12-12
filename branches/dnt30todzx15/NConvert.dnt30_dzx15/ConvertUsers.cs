@@ -42,11 +42,12 @@ namespace NConvert.dnt30_dzx15
             #endregion
 
             DBHelper userlistDBH = MainForm.GetSrcDBH_OldVer();
+            DBHelper dbhUserTemp = MainForm.GetSrcDBH_OldVer();
+
             System.Data.Common.DbDataReader dr = userlistDBH.ExecuteReader(sql);
             List<Users> userlist = new List<Users>();
             while (dr.Read())
             {
-                DBHelper dbhUserTemp = MainForm.GetSrcDBH_OldVer();
                 Users objUser = new Users();
 
                 objUser.uid = Convert.ToInt32(dr["uid"]);
@@ -90,13 +91,6 @@ namespace NConvert.dnt30_dzx15
                 objUser.sharings = 0;
                 objUser.attachsize = 0;
 
-                objUser.views = Convert.ToInt32(dbhUserTemp.ExecuteScalar(
-                    string.Format(
-                        "SELECT count1 FROM [science].[dbo].[kexue_blogcount] WHERE userid={0}", 
-                        objUser.uid
-                        )
-                    )
-                );
                 objUser.oltime = Convert.ToInt32(dr["oltime"]);
 
                 objUser.publishfeed = 0;
@@ -108,11 +102,6 @@ namespace NConvert.dnt30_dzx15
                 objUser.authstr = dr["authstr"].ToString();
                 objUser.groups = "";
                 objUser.attentiongroup = "";
-
-                //objUser.realname = dr["realname"].ToString();   
-                object realname = dbhUserTemp.ExecuteScalar(string.Format("SELECT realname FROM [sciencebbs].[dbo].[user] WHERE id={0}", objUser.uid));
-                objUser.realname = (realname != DBNull.Value && realname != null) ? realname.ToString() : "";
-
 
                 objUser.gender = Convert.ToInt32(dr["gender"]);
                 DateTime bdayt;
@@ -166,7 +155,7 @@ namespace NConvert.dnt30_dzx15
                 objUser.site = dr["website"].ToString();
                 objUser.bio = dr["bio"].ToString();
                 objUser.interest = "";
-                objUser.field1 = "";
+
                 objUser.field2 = "";
                 objUser.field3 = "";
                 objUser.field4 = "";
@@ -190,8 +179,77 @@ namespace NConvert.dnt30_dzx15
                 objUser.sellercredit = 0;
                 objUser.favtimes = 0;
                 objUser.sharetimes = 0;
+
+
+                objUser.views = Convert.ToInt32(dbhUserTemp.ExecuteScalar(
+                    string.Format(
+                        "SELECT count1 FROM [science].[dbo].[kexue_blogcount] WHERE userid={0}",
+                        objUser.uid
+                        )
+                    )
+                );
+
+                string sqlKexueUser = string.Format(
+                    "SELECT realname,blogtype,UserInfo,blogshen,ifgood,jigoublog FROM [sciencebbs].[dbo].[user] WHERE id={0}",
+                    objUser.uid
+                    );
+                System.Data.Common.DbDataReader drKexueUser = dbhUserTemp.ExecuteReader(sqlKexueUser);
+
+                if (drKexueUser.Read())
+                {
+                    //objUser.realname = dr["realname"].ToString();  
+                    objUser.realname = drKexueUser["realname"] != DBNull.Value ? drKexueUser["realname"].ToString() : "";
+                    //field1被用作八大研究领域了，那边的参数写作“realm”对应[user]-blogtype
+                    objUser.field1 = drKexueUser["blogtype"] != DBNull.Value ? drKexueUser["blogtype"].ToString() : "";
+
+                    string userInfo = drKexueUser["UserInfo"] != DBNull.Value ? drKexueUser["UserInfo"].ToString() : "";
+                    string[] arrayUserInfo = userInfo.Split('\\');//一共有15个
+                    objUser.university = arrayUserInfo.Length == 15 ? arrayUserInfo[10] : "";
+                    objUser.universityid = 0;
+                    objUser.laboratory = "";
+                    objUser.initialstudyear = 0;
+                    objUser.educational = arrayUserInfo.Length == 15 ? arrayUserInfo[9] : "";
+                    objUser.grade = 1;
+
+                    int blogshen = Convert.ToInt32(drKexueUser["blogshen"]);
+                    if (blogshen == -1)
+                    {
+                        objUser.usertype = 0;
+#warning TODO
+                    }
+                    else if (blogshen == -2)
+                    {
+                        objUser.usertype = 0;
+                    }
+                    else
+                    {
+                        objUser.usertype = blogshen;
+                    }
+                    objUser.blogShowStatus = Convert.ToInt32(drKexueUser["ifgood"]);
+                    objUser.organblog = Convert.ToInt32(drKexueUser["jigoublog"]);
+                    objUser.userlevel = 0;
+                }
+                else
+                {
+                    objUser.realname = "";
+                    objUser.field1 = "";
+                    objUser.university = "";
+                    objUser.universityid = 0;
+                    objUser.laboratory = "";
+                    objUser.initialstudyear = 0;
+                    objUser.educational = "";
+                    objUser.grade = 1;
+                    objUser.usertype = 0;
+                    objUser.blogShowStatus = 1;
+                    objUser.organblog = 0;
+                    objUser.userlevel = 0;
+                }
+                drKexueUser.Close();
+                drKexueUser.Dispose();
                 userlist.Add(objUser);
             }
+            dr.Close();
+            dr.Dispose();
             return userlist;
         }
 

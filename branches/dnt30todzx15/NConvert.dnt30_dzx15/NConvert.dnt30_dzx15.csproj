@@ -69,6 +69,12 @@
     <Compile Include="ConvertFriends.cs" />
     <Compile Include="ConvertUserRecomandBlogs.cs" />
     <Compile Include="ConvertTopicTypes.cs" />
+    <Compile Include="ConvertAlbumCategory.cs" />
+    <Compile Include="ConvertAlbums.cs" />
+    <Compile Include="ConvertAlbumPics.cs" />
+    <Compile Include="ConvertGroupBlogTypes.cs" />
+    <Compile Include="ConvertGroupShowBlogs.cs" />
+    <Compile Include="ConvertBlogFavorites.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj">

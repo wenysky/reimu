@@ -204,6 +204,7 @@ namespace NConvert.Utils
             MatchCollection mc = GetMatchFull(content, regexstr);
             if (mc != null && mc.Count > 0)
             {
+                System.Diagnostics.Debug.WriteLine("html判断：" + mc[0].Value);
                 return true;
             }
             else

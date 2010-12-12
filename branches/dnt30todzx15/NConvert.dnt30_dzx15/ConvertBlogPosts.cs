@@ -49,83 +49,121 @@ namespace NConvert.dnt30_dzx15
                 {
                     continue;
                 }
-                BlogPostInfo objBlogPostList = new BlogPostInfo();
-                objBlogPostList.blogid = Convert.ToInt32(dr["id"]);
-                objBlogPostList.uid = Convert.ToInt32(dr["homeurl"]);
-                objBlogPostList.username = dr["username"].ToString();
-                objBlogPostList.subject = dr["title"].ToString();
-                objBlogPostList.classid = Convert.ToInt32(dr["typeid"]);
-                objBlogPostList.catid = Convert.ToInt32(dr["field"]);
-                objBlogPostList.viewnum = Convert.ToInt32(dr["hits"]);
-                objBlogPostList.replynum = Convert.ToInt32(dr["commen"]);
-                objBlogPostList.hot = 0;
-                objBlogPostList.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["writetime"]));
-                objBlogPostList.blogtype = Convert.ToInt32(dr["iszz"]) + 1;//原表0是原创 1是转载
-                objBlogPostList.picflag = (dr["upimages"] != DBNull.Value && dr["upimages"].ToString().Trim() != "") ? 1 : 0;
+                BlogPostInfo objBlogPostInfo = new BlogPostInfo();
+                objBlogPostInfo.blogid = Convert.ToInt32(dr["id"]);
+                objBlogPostInfo.uid = Convert.ToInt32(dr["homeurl"]);
+                objBlogPostInfo.username = dr["username"].ToString();
+                objBlogPostInfo.subject = dr["title"].ToString();
+                objBlogPostInfo.classid = Convert.ToInt32(dr["typeid"]);
+                objBlogPostInfo.catid = Convert.ToInt32(dr["field"]);
+                objBlogPostInfo.viewnum = Convert.ToInt32(dr["hits"]);
+                objBlogPostInfo.replynum = Convert.ToInt32(dr["commen"]);
+                objBlogPostInfo.hot = 0;
+                objBlogPostInfo.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["writetime"]));
+                objBlogPostInfo.blogtype = Convert.ToInt32(dr["iszz"]) + 1;//原表0是原创 1是转载
+                objBlogPostInfo.picflag = (dr["upimages"] != DBNull.Value && dr["upimages"].ToString().Trim() != "") ? 1 : 0;
                 if (Convert.ToInt32(dr["ifcommen"]) == 0)//0不允许，1允许所有人，2只允许注册用户，3只允许博主
                 {
-                    objBlogPostList.noreply = 1;
+                    objBlogPostInfo.noreply = 1;
                 }
                 else if (Convert.ToInt32(dr["ifcommen"]) == 1)
                 {
-                    objBlogPostList.noreply = 0;
+                    objBlogPostInfo.noreply = 0;
                 }
                 else if (Convert.ToInt32(dr["ifcommen"]) == 2)
                 {
-                    objBlogPostList.noreply = 3;
+                    objBlogPostInfo.noreply = 3;
                 }
                 else if (Convert.ToInt32(dr["ifcommen"]) == 3)
                 {
-                    objBlogPostList.noreply = 2;
+                    objBlogPostInfo.noreply = 2;
                 }
                 else
                 {
-                    objBlogPostList.noreply = 0;
+                    objBlogPostInfo.noreply = 0;
                 }
-                //3：以前是隐藏kexue_blogarticle[closed]=3的文章和在草稿kexue_blogarticle[del]=1,[closed]=82中的文章都导入到新系统的“仅自己可见”中。
-                if (Convert.ToInt32(dr["closed"]) == 3 || (Convert.ToInt32(dr["del"]) == 1 && Convert.ToInt32(dr["closed"]) == 82))
+                //3：以前是隐藏kexue_blogarticle del!=1,[closed]=3的文章和在草稿kexue_blogarticle[del]=1,[closed]=82中的文章都导入到新系统的“仅自己可见”中。
+                if ((Convert.ToInt32(dr["del"]) != 1 && Convert.ToInt32(dr["closed"]) == 3) || (Convert.ToInt32(dr["del"]) == 1 && Convert.ToInt32(dr["closed"]) == 82))
                 {
-                    objBlogPostList.friend = 3;
+                    objBlogPostInfo.friend = 3;
                 }
                 else
                 {
-                    objBlogPostList.friend = 0;
+                    objBlogPostInfo.friend = 0;
                 }
-                objBlogPostList.password = "";
-                objBlogPostList.favtimes = 0;
-                objBlogPostList.sharetimes = 0;
-                objBlogPostList.status = 0;
-                objBlogPostList.click1 = 0;
-                objBlogPostList.click2 = 0;
-                objBlogPostList.click3 = 0;
-                objBlogPostList.click4 = 0;
-                objBlogPostList.click5 = 0;
-                objBlogPostList.click6 = 0;
-                objBlogPostList.click7 = 0;
-                objBlogPostList.click8 = 0;
-                objBlogPostList.stickstatus = Convert.ToInt32(dr["ifgood"]);
-                objBlogPostList.recommendstatus = Convert.ToInt32(dr["ifgood"]);
+                objBlogPostInfo.password = "";
+                objBlogPostInfo.favtimes = 0;
+                objBlogPostInfo.sharetimes = 0;
+                objBlogPostInfo.status = 0;
+                objBlogPostInfo.click1 = 0;
+                objBlogPostInfo.click2 = 0;
+                objBlogPostInfo.click3 = 0;
+                objBlogPostInfo.click4 = 0;
+                objBlogPostInfo.click5 = 0;
+                objBlogPostInfo.click6 = 0;
+                objBlogPostInfo.click7 = 0;
+                objBlogPostInfo.click8 = 0;
+                objBlogPostInfo.stickstatus = Convert.ToInt32(dr["ifgood"]);
+                if (Convert.ToInt32(dr["blogclose"]) != 2
+                    && Convert.ToInt32(dr["del"]) != 1
+                    && Convert.ToInt32(dr["ifgood"]) > 1
+                    && Convert.ToInt32(dr["closed"]) != 3
+                            )
+                {
+                    objBlogPostInfo.recommendstatus = 3;
+                }
+                else if (Convert.ToInt32(dr["blogclose"]) != 2
+                    && Convert.ToInt32(dr["del"]) != 1
+                    && Convert.ToInt32(dr["ifgood"]) == 1
+                    && Convert.ToInt32(dr["closed"]) != 3
+                            )
+                {
+                    objBlogPostInfo.recommendstatus = 3;
+                }
+                else if (Convert.ToInt32(dr["isview"]) == 1
+                    && Convert.ToInt32(dr["blogclose"]) != 2
+                    && Convert.ToInt32(dr["del"]) != 1
+                    && Convert.ToInt32(dr["closed"]) != 3
+                            )
+                {
+                    objBlogPostInfo.recommendstatus = 1;
+                }
+                else if (Convert.ToInt32(dr["blogclose"]) == 2)
+                {
+                    objBlogPostInfo.recommendstatus = -1;
+                }
+                else
+                {
+                    objBlogPostInfo.recommendstatus = 0;
+                }
 
-                objBlogPostList.showtitle = dr["subtitle"] == DBNull.Value ? "" : dr["subtitle"].ToString().Trim();
-                objBlogPostList.rfirstid = 0;
-                objBlogPostList.lastchangetime = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["updatetime"]));
-                objBlogPostList.recommendnum = Convert.ToInt32(dr["tuijian"]);
+                objBlogPostInfo.showtitle = dr["subtitle"] == DBNull.Value ? objBlogPostInfo.subject : dr["subtitle"].ToString().Trim();
+                objBlogPostInfo.rfirstid = 0;
+                objBlogPostInfo.lastchangetime = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["updatetime"]));
+                objBlogPostInfo.recommendnum = Convert.ToInt32(dr["tuijian"]);
 
 
 
 
-                objBlogPostList.pic = "";
-                objBlogPostList.tag = "";
-                objBlogPostList.message = dr["content"].ToString();
-                objBlogPostList.postip = "";
-                objBlogPostList.related = "";
-                objBlogPostList.relatedtime = 0;
-                objBlogPostList.target_ids = "";
-                objBlogPostList.hotuser = "";
-                objBlogPostList.magiccolor = 0;
-                objBlogPostList.magicpaper = 0;
-                objBlogPostList.pushedaid = 0;
-                blogPostlist.Add(objBlogPostList);
+                objBlogPostInfo.pic = "";
+                objBlogPostInfo.tag = "";
+                objBlogPostInfo.message = dr["content"].ToString();
+                objBlogPostInfo.postip = "";
+                objBlogPostInfo.related = "";
+                objBlogPostInfo.relatedtime = 0;
+                objBlogPostInfo.target_ids = "";
+                objBlogPostInfo.hotuser = "";
+                objBlogPostInfo.magiccolor = 0;
+                objBlogPostInfo.magicpaper = 0;
+                objBlogPostInfo.pushedaid = 0;
+                if (Convert.ToInt32(dr["del"]) == 1 && Convert.ToInt32(dr["closed"]) != 82)
+                {
+                    MainForm.trashBlogPostList.Add(objBlogPostInfo);
+                }
+                else
+                {
+                    blogPostlist.Add(objBlogPostInfo);
+                }
             }
             dr.Close();
             dr.Dispose();
