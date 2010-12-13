@@ -3346,7 +3346,7 @@ VALUES (
 
             MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
-            int pageid = 207;
+            int pageid = 1;
             if (pageid <= 1)
             {
                 //清理数据库
