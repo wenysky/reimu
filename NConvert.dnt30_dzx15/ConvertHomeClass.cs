@@ -36,6 +36,10 @@ namespace NConvert.dnt30_dzx15
                 HomeClassInfo objForum = new HomeClassInfo();;
                 objForum.classid = Convert.ToInt32(drBoard["id"]);
                 objForum.classname = drBoard["title"].ToString();
+                if (drBoard["userid"] == DBNull.Value || Convert.ToInt32(drBoard["userid"]) < 1)
+                {
+                    continue;
+                }
                 objForum.uid = Convert.ToInt32(drBoard["userid"]);
                 objForum.dateline = 0;
                 forumList.Add(objForum);

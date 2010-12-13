@@ -56,7 +56,7 @@ namespace NConvert.dnt30_dzx15
                         {
                             UserRecommandBlogInfo objFriend = new UserRecommandBlogInfo();
                             objFriend.rid = -1;
-                            objFriend.uid = Convert.ToInt32(dr["homeurl"]);
+                            objFriend.uid = dr["homeurl"] != DBNull.Value ? Convert.ToInt32(dr["homeurl"]) : 0;
                             objFriend.id = Convert.ToInt32(dr["id"]);
                             objFriend.idtype = "blogid";
                             objFriend.author = user[1].Trim();

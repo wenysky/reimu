@@ -59,7 +59,7 @@ namespace Yuwen.Tools.Data
             MyCommand = MyConnection.CreateCommand();
 
             //System.Diagnostics.Debug.WriteLine(MyConnection.ConnectionTimeout);
-            MyCommand.CommandTimeout = 180;//wysky 2010-12-12修改  避免大数据翻页超时
+            MyCommand.CommandTimeout = 0;//wysky 2010-12-12修改  避免大数据翻页超时
         }
         #endregion
 
