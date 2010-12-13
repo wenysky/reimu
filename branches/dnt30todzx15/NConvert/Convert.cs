@@ -3346,12 +3346,19 @@ VALUES (
 
             MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
-
-            //清理数据库
-            dbh.TruncateTable(string.Format("{0}home_blog", MainForm.cic.TargetDbTablePrefix));
-            dbh.TruncateTable(string.Format("{0}home_blogfield", MainForm.cic.TargetDbTablePrefix));
-            //classid默认为smallint 最多只能存放65535条记录
-            dbh.ExecuteNonQuery(string.Format("ALTER TABLE {0}home_blog CHANGE `classid` `classid` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0'", MainForm.cic.TargetDbTablePrefix));
+            int pageid = 207;
+            if (pageid <= 1)
+            {
+                //清理数据库
+                dbh.TruncateTable(string.Format("{0}home_blog", MainForm.cic.TargetDbTablePrefix));
+                dbh.TruncateTable(string.Format("{0}home_blogfield", MainForm.cic.TargetDbTablePrefix));
+                //classid默认为smallint 最多只能存放65535条记录
+                dbh.ExecuteNonQuery(string.Format("ALTER TABLE {0}home_blog CHANGE `classid` `classid` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0'", MainForm.cic.TargetDbTablePrefix));
+            }
+            else
+            {
+                MainForm.MessageForm.SetCurrentProgressBarNum((pageid - 1) * MainForm.PageSize);
+            }
             #region sql语句
             string sqlBlogPost = string.Format(@"INSERT INTO {0}home_blog (
 `blogid` ,
@@ -3454,7 +3461,7 @@ VALUES (
 @pushedaid
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
-            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            for (int pagei = pageid; pagei <= MainForm.PageCount; pagei++)
             {
                 //分段得到主题列表
                 List<BlogPostInfo> blogPostList = Provider.Provider.GetInstance().GetBlogList(pagei);

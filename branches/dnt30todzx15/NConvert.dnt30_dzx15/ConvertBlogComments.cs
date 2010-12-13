@@ -46,7 +46,7 @@ namespace NConvert.dnt30_dzx15
             while (drBoard.Read())
             {
                 //悄悄话不导入
-                if (Convert.ToInt32(drBoard["hide"]) == 1)
+                if (drBoard["hide"] != DBNull.Value && Convert.ToInt32(drBoard["hide"]) == 1)
                     continue;
                 CommentInfo objForum = new CommentInfo();
                 objForum.cid = Convert.ToInt32(drBoard["id"]);
@@ -58,7 +58,7 @@ namespace NConvert.dnt30_dzx15
                 objForum.ip = drBoard["ip"].ToString();
                 objForum.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drBoard["updatetime"]));
                 objForum.message = drBoard["commencontent"].ToString();
-                objForum.magicflicker =0;
+                objForum.magicflicker = 0;
                 objForum.status = 0;
                 forumList.Add(objForum);
             }
