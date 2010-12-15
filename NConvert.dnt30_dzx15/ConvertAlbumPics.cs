@@ -62,9 +62,18 @@ namespace NConvert.dnt30_dzx15
                 objAlbumPicInfo.postip = "";
                 if (drAlbumPic["address"] != DBNull.Value && drAlbumPic["address"].ToString().Trim() != string.Empty)
                 {
-                    objAlbumPicInfo.filepath = drAlbumPic["address"].ToString().Trim();
+                    objAlbumPicInfo.filepath = drAlbumPic["address"].ToString().Trim().Trim('\\');
                 }
-                else
+                else if (drAlbumPic["html"] != DBNull.Value && drAlbumPic["html"].ToString().Trim() != string.Empty)
+                {
+                    objAlbumPicInfo.filepath = drAlbumPic["html"].ToString().Trim().Trim('\\');
+                }
+                else if (drAlbumPic["url"] != DBNull.Value && drAlbumPic["url"].ToString().Trim() != string.Empty)
+                {
+                    objAlbumPicInfo.filepath = drAlbumPic["url"].ToString().Trim().Trim('\\');
+                }
+
+                if (objAlbumPicInfo.filepath == null || objAlbumPicInfo.filepath.Trim() == string.Empty)
                 {
                     continue;
                 }

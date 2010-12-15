@@ -46,7 +46,12 @@ namespace NConvert.dnt30_dzx15
                 objAlbumInfo.albumid = Convert.ToInt32(drAlbumCategory["id"]);
                 objAlbumInfo.albumname = drAlbumCategory["title"].ToString();
                 objAlbumInfo.catid = Convert.ToInt32(drAlbumCategory["parent1"]);
-                objAlbumInfo.username = drAlbumCategory["username"].ToString();
+                objAlbumInfo.username = drAlbumCategory["username"] != DBNull.Value ? drAlbumCategory["username"].ToString() : "";
+                if (objAlbumInfo.username.Trim() == string.Empty)
+                {
+                    System.Diagnostics.Debug.WriteLine("username is empty,albumid=" + objAlbumInfo.albumid.ToString());
+                    continue;
+                }
                 objAlbumInfo.uid = GetUIDbyUsername(objAlbumInfo.username);
                 objAlbumInfo.dateline = drAlbumCategory["updatetime"] != DBNull.Value ? Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drAlbumCategory["updatetime"])) : 0;
                 objAlbumInfo.updatetime = objAlbumInfo.dateline;

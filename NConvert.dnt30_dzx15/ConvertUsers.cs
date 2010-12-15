@@ -258,14 +258,23 @@ namespace NConvert.dnt30_dzx15
         {
             Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
             int uid;
-            try
+            string sql = string.Format(
+                "SELECT uid FROM {0}common_member WHERE username=@username", 
+                MainForm.cic.TargetDbTablePrefix, username
+                );
+            dbh.ParameterAdd("@username", username, System.Data.DbType.String, 20);
+            System.Data.Common.DbDataReader dr = dbh.ExecuteReader(sql);
+
+            if (dr.Read())
             {
-                uid = Convert.ToInt32(dbh.ExecuteScalar(string.Format("SELECT uid FROM {0}common_member WHERE username='{1}'", MainForm.cic.TargetDbTablePrefix, username)));
+                uid = dr["uid"] != DBNull.Value ? Convert.ToInt32(dr["uid"]) : 0;
             }
-            catch
+            else
             {
                 uid = 0;
             }
+            dr.Close();
+            dr.Dispose();
             return uid;
         }
     }
