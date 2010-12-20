@@ -196,9 +196,7 @@ namespace NConvert.dnt30_dzx15
                 System.Data.Common.DbDataReader drKexueUser = dbhUserTemp.ExecuteReader(sqlKexueUser);
 
                 if (drKexueUser.Read())
-                {
-                    //objUser.realname = dr["realname"].ToString();  
-                    objUser.realname = drKexueUser["realname"] != DBNull.Value ? drKexueUser["realname"].ToString() : "";
+                { 
                     //field1被用作八大研究领域了，那边的参数写作“realm”对应[user]-blogtype
                     objUser.field1 = drKexueUser["blogtype"] != DBNull.Value ? drKexueUser["blogtype"].ToString() : "";
 
@@ -210,6 +208,16 @@ namespace NConvert.dnt30_dzx15
                     objUser.initialstudyear = 0;
                     objUser.educational = arrayUserInfo.Length == 15 ? arrayUserInfo[9] : "";
                     objUser.grade = 1;
+
+                    //objUser.realname = dr["realname"].ToString(); 
+                    if (arrayUserInfo.Length == 15 && arrayUserInfo[0].Trim() != string.Empty)
+                    {
+                        objUser.realname = arrayUserInfo[0].Trim();
+                    }
+                    else
+                    {
+                        objUser.realname = drKexueUser["realname"] != DBNull.Value ? drKexueUser["realname"].ToString() : "";
+                    }
 
                     int blogshen = Convert.ToInt32(drKexueUser["blogshen"]);
                     if (blogshen == -1)
