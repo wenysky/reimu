@@ -56,6 +56,11 @@ namespace NConvert.dnt30_dzx15
                 objBlogPostInfo.subject = dr["title"].ToString();
                 objBlogPostInfo.classid = Convert.ToInt32(dr["typeid"]);
                 objBlogPostInfo.catid = Convert.ToInt32(dr["field"]);
+                //26. 博客十二大分类中，“考研体会”和“抗震救灾”两个栏目撤消，原来这两个栏目里的博文都应该导入观点述评。 
+                if (objBlogPostInfo.catid == 13 || objBlogPostInfo.catid == 14)
+                {
+                    objBlogPostInfo.catid = 3;
+                }
                 objBlogPostInfo.viewnum = Convert.ToInt32(dr["hits"]);
                 objBlogPostInfo.replynum = Convert.ToInt32(dr["commen"]);
                 objBlogPostInfo.hot = 0;

@@ -1301,3 +1301,67 @@ extcredits
 dateline
 score
 reason
+
+
+
+INSERT INTO `sns`.`pre_common_member_field_home` (
+`uid` ,
+`videophoto` ,
+`spacename` ,
+`spacedescription` ,
+`domain` ,
+`addsize` ,
+`addfriend` ,
+`menunum` ,
+`theme` ,
+`spacecss` ,
+`blockposition` ,
+`recentnote` ,
+`spacenote` ,
+`privacy` ,
+`feedfriend` ,
+`acceptemail` ,
+`magicgift` ,
+`blogstartime` 
+)
+VALUES (
+@uid,
+@videophoto,
+@spacename,
+@spacedescription,
+@domain,
+@addsize,
+@addfriend,
+@menunum,
+@theme,
+@spacecss,
+@blockposition,
+@recentnote,
+@spacenote,
+@privacy,
+@feedfriend,
+@acceptemail,
+@magicgift,
+@blogstartime
+);
+
+
+
+uid
+videophoto
+spacename
+spacedescription
+domain
+addsize
+addfriend
+menunum
+theme
+spacecss
+blockposition
+recentnote
+spacenote
+privacy
+feedfriend
+acceptemail
+magicgift
+blogstartime
