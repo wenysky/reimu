@@ -13,11 +13,11 @@ namespace ConvertAvatars
         static void Main(string[] args)
         {
             DBHelper srcDBH = new DBHelper();
-            DataTable avatars = srcDBH.ExecuteDataSet("SELECT TOP 100 ID,userphoto FROM [user] WHERE userphoto<>'images/upphoto/nophoto.gif' AND userphoto LIKE '%images%.%'").Tables[0];
+            DataTable avatars = srcDBH.ExecuteDataSet("SELECT ID,userphoto FROM [user] WHERE userphoto<>'images/upphoto/nophoto.gif' AND userphoto LIKE '%images%.%' ORDER BY ID").Tables[0];
 
-
-            System.Console.WriteLine("总共找到了{0}条数据", avatars.Rows.Count);
+            int totalCount = avatars.Rows.Count;
             int count = 0;
+            System.Console.WriteLine("总共找到了{0}条数据", totalCount);
             foreach (DataRow dr in avatars.Rows)
             {
                 string url = dr["userphoto"].ToString().Trim().Trim('/').Replace('/', Path.DirectorySeparatorChar);
@@ -83,13 +83,19 @@ namespace ConvertAvatars
                     }
                     count++;
                     System.Console.Write(".");
+                    if (count % 200 == 0)
+                    {
+                        System.Console.WriteLine("进度{1}/{2}", count, totalCount);
+                    }
                 }
                 else
                 {
-                    System.Console.WriteLine("没能找到uid={0}的用户头像{1}", dr["id"], dr["userphoto"]);
+                    System.Console.WriteLine("");
+                    System.Console.WriteLine("未找到uid={0}的头像{1}", dr["id"], dr["userphoto"]);
                 }
             }
-            System.Console.WriteLine("提示:</span>头像转换程序已经成功转换了{0}个头像.", count);
+            System.Console.WriteLine("");
+            System.Console.WriteLine("提示:头像转换程序已经成功转换了{0}/{1}个头像.", count, totalCount);
         }
     }
 }
