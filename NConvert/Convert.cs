@@ -161,7 +161,7 @@ namespace NConvert
 
 
         /// <summary>
-        /// 转换用户
+        /// 转换用户组
         /// </summary>
         public static void ConvertUserGroups()
         {
@@ -605,6 +605,7 @@ values
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_profile", MainForm.cic.TargetDbTablePrefix));
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_status", MainForm.cic.TargetDbTablePrefix));
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_education", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_field_home", MainForm.cic.TargetDbTablePrefix));
             }
 
 
@@ -930,6 +931,48 @@ VALUES (
 @educational,
 @grade
 )", MainForm.cic.TargetDbTablePrefix);
+
+
+            string sqlFieldHome = string.Format(@"INSERT INTO {0}common_member_field_home (
+`uid` ,
+`videophoto` ,
+`spacename` ,
+`spacedescription` ,
+`domain` ,
+`addsize` ,
+`addfriend` ,
+`menunum` ,
+`theme` ,
+`spacecss` ,
+`blockposition` ,
+`recentnote` ,
+`spacenote` ,
+`privacy` ,
+`feedfriend` ,
+`acceptemail` ,
+`magicgift` ,
+`blogstartime` 
+)
+VALUES (
+@uid,
+@videophoto,
+@spacename,
+@spacedescription,
+@domain,
+@addsize,
+@addfriend,
+@menunum,
+@theme,
+@spacecss,
+@blockposition,
+@recentnote,
+@spacenote,
+@privacy,
+@feedfriend,
+@acceptemail,
+@magicgift,
+@blogstartime
+)", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
             for (int pagei = pageid; pagei <= MainForm.PageCount; pagei++)
@@ -1074,14 +1117,35 @@ VALUES (
                         dbhConvertUsers.ParameterAdd("@blogShowStatus", objUser.blogShowStatus, DbType.Int32, 4);
                         dbhConvertUsers.ParameterAdd("@organblog", objUser.organblog, DbType.Int32, 4);
                         dbhConvertUsers.ParameterAdd("@userlevel", objUser.userlevel, DbType.Int32, 4);
+
+                        //home field
+                        dbhConvertUsers.ParameterAdd("@videophoto", objUser.videophoto, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@spacename", objUser.spacename, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@spacedescription", objUser.spacedescription, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@domain", objUser.domain, DbType.String, 15);
+                        dbhConvertUsers.ParameterAdd("@addsize", objUser.addsize, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@addfriend", objUser.addfriend, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@menunum", objUser.menunum, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@theme", objUser.theme, DbType.String, 20);
+                        dbhConvertUsers.ParameterAdd("@spacecss", objUser.spacecss, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@blockposition", objUser.blockposition, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@recentnote", objUser.recentnote, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@spacenote", objUser.spacenote, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@privacy", objUser.privacy, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@feedfriend", objUser.feedfriend, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@acceptemail", objUser.acceptemail, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@magicgift", objUser.magicgift, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@blogstartime", objUser.blogstartime, DbType.Int32, 4);
+
                         #endregion
-                        dbhConvertUsers.ExecuteNonQuery(sqlUCUser);//插入dnt_users表
-                        dbhConvertUsers.ExecuteNonQuery(sqlUCUserfield);//插入dnt_users表
+                        dbhConvertUsers.ExecuteNonQuery(sqlUCUser);
+                        dbhConvertUsers.ExecuteNonQuery(sqlUCUserfield);
                         dbhConvertUsers.ExecuteNonQuery(sqlMember);//插入dnt_users表
-                        dbhConvertUsers.ExecuteNonQuery(sqlMembercount);//插入dnt_userfields表
+                        dbhConvertUsers.ExecuteNonQuery(sqlMembercount);
                         dbhConvertUsers.ExecuteNonQuery(sqlMemberfieldforum);//插入dnt_userfields表
-                        dbhConvertUsers.ExecuteNonQuery(sqlMemberprofile);//插入dnt_userfields表
-                        dbhConvertUsers.ExecuteNonQuery(sqlMemberstatus);//插入dnt_userfields表
+                        dbhConvertUsers.ExecuteNonQuery(sqlMemberprofile);
+                        dbhConvertUsers.ExecuteNonQuery(sqlMemberstatus);
+                        dbhConvertUsers.ExecuteNonQuery(sqlFieldHome);
 
                         dbhConvertUsers.ExecuteNonQuery(sqlMemberEducation);//插入额外表
                         MainForm.SuccessedRecordCount++;

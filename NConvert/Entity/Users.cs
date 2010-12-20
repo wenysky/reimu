@@ -289,7 +289,40 @@ namespace NConvert.Entity
         public int favtimes { get; set; }
         public int sharetimes { get; set; }
 
-
+        /// <summary>
+        /// 视频认证照片地址 char255
+        /// </summary>
+        public string videophoto { get; set; }
+        /// <summary>
+        /// 空间描述 char255
+        /// </summary>
+        public string spacename { get; set; }
+        /// <summary>
+        /// 空间简介 char255
+        /// </summary>
+        public string spacedescription { get; set; }
+        /// <summary>
+        /// char15
+        /// </summary>
+        public string domain { get; set; }
+        public int addsize { get; set; }
+        public int addfriend { get; set; }
+        /// <summary>
+        /// 应用显示个数
+        /// </summary>
+        public int menunum { get; set; }
+        /// <summary>
+        /// 空间风格主题 char20
+        /// </summary>
+        public string theme { get; set; }
+        public string spacecss { get; set; }
+        public string blockposition { get; set; }
+        public string recentnote { get; set; }
+        public string spacenote { get; set; }
+        public string privacy { get; set; }
+        public string feedfriend { get; set; }
+        public string acceptemail { get; set; }
+        public string magicgift { get; set; }
 
         #region 额外的
         /// <summary>
@@ -333,6 +366,11 @@ namespace NConvert.Entity
         /// 属于那一级（第一个高校为1，第二高校为2，第三个高校为3）   默认置为1
         /// </summary>
         public int grade { get; set; }
+
+        /// <summary>
+        /// 开博时间
+        /// </summary>
+        public int blogstartime { get; set; }
         #endregion
     }
 }

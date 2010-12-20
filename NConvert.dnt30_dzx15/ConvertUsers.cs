@@ -181,6 +181,23 @@ namespace NConvert.dnt30_dzx15
                 objUser.sharetimes = 0;
 
 
+                objUser.videophoto = "";
+                objUser.domain = "";
+                objUser.addsize = 0;
+                objUser.addfriend = 0;
+                objUser.menunum = 0;
+                objUser.theme = "";
+                objUser.spacecss = "";
+                objUser.blockposition = "";
+                objUser.recentnote = "";
+                objUser.spacenote = "";
+                objUser.privacy = "";
+                objUser.feedfriend = "";
+                objUser.acceptemail = "";
+                objUser.magicgift = "";
+
+
+
                 objUser.views = Convert.ToInt32(dbhUserTemp.ExecuteScalar(
                     string.Format(
                         "SELECT count1 FROM [science].[dbo].[kexue_blogcount] WHERE userid={0}",
@@ -190,13 +207,13 @@ namespace NConvert.dnt30_dzx15
                 );
 
                 string sqlKexueUser = string.Format(
-                    "SELECT realname,blogtype,UserInfo,blogshen,ifgood,jigoublog FROM [sciencebbs].[dbo].[user] WHERE id={0}",
+                    "SELECT realname,blogtype,UserInfo,blogshen,ifgood,jigoublog,blogname,blogjie,bloggong,savetime FROM [sciencebbs].[dbo].[user] WHERE id={0}",
                     objUser.uid
                     );
                 System.Data.Common.DbDataReader drKexueUser = dbhUserTemp.ExecuteReader(sqlKexueUser);
 
                 if (drKexueUser.Read())
-                { 
+                {
                     //field1被用作八大研究领域了，那边的参数写作“realm”对应[user]-blogtype
                     objUser.field1 = drKexueUser["blogtype"] != DBNull.Value ? drKexueUser["blogtype"].ToString() : "";
 
@@ -236,6 +253,15 @@ namespace NConvert.dnt30_dzx15
                     objUser.blogShowStatus = Convert.ToInt32(drKexueUser["ifgood"]);
                     objUser.organblog = Convert.ToInt32(drKexueUser["jigoublog"]);
                     objUser.userlevel = 0;
+
+
+                    objUser.spacename = drKexueUser["blogname"] != DBNull.Value ? drKexueUser["blogname"].ToString() : "";
+                    objUser.spacedescription = drKexueUser["blogjie"] != DBNull.Value ? drKexueUser["blogjie"].ToString() : "";
+                    //if (dr["bloggong"] != DBNull.Value && dr["bloggong"].ToString().Trim() != string.Empty)
+                    //{
+                    //    objUser.spacedescription += dr["bloggong"].ToString().Trim();
+                    //}
+                    objUser.blogstartime = drKexueUser["savetime"] != DBNull.Value ? Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drKexueUser["savetime"])) : 0;
                 }
                 else
                 {
@@ -251,6 +277,14 @@ namespace NConvert.dnt30_dzx15
                     objUser.blogShowStatus = 1;
                     objUser.organblog = 0;
                     objUser.userlevel = 0;
+
+                    objUser.spacename = "";
+                    objUser.spacedescription = "";
+                    //if (dr["bloggong"] != DBNull.Value && dr["bloggong"].ToString().Trim() != string.Empty)
+                    //{
+                    //    objUser.spacedescription += dr["bloggong"].ToString().Trim();
+                    //}
+                    objUser.blogstartime = 0;
                 }
                 drKexueUser.Close();
                 drKexueUser.Dispose();
@@ -267,7 +301,7 @@ namespace NConvert.dnt30_dzx15
             Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
             int uid;
             string sql = string.Format(
-                "SELECT uid FROM {0}common_member WHERE username=@username", 
+                "SELECT uid FROM {0}common_member WHERE username=@username",
                 MainForm.cic.TargetDbTablePrefix, username
                 );
             dbh.ParameterAdd("@username", username, System.Data.DbType.String, 20);
