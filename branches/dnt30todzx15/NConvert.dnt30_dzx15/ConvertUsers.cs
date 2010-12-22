@@ -4,6 +4,7 @@ using System.Text;
 using NConvert.Provider;
 using NConvert.Entity;
 using Yuwen.Tools.Data;
+using System.Collections;
 
 namespace NConvert.dnt30_dzx15
 {
@@ -43,6 +44,8 @@ namespace NConvert.dnt30_dzx15
 
             DBHelper userlistDBH = MainForm.GetSrcDBH_OldVer();
             DBHelper dbhUserTemp = MainForm.GetSrcDBH_OldVer();
+            DBHelper dbhBlogLinkTemp = MainForm.GetSrcDBH_OldVer();
+            DBHelper dbhBlogMusicTemp = MainForm.GetSrcDBH_OldVer();
 
             System.Data.Common.DbDataReader dr = userlistDBH.ExecuteReader(sql);
             List<Users> userlist = new List<Users>();
@@ -188,7 +191,6 @@ namespace NConvert.dnt30_dzx15
                 objUser.menunum = 0;
                 objUser.theme = "";
                 objUser.spacecss = "";
-                objUser.blockposition = "";
                 objUser.recentnote = "";
                 objUser.spacenote = "";
                 objUser.privacy = "";
@@ -255,13 +257,99 @@ namespace NConvert.dnt30_dzx15
                     objUser.userlevel = 0;
 
 
-                    objUser.spacename = drKexueUser["blogname"] != DBNull.Value ? drKexueUser["blogname"].ToString() : "";
+                    objUser.spacename = drKexueUser["blogname"] != DBNull.Value ? Utils.Text.RemoveHtml(drKexueUser["blogname"].ToString()) : "";
                     objUser.spacedescription = drKexueUser["blogjie"] != DBNull.Value ? drKexueUser["blogjie"].ToString() : "";
                     //if (dr["bloggong"] != DBNull.Value && dr["bloggong"].ToString().Trim() != string.Empty)
                     //{
                     //    objUser.spacedescription += dr["bloggong"].ToString().Trim();
                     //}
                     objUser.blogstartime = drKexueUser["savetime"] != DBNull.Value ? Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drKexueUser["savetime"])) : 0;
+
+                    #region bloglinks
+                    StringBuilder blogLinks = new StringBuilder();
+                    string sqlBlogLinkTemp = string.Format(
+                    "SELECT linkname,linkaddress FROM [science].[dbo].[kexue_bloglink] WHERE linkname>'' AND linkaddress>'' AND userid={0}",
+                    objUser.uid
+                    );
+                    System.Data.Common.DbDataReader drBlogLinkTemp = dbhBlogLinkTemp.ExecuteReader(sqlBlogLinkTemp);
+                    while (drBlogLinkTemp.Read())
+                    {
+                        blogLinks.Append(
+                            string.Format("[url={1}]{0}[/url]",
+                                drBlogLinkTemp["linkname"].ToString(),
+                                drBlogLinkTemp["linkaddress"].ToString()
+                                )
+                            );
+                    }
+                    drBlogLinkTemp.Close();
+                    drBlogLinkTemp.Dispose();
+                    #endregion
+
+                    #region blogmusic
+                    ArrayList arrayBlogMusiclist = new ArrayList();
+                    string sqlBlogMusicTemp = string.Format(
+                    "SELECT title,audiourl FROM [science].[dbo].[kexue_blogaudio] WHERE title>'' AND audiourl>'' AND userid={0}",
+                    objUser.uid
+                    );
+                    System.Data.Common.DbDataReader drBlogMusicTemp = dbhBlogMusicTemp.ExecuteReader(sqlBlogMusicTemp);
+                    while (drBlogMusicTemp.Read())
+                    {
+                        Hashtable ht = new Hashtable();
+                        ht.Add("mp3name", drBlogMusicTemp["title"].ToString());
+                        ht.Add("cdbj", "");
+                        ht.Add("mp3url", drBlogMusicTemp["audiourl"].ToString());
+                        arrayBlogMusiclist.Add(ht);
+                    }
+                    drBlogMusicTemp.Close();
+                    drBlogMusicTemp.Dispose();
+                    #endregion
+
+                    string bloglink = blogLinks.ToString();
+                    string description = drKexueUser["blogjie"] != DBNull.Value ? drKexueUser["blogjie"].ToString().Trim() : "";
+                    string annc = drKexueUser["bloggong"] != DBNull.Value ? drKexueUser["bloggong"].ToString().Trim() : "";
+
+                    if (bloglink != string.Empty || description != string.Empty || annc != string.Empty || arrayBlogMusiclist.Count > 0)
+                    {
+                        #region 序列化
+                        string blockposition = "a:3:{s:10:\"parameters\";a:3:{s:6:\"block1\";a:2:{s:5:\"title\";s:6:\"公告栏\";s:7:\"content\";s:10:\"{1}\\r\\n{2}\";}s:5:\"music\";a:2:{s:7:\"mp3list\";a:1:{i:0;a:3:{s:6:\"mp3url\";s:20:\"http://abc.com/1.mp3\";s:7:\"mp3name\";s:6:\"曲目名\";s:4:\"cdbj\";s:23:\"http://abc.com/封面.mp3\";}}s:6:\"config\";a:6:{s:7:\"showmod\";s:7:\"default\";s:7:\"autorun\";s:4:\"true\";s:7:\"shuffle\";s:4:\"true\";s:12:\"crontabcolor\";s:7:\"#D2FF8C\";s:11:\"buttoncolor\";s:7:\"#1F43FF\";s:9:\"fontcolor\";s:7:\"#1F43FF\";}}s:6:\"block2\";a:2:{s:5:\"title\";s:8:\"友情链接\";s:7:\"content\";s:10:\"=友情链接=\";}}s:5:\"block\";a:1:{s:12:\"frame`frame1\";a:4:{s:4:\"attr\";a:4:{s:4:\"name\";s:6:\"frame1\";s:8:\"moveable\";s:5:\"false\";s:9:\"className\";s:8:\"frame cl\";s:6:\"titles\";s:0:\"\";}s:18:\"column`frame1_left\";a:6:{s:4:\"attr\";a:2:{s:4:\"name\";s:11:\"frame1_left\";s:9:\"className\";s:8:\"z column\";}s:13:\"block`profile\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:7:\"profile\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:8:\"个人资料\";s:4:\"href\";s:62:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=profile&view=me\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:12:\"block`block1\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:6:\"block1\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:6:\"公告栏\";s:4:\"href\";s:0:\"\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:11:\"block`doing\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:5:\"doing\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:4:\"记录\";s:4:\"href\";s:60:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=doing&view=me\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:11:\"block`music\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:5:\"music\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:6:\"音乐盒\";s:4:\"href\";s:0:\"\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:12:\"block`block2\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:6:\"block2\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:8:\"友情链接\";s:4:\"href\";s:0:\"\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}}s:20:\"column`frame1_center\";a:6:{s:4:\"attr\";a:2:{s:4:\"name\";s:13:\"frame1_center\";s:9:\"className\";s:8:\"z column\";}s:10:\"block`feed\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:4:\"feed\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:4:\"动态\";s:4:\"href\";s:59:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=feed&view=me\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:11:\"block`share\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:5:\"share\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:4:\"分享\";s:4:\"href\";s:60:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=share&view=me\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:10:\"block`blog\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:4:\"blog\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:4:\"日志\";s:4:\"href\";s:59:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=blog&view=me\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:12:\"block`thread\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:6:\"thread\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";s:0:\"\";}}s:10:\"block`wall\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:4:\"wall\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:4:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:6:\"留言板\";s:4:\"href\";s:59:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=wall&view=me\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}i:1;a:8:{s:4:\"text\";s:4:\"全部\";s:4:\"href\";s:51:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=wall\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:5:\"y xw0\";s:3:\"src\";s:0:\"\";}}}}}s:19:\"column`frame1_right\";a:6:{s:4:\"attr\";a:2:{s:4:\"name\";s:12:\"frame1_right\";s:9:\"className\";s:8:\"z column\";}s:12:\"block`friend\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:6:\"friend\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:4:\"好友\";s:4:\"href\";s:61:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=friend&view=me\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:13:\"block`visitor\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:7:\"visitor\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:8:\"最近访客\";s:4:\"href\";s:66:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=friend&view=visitor\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:11:\"block`group\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:5:\"group\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:4:\"群组\";s:4:\"href\";s:69:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=group&view=groupthread\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:11:\"block`album\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:5:\"album\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:4:\"相册\";s:4:\"href\";s:60:\"http://dzx15.s.com/home.php?mod=space&uid=1&do=album&view=me\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}s:15:\"block`statistic\";a:1:{s:4:\"attr\";a:3:{s:4:\"name\";s:9:\"statistic\";s:9:\"className\";s:15:\"block move-span\";s:6:\"titles\";a:3:{s:9:\"className\";a:1:{i:0;s:16:\"blocktitle title\";}s:5:\"style\";s:0:\"\";i:0;a:8:{s:4:\"text\";s:8:\"统计信息\";s:4:\"href\";s:0:\"\";s:5:\"color\";s:0:\"\";s:5:\"float\";s:0:\"\";s:6:\"margin\";s:0:\"\";s:9:\"font-size\";s:0:\"\";s:9:\"className\";s:0:\"\";s:3:\"src\";s:0:\"\";}}}}}}}s:13:\"currentlayout\";s:5:\"1:2:1\";}";//.Replace("{0}", "1");//.Replace("{1}", description).Replace("{2}", annc).Replace("{3}", bloglink);
+                            //,
+                            //objUser.uid,
+                            //description,
+                            //annc,
+                            //bloglink
+                            //);
+                        #endregion
+
+                        byte[] blocks = System.Text.Encoding.GetEncoding("gb2312").GetBytes(blockposition);
+                        object oBlock = PHPSerializer.UnSerialize(blocks, System.Text.Encoding.GetEncoding("gb2312"));
+                        Hashtable hBlock = (Hashtable)oBlock;
+                        if (bloglink == string.Empty)
+                        {
+                            ((Hashtable)(hBlock["parameters"])).Remove("block2");
+                            ((Hashtable)((Hashtable)((Hashtable)hBlock["block"])["frame`frame1"])["column`frame1_left"]).Remove("block`block2");
+                        }
+
+                        if (description == string.Empty && annc == string.Empty)
+                        {
+                            ((Hashtable)(hBlock["parameters"])).Remove("block1");
+                            ((Hashtable)((Hashtable)((Hashtable)hBlock["block"])["frame`frame1"])["column`frame1_left"]).Remove("block`block1");
+                        }
+
+                        if (arrayBlogMusiclist.Count > 0)
+                        {
+                            ((Hashtable)((Hashtable)hBlock["parameters"])["music"])["mp3list"] = arrayBlogMusiclist;
+                        }
+                        else
+                        {
+                            ((Hashtable)(hBlock["parameters"])).Remove("music");
+                            ((Hashtable)((Hashtable)((Hashtable)hBlock["block"])["frame`frame1"])["column`frame1_left"]).Remove("block`music");
+                        }
+                        objUser.blockposition = System.Text.Encoding.GetEncoding("gb2312").GetString(PHPSerializer.Serialize(hBlock, System.Text.Encoding.GetEncoding("gb2312")));
+                    }
+                    else
+                    {
+                        objUser.blockposition = "";
+                    }
                 }
                 else
                 {
@@ -285,6 +373,7 @@ namespace NConvert.dnt30_dzx15
                     //    objUser.spacedescription += dr["bloggong"].ToString().Trim();
                     //}
                     objUser.blogstartime = 0;
+                    objUser.blockposition = "";
                 }
                 drKexueUser.Close();
                 drKexueUser.Dispose();
