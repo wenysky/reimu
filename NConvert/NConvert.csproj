@@ -153,6 +153,7 @@
     <Compile Include="Provider\Provider.cs" />
     <Compile Include="TestThread.cs" />
     <Compile Include="Utils\Attachments.cs" />
+    <Compile Include="Utils\PHPSerializer.cs" />
     <Compile Include="Utils\Posts.cs" />
     <Compile Include="Utils\Text.cs" />
     <Compile Include="Utils\Topics.cs" />

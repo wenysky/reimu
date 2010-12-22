@@ -1365,3 +1365,49 @@ feedfriend
 acceptemail
 magicgift
 blogstartime
+
+
+
+
+
+a:3:{s:10:"parameters";a:3:{s:6:"block1";a:2:{s:5:"title";s:6:"公告栏";s:7:"content";s:10:"";}s:5:"music";a:2:{s:7:"mp3list";a:1:{i:0;a:3:{s:6:"mp3url";s:20:"http://abc.com/1.mp3";s:7:"mp3name";s:6:"曲目名";s:4:"cdbj";s:23:"http://abc.com/封面.mp3";}}s:6:"config";a:6:{s:7:"showmod";s:7:"default";s:7:"autorun";s:4:"true";s:7:"shuffle";s:4:"true";s:12:"crontabcolor";s:7:"#D2FF8C";s:11:"buttoncolor";s:7:"#1F43FF";s:9:"fontcolor";s:7:"#1F43FF";}}s:6:"block2";a:2:{s:5:"title";s:8:"友情链接";s:7:"content";s:10:"=友情链接=";}}s:5:"block";a:1:{s:12:"frame`frame1";a:4:{s:4:"attr";a:4:{s:4:"name";s:6:"frame1";s:8:"moveable";s:5:"false";s:9:"className";s:8:"frame cl";s:6:"titles";s:0:"";}s:18:"column`frame1_left";a:6:{s:4:"attr";a:2:{s:4:"name";s:11:"frame1_left";s:9:"className";s:8:"z column";}s:13:"block`profile";a:1:{s:4:"attr";a:3:{s:4:"name";s:7:"profile";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:8:"个人资料";s:4:"href";s:62:"home.php?mod=space&uid={0}&do=profile&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:12:"block`block1";a:1:{s:4:"attr";a:3:{s:4:"name";s:6:"block1";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:6:"公告栏";s:4:"href";s:0:"";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`doing";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"doing";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"记录";s:4:"href";s:60:"home.php?mod=space&uid={0}&do=doing&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`music";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"music";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:6:"音乐盒";s:4:"href";s:0:"";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:12:"block`block2";a:1:{s:4:"attr";a:3:{s:4:"name";s:6:"block2";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:8:"友情链接";s:4:"href";s:0:"";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}}s:20:"column`frame1_center";a:6:{s:4:"attr";a:2:{s:4:"name";s:13:"frame1_center";s:9:"className";s:8:"z column";}s:10:"block`feed";a:1:{s:4:"attr";a:3:{s:4:"name";s:4:"feed";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"动态";s:4:"href";s:59:"home.php?mod=space&uid={0}&do=feed&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`share";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"share";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"分享";s:4:"href";s:60:"home.php?mod=space&uid={0}&do=share&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:10:"block`blog";a:1:{s:4:"attr";a:3:{s:4:"name";s:4:"blog";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"日志";s:4:"href";s:59:"home.php?mod=space&uid={0}&do=blog&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:12:"block`thread";a:1:{s:4:"attr";a:3:{s:4:"name";s:6:"thread";s:9:"className";s:15:"block move-span";s:6:"titles";s:0:"";}}s:10:"block`wall";a:1:{s:4:"attr";a:3:{s:4:"name";s:4:"wall";s:9:"className";s:15:"block move-span";s:6:"titles";a:4:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:6:"留言板";s:4:"href";s:59:"home.php?mod=space&uid={0}&do=wall&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}i:1;a:8:{s:4:"text";s:4:"全部";s:4:"href";s:51:"home.php?mod=space&uid={0}&do=wall";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:5:"y xw0";s:3:"src";s:0:"";}}}}}s:19:"column`frame1_right";a:6:{s:4:"attr";a:2:{s:4:"name";s:12:"frame1_right";s:9:"className";s:8:"z column";}s:12:"block`friend";a:1:{s:4:"attr";a:3:{s:4:"name";s:6:"friend";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"好友";s:4:"href";s:61:"home.php?mod=space&uid={0}&do=friend&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:13:"block`visitor";a:1:{s:4:"attr";a:3:{s:4:"name";s:7:"visitor";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:8:"最近访客";s:4:"href";s:66:"home.php?mod=space&uid={0}&do=friend&view=visitor";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`group";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"group";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"群组";s:4:"href";s:69:"home.php?mod=space&uid={0}&do=group&view=groupthread";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`album";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"album";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"相册";s:4:"href";s:60:"home.php?mod=space&uid={0}&do=album&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:15:"block`statistic";a:1:{s:4:"attr";a:3:{s:4:"name";s:9:"statistic";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:8:"统计信息";s:4:"href";s:0:"";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}}}}s:13:"currentlayout";s:5:"1:2:1";}
+
+
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])
+Count = 3
+    ["mp3name"]: "曲目名"
+    ["cdbj"]: "http://music.com/封面.jpg"
+    ["mp3url"]: "http://music.com/m.mp3"
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])["mp3name"]
+"曲目名"
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])["mp3name"]="oooooo"
+"oooooo"
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])["cdbj"]="oooooo"
+"oooooo"
+mp3url
+当前上下文中不存在名称“mp3url”
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])["mp3url"]="oooooo"
+"oooooo"
+
+
+((Hashtable)al["parameters"]).Remove("music")
+
+
+
+
+
+((Hashtable)((Hashtable)al["parameters"])["block1"])
+Count = 2
+    ["title"]: "我的自定义模块1"
+    ["content"]: "啊啊啊啊\r\n哦哦哦"
+((Hashtable)((Hashtable)al["parameters"])["block1"])["title"]
+"我的自定义模块1"
+((Hashtable)((Hashtable)al["parameters"])["block1"])["content"]
+"啊啊啊啊\r\n哦哦哦"
+
+
+
+((Hashtable)((Hashtable)((Hashtable)al["block"])["frame`frame1"])["column`frame1_left"]).Remove("block`music")
+已经计算表达式，表达式没有值
+((Hashtable)((Hashtable)((Hashtable)al["block"])["frame`frame1"])["column`frame1_left"]).Remove("block`block1")
+已经计算表达式，表达式没有值
