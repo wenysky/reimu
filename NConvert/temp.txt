@@ -1411,3 +1411,96 @@ Count = 2
 已经计算表达式，表达式没有值
 ((Hashtable)((Hashtable)((Hashtable)al["block"])["frame`frame1"])["column`frame1_left"]).Remove("block`block1")
 已经计算表达式，表达式没有值
+
+
+
+
+
+INSERT INTO `sns`.`pre_blog_recommendpic` (
+`rpid` ,
+`title` ,
+`picsrc` ,
+`linksrc` ,
+`pictype` ,
+`userid` ,
+`readme`
+)
+VALUES (
+@rpid,
+@title,
+@picsrc,
+@linksrc,
+@pictype,
+@userid,
+@readme
+);
+
+
+
+rpid
+title
+picsrc
+linksrc
+pictype
+userid
+readme
+
+
+INSERT INTO `sns`.`pre_blog_recommendfirst` (
+`rfid` ,
+`blogid` ,
+`title` ,
+`content` ,
+`status` ,
+`recommendtime` ,
+`bloguid` ,
+`relateblog`
+)
+VALUES (
+@rfid,
+@blogid,
+@title,
+@content,
+@status,
+@recommendtime,
+@bloguid,
+@relateblog
+);
+
+
+rfid
+blogid
+title
+content
+status
+recommendtime
+bloguid
+relateblog
+
+
+INSERT INTO `sns`.`pre_blog_subject` (
+`sbid` ,
+`title` ,
+`content` ,
+`sbtype` ,
+`sborder` ,
+`logo` ,
+`updatetime`
+)
+VALUES (
+@sbid,
+@title,
+@content,
+@sbtype,
+@sborder,
+@logo,
+@updatetime
+);
+
+sbid
+title
+content
+sbtype
+sborder
+logo
+updatetime

@@ -85,11 +85,11 @@
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.ckbxIsConvertBlogSubjects = new System.Windows.Forms.CheckBox();
+            this.ckbxIsConvertIndexRecomandBlogs = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertGroupBlogType = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertAlbumCategory = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.ckbxIsConvertIndexRecomandBlogPics = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertRateLogs = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertBlogPostFavorite = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertGroupBlog = new System.Windows.Forms.CheckBox();
@@ -627,11 +627,11 @@
             this.groupBox4.Controls.Add(this.checkBox6);
             this.groupBox4.Controls.Add(this.checkBox7);
             this.groupBox4.Controls.Add(this.checkBox8);
-            this.groupBox4.Controls.Add(this.checkBox1);
-            this.groupBox4.Controls.Add(this.checkBox2);
+            this.groupBox4.Controls.Add(this.ckbxIsConvertBlogSubjects);
+            this.groupBox4.Controls.Add(this.ckbxIsConvertIndexRecomandBlogs);
             this.groupBox4.Controls.Add(this.ckbxIsConvertGroupBlogType);
             this.groupBox4.Controls.Add(this.ckbxIsConvertAlbumCategory);
-            this.groupBox4.Controls.Add(this.checkBox3);
+            this.groupBox4.Controls.Add(this.ckbxIsConvertIndexRecomandBlogPics);
             this.groupBox4.Controls.Add(this.ckbxIsConvertRateLogs);
             this.groupBox4.Controls.Add(this.ckbxIsConvertBlogPostFavorite);
             this.groupBox4.Controls.Add(this.ckbxIsConvertGroupBlog);
@@ -716,25 +716,25 @@
             this.checkBox8.Text = "呵呵";
             this.checkBox8.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // ckbxIsConvertBlogSubjects
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 338);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(50, 17);
-            this.checkBox1.TabIndex = 31;
-            this.checkBox1.Text = "呵呵";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.ckbxIsConvertBlogSubjects.AutoSize = true;
+            this.ckbxIsConvertBlogSubjects.Location = new System.Drawing.Point(6, 338);
+            this.ckbxIsConvertBlogSubjects.Name = "ckbxIsConvertBlogSubjects";
+            this.ckbxIsConvertBlogSubjects.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertBlogSubjects.TabIndex = 31;
+            this.ckbxIsConvertBlogSubjects.Text = "博文专题";
+            this.ckbxIsConvertBlogSubjects.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // ckbxIsConvertIndexRecomandBlogs
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(95, 315);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(50, 17);
-            this.checkBox2.TabIndex = 30;
-            this.checkBox2.Text = "呵呵";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.ckbxIsConvertIndexRecomandBlogs.AutoSize = true;
+            this.ckbxIsConvertIndexRecomandBlogs.Location = new System.Drawing.Point(95, 315);
+            this.ckbxIsConvertIndexRecomandBlogs.Name = "ckbxIsConvertIndexRecomandBlogs";
+            this.ckbxIsConvertIndexRecomandBlogs.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertIndexRecomandBlogs.TabIndex = 30;
+            this.ckbxIsConvertIndexRecomandBlogs.Text = "首页博文";
+            this.ckbxIsConvertIndexRecomandBlogs.UseVisualStyleBackColor = true;
             // 
             // ckbxIsConvertGroupBlogType
             // 
@@ -756,15 +756,15 @@
             this.ckbxIsConvertAlbumCategory.Text = "相册分类";
             this.ckbxIsConvertAlbumCategory.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // ckbxIsConvertIndexRecomandBlogPics
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 315);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(50, 17);
-            this.checkBox3.TabIndex = 27;
-            this.checkBox3.Text = "呵呵";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.ckbxIsConvertIndexRecomandBlogPics.AutoSize = true;
+            this.ckbxIsConvertIndexRecomandBlogPics.Location = new System.Drawing.Point(6, 315);
+            this.ckbxIsConvertIndexRecomandBlogPics.Name = "ckbxIsConvertIndexRecomandBlogPics";
+            this.ckbxIsConvertIndexRecomandBlogPics.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertIndexRecomandBlogPics.TabIndex = 27;
+            this.ckbxIsConvertIndexRecomandBlogPics.Text = "推荐博图";
+            this.ckbxIsConvertIndexRecomandBlogPics.UseVisualStyleBackColor = true;
             // 
             // ckbxIsConvertRateLogs
             // 
@@ -1163,7 +1163,7 @@
         private System.Windows.Forms.CheckBox ckbxIsConvertFriend;
         private System.Windows.Forms.CheckBox ckbxIsConvertUserBlogClass;
         private System.Windows.Forms.CheckBox ckbxIsConvertPics;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox ckbxIsConvertIndexRecomandBlogPics;
         private System.Windows.Forms.CheckBox ckbxIsConvertRateLogs;
         private System.Windows.Forms.CheckBox ckbxIsConvertBlogPostFavorite;
         private System.Windows.Forms.CheckBox ckbxIsConvertGroupBlog;
@@ -1174,8 +1174,8 @@
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.CheckBox checkBox8;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox ckbxIsConvertBlogSubjects;
+        private System.Windows.Forms.CheckBox ckbxIsConvertIndexRecomandBlogs;
     }
 }
 
