@@ -151,6 +151,20 @@ namespace NConvert
                 ConvertRateLogs();
             }
 
+            
+            if (MainForm.IsConvertIndexRecomandBlogPicss)
+            {
+                ConvertIndexRecomandBlogPics();
+            }
+            if (MainForm.IsConvertIndexRecomandBlogs)
+            {
+                ConvertIndexRecomandBlogs();
+            }
+            if (MainForm.IsConvertBlogSubjects)
+            {
+                ConvertBlogSubjects();
+            }
+
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             MainForm.MessageForm.SetButtonStatus(false);
@@ -1846,7 +1860,7 @@ VALUES (
                     dbh.ParameterAdd("@authorid", objPost.authorid, DbType.Int32, 4);
                     dbh.ParameterAdd("@subject", objPost.subject, DbType.String, 80);
                     dbh.ParameterAdd("@dateline", objPost.dateline, DbType.Int32, 4);
-                    dbh.ParameterAdd("@message", objPost.message, DbType.String, 10000);
+                    dbh.ParameterAdd("@message", objPost.message, DbType.String, 655350000);
                     dbh.ParameterAdd("@useip", objPost.useip, DbType.String, 15);
                     dbh.ParameterAdd("@invisible", objPost.invisible, DbType.Int32, 4);
                     dbh.ParameterAdd("@anonymous", objPost.anonymous, DbType.Int32, 4);
@@ -5073,6 +5087,264 @@ VALUES (
             dbhConvertRateLogs.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换评分记录。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+
+        public static void ConvertIndexRecomandBlogPics()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertUserRecommandBlogs = MainForm.GetTargetDBH_OldVer();
+            dbhConvertUserRecommandBlogs.Open();
+            MainForm.MessageForm.SetMessage("开始转换博客推荐图片\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetIndexRecomandBlogPicRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);//只能估算
+
+            //清理数据库
+            dbhConvertUserRecommandBlogs.TruncateTable(string.Format("{0}blog_recommendpic", MainForm.cic.TargetDbTablePrefix));
+
+
+
+            #region sql语句
+            string sqlFriend = string.Format(@"INSERT INTO {0}blog_recommendpic (
+`rpid` ,
+`title` ,
+`picsrc` ,
+`linksrc` ,
+`pictype` ,
+`userid` ,
+`readme`
+)
+VALUES (
+@rpid,
+@title,
+@picsrc,
+@linksrc,
+@pictype,
+@userid,
+@readme
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<IndexRecomandBlogPicInfo> recommandList = Provider.Provider.GetInstance().GetIndexRecomandBlogPicList(pagei);
+                foreach (IndexRecomandBlogPicInfo objUser in recommandList)
+                {
+                    try
+                    {
+                        dbhConvertUserRecommandBlogs.ParametersClear();
+                        #region users参数
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@rpid", objUser.rpid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@title", objUser.title, DbType.String, 120);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@picsrc", objUser.picsrc, DbType.String, 120);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@linksrc", objUser.linksrc, DbType.String, 120);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@pictype", objUser.pictype, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@userid", objUser.userid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@readme", objUser.readme, DbType.String, 255);
+                        #endregion
+                        dbhConvertUserRecommandBlogs.ExecuteNonQuery(sqlFriend);//插入dnt_users表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.rpid={1}\r\n", ex.Message, objUser.rpid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertUserRecommandBlogs.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换博客推荐图片。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+
+        public static void ConvertIndexRecomandBlogs()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertUserRecommandBlogs = MainForm.GetTargetDBH_OldVer();
+            dbhConvertUserRecommandBlogs.Open();
+            MainForm.MessageForm.SetMessage("开始转换博客首页推荐头条\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetIndexRecomandBlogRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);//只能估算
+
+            //清理数据库
+            dbhConvertUserRecommandBlogs.TruncateTable(string.Format("{0}blog_recommendfirst", MainForm.cic.TargetDbTablePrefix));
+
+
+
+            #region sql语句
+            string sqlFriend = string.Format(@"INSERT INTO {0}pre_blog_recommendfirst (
+`rfid` ,
+`blogid` ,
+`title` ,
+`content` ,
+`status` ,
+`recommendtime` ,
+`bloguid` ,
+`relateblog`
+)
+VALUES (
+@rfid,
+@blogid,
+@title,
+@content,
+@status,
+@recommendtime,
+@bloguid,
+@relateblog
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<IndexRecomandBlogInfo> recommandList = Provider.Provider.GetInstance().GetIndexRecomandBlogList(pagei);
+                foreach (IndexRecomandBlogInfo objUser in recommandList)
+                {
+                    try
+                    {
+                        dbhConvertUserRecommandBlogs.ParametersClear();
+                        #region users参数
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@rfid", objUser.rfid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@blogid", objUser.blogid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@title", objUser.title, DbType.String, 200);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@content", objUser.content, DbType.String, 255);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@status", objUser.status, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@recommendtime", objUser.recommendtime, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@bloguid", objUser.bloguid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@relateblog", objUser.relateblog, DbType.String, 30);
+                        #endregion
+                        dbhConvertUserRecommandBlogs.ExecuteNonQuery(sqlFriend);//插入dnt_users表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.rfid={1}\r\n", ex.Message, objUser.rfid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertUserRecommandBlogs.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换博客首页推荐头条。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+
+        public static void ConvertBlogSubjects()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertUserRecommandBlogs = MainForm.GetTargetDBH_OldVer();
+            dbhConvertUserRecommandBlogs.Open();
+            MainForm.MessageForm.SetMessage("开始转换博客专题\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetBlogSubjectRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);//只能估算
+
+            //清理数据库
+            dbhConvertUserRecommandBlogs.TruncateTable(string.Format("{0}pre_blog_subject", MainForm.cic.TargetDbTablePrefix));
+
+
+
+            #region sql语句
+            string sqlFriend = string.Format(@"INSERT INTO {0}pre_blog_subject (
+`sbid` ,
+`title` ,
+`content` ,
+`sbtype` ,
+`sborder` ,
+`logo` ,
+`updatetime`
+)
+VALUES (
+@sbid,
+@title,
+@content,
+@sbtype,
+@sborder,
+@logo,
+@updatetime
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<BlogSubjectInfo> recommandList = Provider.Provider.GetInstance().GetBlogSubjectList(pagei);
+                foreach (BlogSubjectInfo objUser in recommandList)
+                {
+                    try
+                    {
+                        dbhConvertUserRecommandBlogs.ParametersClear();
+                        #region users参数
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@sbid", objUser.sbid, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@title", objUser.title, DbType.String, 50);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@content", objUser.content, DbType.String, 1000);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@sbtype", objUser.sbtype, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@sborder", objUser.sborder, DbType.Int32, 4);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@logo", objUser.logo, DbType.String, 50);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@updatetime", objUser.updatetime, DbType.Int32, 4);
+                        #endregion
+                        dbhConvertUserRecommandBlogs.ExecuteNonQuery(sqlFriend);//插入dnt_users表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.sbid={1}\r\n", ex.Message, objUser.sbid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertUserRecommandBlogs.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换博客专题。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
     }
 }

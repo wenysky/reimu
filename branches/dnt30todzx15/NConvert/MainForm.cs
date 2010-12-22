@@ -134,6 +134,10 @@ namespace NConvert
         public static bool IsConvertFriends;//转换
         public static bool IsConvertUserRecommands;//转换
 
+        public static bool IsConvertIndexRecomandBlogPicss;//转换
+        public static bool IsConvertIndexRecomandBlogs;//转换
+        public static bool IsConvertBlogSubjects;//转换
+
         /*
         public static bool IsConvert;//转换
         public static bool IsConvert;//转换
@@ -271,6 +275,11 @@ namespace NConvert
             IsConvertUserBlogClass = ckbxIsConvertUserBlogClass.Checked;
             IsConvertFriends = ckbxIsConvertFriend.Checked;
             IsConvertUserRecommands = ckbxIsConvertUserRecommand.Checked;
+
+            IsConvertIndexRecomandBlogPicss = ckbxIsConvertIndexRecomandBlogPics.Checked;
+            IsConvertIndexRecomandBlogs = ckbxIsConvertIndexRecomandBlogs.Checked;
+            IsConvertBlogSubjects = ckbxIsConvertBlogSubjects.Checked;
+
             #endregion
         }
 

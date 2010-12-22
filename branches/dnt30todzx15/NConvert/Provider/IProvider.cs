@@ -226,5 +226,17 @@ namespace NConvert.Provider
 
         int GetRateLogRecordCount();
         List<RateLogInfo> GetRateLogList(int pagei);
+
+
+        int GetIndexRecomandBlogPicRecordCount();
+        List<IndexRecomandBlogPicInfo> GetIndexRecomandBlogPicList(int pagei);
+
+
+        int GetIndexRecomandBlogRecordCount();
+        List<IndexRecomandBlogInfo> GetIndexRecomandBlogList(int pagei);
+
+
+        int GetBlogSubjectRecordCount();
+        List<BlogSubjectInfo> GetBlogSubjectList(int pagei);
     }
 }
