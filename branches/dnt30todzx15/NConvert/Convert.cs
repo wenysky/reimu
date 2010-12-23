@@ -151,7 +151,7 @@ namespace NConvert
                 ConvertRateLogs();
             }
 
-            
+
             if (MainForm.IsConvertIndexRecomandBlogPicss)
             {
                 ConvertIndexRecomandBlogPics();
@@ -620,6 +620,11 @@ values
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_status", MainForm.cic.TargetDbTablePrefix));
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_education", MainForm.cic.TargetDbTablePrefix));
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_field_home", MainForm.cic.TargetDbTablePrefix));
+            }
+            else
+            {
+                MainForm.MessageForm.SetTotalProgressBarNum(pageid - 1);
+                MainForm.MessageForm.SetCurrentProgressBarNum((pageid - 1) * MainForm.PageSize);
             }
 
 
@@ -1892,6 +1897,19 @@ VALUES (
                 //一次分页完毕
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
+
+            object maxpid = dbh.ExecuteScalar(string.Format(
+                        "SELECT MAX(pid) FROM {0}forum_post",
+                        MainForm.cic.TargetDbTablePrefix
+                        )
+                    );
+            dbh.ExecuteNonQuery(
+                string.Format(
+                    "INSERT INTO {0}forum_post_tableid(`pid`) VALUES ({1})",
+                    MainForm.cic.TargetDbTablePrefix,
+                    Convert.ToInt32(maxpid)
+                    )
+                );
             dbh.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换帖子。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
@@ -5202,7 +5220,7 @@ VALUES (
 
 
             #region sql语句
-            string sqlFriend = string.Format(@"INSERT INTO {0}pre_blog_recommendfirst (
+            string sqlFriend = string.Format(@"INSERT INTO {0}blog_recommendfirst (
 `rfid` ,
 `blogid` ,
 `title` ,
@@ -5285,12 +5303,12 @@ VALUES (
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);//只能估算
 
             //清理数据库
-            dbhConvertUserRecommandBlogs.TruncateTable(string.Format("{0}pre_blog_subject", MainForm.cic.TargetDbTablePrefix));
+            dbhConvertUserRecommandBlogs.TruncateTable(string.Format("{0}blog_subject", MainForm.cic.TargetDbTablePrefix));
 
 
 
             #region sql语句
-            string sqlFriend = string.Format(@"INSERT INTO {0}pre_blog_subject (
+            string sqlFriend = string.Format(@"INSERT INTO {0}blog_subject (
 `sbid` ,
 `title` ,
 `content` ,

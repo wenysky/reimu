@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NConvert.Provider;
 using NConvert.Entity;
+using System.Collections;
 using Yuwen.Tools.Data;
 
 namespace NConvert.dnt30_dzx15
@@ -88,7 +89,45 @@ namespace NConvert.dnt30_dzx15
                 objForum.formulaperm = "";
                 objForum.moderators = drBoard["moderators"].ToString().Replace(",", "\t");
                 objForum.rules = drBoard["rules"].ToString();
-                objForum.threadtypes = "";
+
+                if (drBoard["topictypes"].ToString().Trim() != string.Empty && Convert.ToInt32(drBoard["applytopictype"]) == 1)
+                {
+                    string sThreadTypes = "a:5:{s:8:\"required\";b:0;s:8:\"listable\";b:1;s:6:\"prefix\";s:1:\"1\";s:5:\"types\";a:1:{i:1;s:3:\"my1\";}s:5:\"icons\";a:1:{i:1;s:0:\"\";}}";
+                    byte[] bThreadTypes = System.Text.Encoding.GetEncoding("gb2312").GetBytes(sThreadTypes);
+                    object oThreadTypes = PHPSerializer.UnSerialize(bThreadTypes, System.Text.Encoding.GetEncoding("gb2312"));
+                    Hashtable hThreadTypes = (Hashtable)oThreadTypes;
+
+                    Hashtable typeList = new Hashtable();
+                    Hashtable typeIconList = new Hashtable();
+                    string[] arrayTypeList = drBoard["topictypes"].ToString().Split('|');
+                    foreach (string type in arrayTypeList)
+                    {
+                        string[] arrayType = type.Split(',');
+                        if (arrayType.Length == 3)
+                        {
+                            int typeid = Convert.ToInt32(string.Format("{0}", objForum.fid * 100 + Convert.ToInt32(arrayType[0])));
+                            if (!typeList.ContainsKey(typeid))
+                            {
+                                typeList.Add(typeid, arrayType[1].Trim('\r').Trim('\n'));
+                                typeIconList.Add(typeid, "");
+                            }
+                        }
+                    }
+                    hThreadTypes["types"] = typeList;
+                    hThreadTypes["icons"] = typeIconList;
+                    hThreadTypes["required"] = Convert.ToInt32(drBoard["postbytopictype"]) == 1 ? true : false;
+                    hThreadTypes["listable"] = Convert.ToInt32(drBoard["viewbytopictype"]) == 1 ? true : false;
+                    hThreadTypes["prefix"] = Convert.ToInt32(drBoard["topictypeprefix"]);
+
+
+                    objForum.threadtypes = System.Text.Encoding.GetEncoding("gb2312").GetString(PHPSerializer.Serialize(hThreadTypes, System.Text.Encoding.GetEncoding("gb2312")));
+                }
+                else
+                {
+                    objForum.threadtypes = "";
+                }
+
+
                 objForum.threadsorts = "";
                 objForum.viewperm = drBoard["viewperm"].ToString().Trim() == "" ? "" : string.Format("\t{0}\t", drBoard["viewperm"].ToString().Replace(",", "\t"));
                 objForum.postperm = drBoard["postperm"].ToString().Trim() == "" ? "" : string.Format("\t{0}\t", drBoard["postperm"].ToString().Replace(",", "\t"));

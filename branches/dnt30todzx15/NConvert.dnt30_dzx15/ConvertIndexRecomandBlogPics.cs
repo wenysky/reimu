@@ -46,13 +46,13 @@ namespace NConvert.dnt30_dzx15
             while (dr.Read())
             {
                 IndexRecomandBlogPicInfo objFriend = new IndexRecomandBlogPicInfo();
-                objFriend.rpid = Convert.ToInt32(dr["rpid"]);
-                objFriend.title = dr["title"] != DBNull.Value ? dr["title"].ToString().Trim() : "";
-                objFriend.picsrc = dr["picsrc"] != DBNull.Value ? dr["picsrc"].ToString().Trim() : "";
-                objFriend.linksrc = dr["linksrc"] != DBNull.Value ? dr["linksrc"].ToString().Trim() : "";
-                objFriend.pictype = dr["pictype"] != DBNull.Value ? Convert.ToInt32(dr["pictype"]) : 0;
+                objFriend.rpid = Convert.ToInt32(dr["id"]);
+                objFriend.title = dr["name"] != DBNull.Value ? dr["name"].ToString().Trim() : "";
+                objFriend.picsrc = dr["pic"] != DBNull.Value ? dr["pic"].ToString().Trim() : "";
+                objFriend.linksrc = dr["link"] != DBNull.Value ? dr["link"].ToString().Trim() : "";
+                objFriend.pictype = dr["ifhead"] != DBNull.Value ? Convert.ToInt32(dr["ifhead"]) : 0;
                 objFriend.userid = dr["userid"] != DBNull.Value ? Convert.ToInt32(dr["userid"]) : 0;
-                objFriend.readme = dr["readme"] != DBNull.Value ? dr["titreadmele"].ToString().Trim() : "";
+                objFriend.readme = dr["readme"] != DBNull.Value ? dr["readme"].ToString().Trim() : "";
                 Recommandlist.Add(objFriend);
             }
             dr.Close();
