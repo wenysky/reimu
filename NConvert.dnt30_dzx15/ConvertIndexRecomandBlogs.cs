@@ -46,7 +46,7 @@ namespace NConvert.dnt30_dzx15
             while (dr.Read())
             {
                 IndexRecomandBlogInfo objFriend = new IndexRecomandBlogInfo();
-                objFriend.rfid = dr["rfid"] != DBNull.Value ? Convert.ToInt32(dr["id"]) : 0;
+                objFriend.rfid = dr["id"] != DBNull.Value ? Convert.ToInt32(dr["id"]) : 0;
 
                 if (dr["titleurl"] != DBNull.Value && dr["titleurl"].ToString().Trim() != string.Empty)
                 {
@@ -54,7 +54,7 @@ namespace NConvert.dnt30_dzx15
                     string blogid = Utils.Text.GetMatch(titleUrl, "http://www.sciencenet.cn/blog/user_content.aspx\\?id=([0-9]+).*?");
 #warning  断点一下
                     int rblogid;
-                    if (blogid == string.Empty || int.TryParse(blogid, out rblogid))
+                    if (blogid == string.Empty || !int.TryParse(blogid, out rblogid))
                     {
                         objFriend.blogid = 0;
                     }

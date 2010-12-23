@@ -46,12 +46,12 @@ namespace NConvert.dnt30_dzx15
             while (dr.Read())
             {
                 BlogSubjectInfo objFriend = new BlogSubjectInfo();
-                objFriend.sbid = dr["sbid"] != DBNull.Value ? Convert.ToInt32(dr["id"]) : 0;
+                objFriend.sbid = dr["id"] != DBNull.Value ? Convert.ToInt32(dr["id"]) : 0;
                 objFriend.title = dr["title"] != DBNull.Value ? dr["title"].ToString().Trim() : "";
                 objFriend.content = dr["content"] != DBNull.Value ? dr["content"].ToString().Trim() : "";
                 objFriend.sbtype = dr["parent"] != DBNull.Value ? Convert.ToInt32(dr["parent"]) : 0;
                 objFriend.sborder = dr["order1"] != DBNull.Value ? Convert.ToInt32(dr["order1"]) : 0;
-                objFriend.logo = dr["logo"] != DBNull.Value ? dr["logo"].ToString().Trim() : "";
+                objFriend.logo = dr["logo"] != DBNull.Value ? dr["logo"].ToString().Trim().Trim('/'): "";
                 objFriend.updatetime = dr["updatetime"] != DBNull.Value ? Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["updatetime"])) : 0;
                 Recommandlist.Add(objFriend);
             }
