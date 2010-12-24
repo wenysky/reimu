@@ -415,7 +415,11 @@ namespace NConvert.dnt30_dzx15
                 );
             dbh.ParameterAdd("@username", username, System.Data.DbType.String, 20);
             System.Data.Common.DbDataReader dr = dbh.ExecuteReader(sql);
-
+            if (dr == null)
+            {
+                return 0;
+                System.Diagnostics.Debug.WriteLine(string.Format("【DEBUG】获取uid失败，username={0}", username));
+            }
             if (dr.Read())
             {
                 uid = dr["uid"] != DBNull.Value ? Convert.ToInt32(dr["uid"]) : 0;
