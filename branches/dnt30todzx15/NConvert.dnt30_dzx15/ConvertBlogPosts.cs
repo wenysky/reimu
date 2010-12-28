@@ -30,12 +30,12 @@ namespace NConvert.dnt30_dzx15
             if (CurrentPage <= 1)
             {
                 sql = string.Format
-                       ("SELECT TOP {1} * FROM [science].[dbo].[kexue_blogarticle] ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+                       ("SELECT TOP {1} id,fuurl,username,homeurl,title,typeid,field,hits,commen,writetime,iszz,upimages,ifcommen,del,closed,ifgood,blogclose,isview,subtitle,updatetime,tuijian,content,subid FROM [science].[dbo].[kexue_blogarticle] ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
             }
             else
             {
                 sql = string.Format
-                       ("SELECT TOP {1} * FROM [science].[dbo].[kexue_blogarticle] WHERE id NOT IN (SELECT TOP {2} id FROM [science].[dbo].[kexue_blogarticle] ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+                       ("SELECT TOP {1} id,fuurl,username,homeurl,title,typeid,field,hits,commen,writetime,iszz,upimages,ifcommen,del,closed,ifgood,blogclose,isview,subtitle,updatetime,tuijian,content,subid FROM [science].[dbo].[kexue_blogarticle] WHERE id NOT IN (SELECT TOP {2} id FROM [science].[dbo].[kexue_blogarticle] ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
             }
             #endregion
 
@@ -161,6 +161,8 @@ namespace NConvert.dnt30_dzx15
                 objBlogPostInfo.magiccolor = 0;
                 objBlogPostInfo.magicpaper = 0;
                 objBlogPostInfo.pushedaid = 0;
+
+                objBlogPostInfo.subjectid = dr["subid"] != DBNull.Value ? Convert.ToInt32(dr["subid"]) : 0;
                 if (Convert.ToInt32(dr["del"]) == 1 && Convert.ToInt32(dr["closed"]) != 82)
                 {
                     MainForm.trashBlogPostList.Add(objBlogPostInfo);

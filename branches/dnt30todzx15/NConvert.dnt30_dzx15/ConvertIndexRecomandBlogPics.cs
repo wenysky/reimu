@@ -48,10 +48,85 @@ namespace NConvert.dnt30_dzx15
                 IndexRecomandBlogPicInfo objFriend = new IndexRecomandBlogPicInfo();
                 objFriend.rpid = Convert.ToInt32(dr["id"]);
                 objFriend.title = dr["name"] != DBNull.Value ? dr["name"].ToString().Trim() : "";
-                objFriend.picsrc = dr["pic"] != DBNull.Value ? dr["pic"].ToString().Trim() : "";
-                objFriend.linksrc = dr["link"] != DBNull.Value ? dr["link"].ToString().Trim() : "";
                 objFriend.pictype = dr["ifhead"] != DBNull.Value ? Convert.ToInt32(dr["ifhead"]) : 0;
-                objFriend.userid = dr["userid"] != DBNull.Value ? Convert.ToInt32(dr["userid"]) : 0;
+                objFriend.picsrc = dr["pic"] != DBNull.Value ? "olddata/kexue.com.cn/admin/" + dr["pic"].ToString().Trim().Trim('/') : "";
+
+
+                string link = dr["link"] != DBNull.Value ? dr["link"].ToString().Trim() : "";
+                int rblogid = 0;
+                int uid = 0;
+
+                if (link != string.Empty)
+                {
+                    string blogid = Utils.Text.GetMatch(link, "user_content.aspx\\?id=([0-9]+).*?");
+
+                    if (blogid != string.Empty && int.TryParse(blogid, out rblogid))
+                    {
+                        //如果blogid》0，那么就是日志链接了
+                        uid = GetUIDbyBlogid(rblogid);
+                        objFriend.linksrc = string.Format(
+                                "home.php?mod=space&uid={0}&do=blog&id={1}&from=space",
+                                uid,
+                                rblogid
+                                );
+                    }
+                    else
+                    {
+                        //如果blogid=0，就尝试弄uid
+                        string suid = Utils.Text.GetMatch(link, "user_index.aspx\\?userid=([0-9]+).*?");
+                        if (suid != null && suid.Trim() != string.Empty && int.TryParse(suid, out uid))
+                        {
+                            //如果uid》0，就是空间链接
+                            objFriend.linksrc = string.Format(
+                                "home.php?mod=space&uid={0}",
+                                uid
+                                );
+                        }
+                        else
+                        {
+                            //blogid=0,uid=0，那么就保持原装吧
+                            objFriend.linksrc = link;
+                        }
+                    }
+
+                    /*飕飕飕
+                     * 
+                    if (objFriend.pictype == 2)
+                    {
+                        objFriend.linksrc = string.Format(
+                            "home.php?mod=space&uid={0}",
+                            Utils.Text.GetMatch(link, "http://www.sciencenet.cn/blog/user_index.aspx\\?userid=([0-9]+).*?")
+                            );
+                    }
+                    else if (objFriend.pictype == 1 || objFriend.pictype == 3)
+                    {
+                        string sblogid = Utils.Text.GetMatch(link, "http://www.sciencenet.cn/blog/user_content.aspx\\?id=([0-9]+).*?");
+                        
+                        if (sblogid != null && sblogid.Trim() != string.Empty && int.TryParse(sblogid, out blogid))
+                        {
+                            uid = GetUIDbyBlogid(blogid);
+                            objFriend.linksrc = string.Format(
+                                "home.php?mod=space&uid={0}&do=blog&id={1}&from=space",
+                                uid,
+                                blogid
+                                );
+                        }
+                        else
+                        {
+                            objFriend.linksrc = link;
+                        }
+                    }
+                    else
+                    {
+                        objFriend.linksrc = link;
+                    }
+                     */
+                }
+                else
+                {
+                    objFriend.linksrc = "";
+                }
+                objFriend.userid = dr["userid"] != DBNull.Value ? Convert.ToInt32(dr["userid"]) : uid;
                 objFriend.readme = dr["readme"] != DBNull.Value ? dr["readme"].ToString().Trim() : "";
                 Recommandlist.Add(objFriend);
             }

@@ -24,5 +24,9 @@ namespace NConvert.Entity
         /// char30
         /// </summary>
         public string relateblog { get; set; }
+        /// <summary>
+        /// char 120 标题连接
+        /// </summary>
+        public string titlelink { get; set; }
     }
 }

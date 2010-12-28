@@ -51,7 +51,7 @@ namespace NConvert.dnt30_dzx15
                 objFriend.content = dr["content"] != DBNull.Value ? dr["content"].ToString().Trim() : "";
                 objFriend.sbtype = dr["parent"] != DBNull.Value ? Convert.ToInt32(dr["parent"]) : 0;
                 objFriend.sborder = dr["order1"] != DBNull.Value ? Convert.ToInt32(dr["order1"]) : 0;
-                objFriend.logo = dr["logo"] != DBNull.Value ? dr["logo"].ToString().Trim().Trim('/'): "";
+                objFriend.logo = dr["logo"] != DBNull.Value ? "olddata/kexue.com.cn/" + dr["logo"].ToString().Trim().Trim('/') : "";
                 objFriend.updatetime = dr["updatetime"] != DBNull.Value ? Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["updatetime"])) : 0;
                 Recommandlist.Add(objFriend);
             }

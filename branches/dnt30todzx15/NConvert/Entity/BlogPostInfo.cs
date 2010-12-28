@@ -117,5 +117,9 @@ namespace NConvert.Entity
         /// 推送文章id
         /// </summary>
         public int pushedaid { get; set; }
+        /// <summary>
+        /// 博文专题
+        /// </summary>
+        public int subjectid { get; set; }
     }
 }
