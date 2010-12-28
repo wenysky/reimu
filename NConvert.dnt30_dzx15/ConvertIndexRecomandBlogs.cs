@@ -48,19 +48,29 @@ namespace NConvert.dnt30_dzx15
                 IndexRecomandBlogInfo objFriend = new IndexRecomandBlogInfo();
                 objFriend.rfid = dr["id"] != DBNull.Value ? Convert.ToInt32(dr["id"]) : 0;
 
-                if (dr["titleurl"] != DBNull.Value && dr["titleurl"].ToString().Trim() != string.Empty)
+                string titleUrl = dr["titleurl"] != DBNull.Value ? dr["titleurl"].ToString().Trim() : "";
+                if (titleUrl != string.Empty)
                 {
-                    string titleUrl = dr["titleurl"].ToString().Trim();
-                    string blogid = Utils.Text.GetMatch(titleUrl, "http://www.sciencenet.cn/blog/user_content.aspx\\?id=([0-9]+).*?");
-#warning  断点一下
+                    string blogid = Utils.Text.GetMatch(titleUrl, "user_content.aspx\\?id=([0-9]+).*?");
                     int rblogid;
                     if (blogid == string.Empty || !int.TryParse(blogid, out rblogid))
                     {
                         objFriend.blogid = 0;
+                        string suid = Utils.Text.GetMatch(titleUrl, "user_index.aspx\\?userid=([0-9]+).*?");
+                        int uid;
+                        if (suid != null && suid.Trim() != string.Empty && int.TryParse(suid, out uid))
+                        {
+                            objFriend.bloguid = uid;
+                        }
+                        else
+                        {
+                            objFriend.bloguid = 0;
+                        }
                     }
                     else
                     {
                         objFriend.blogid = rblogid;
+                        objFriend.bloguid = GetUIDbyBlogid(objFriend.blogid);
                     }
                 }
                 else
@@ -71,8 +81,28 @@ namespace NConvert.dnt30_dzx15
                 objFriend.content = dr["userurl"] != DBNull.Value ? dr["userurl"].ToString().Trim() : "";
                 objFriend.status = dr["ifgood"] != DBNull.Value ? Convert.ToInt32(dr["ifgood"]) : 0;
                 objFriend.recommendtime = 0;
-                objFriend.bloguid = 0;
                 objFriend.relateblog = "";
+
+
+                if (objFriend.blogid > 0)
+                {
+                    objFriend.titlelink = string.Format(
+                                "home.php?mod=space&uid={0}&do=blog&id={1}&from=space",
+                                objFriend.bloguid,
+                                objFriend.blogid
+                                );
+                }
+                else if (objFriend.bloguid > 0)
+                {
+                    objFriend.titlelink = string.Format(
+                            "home.php?mod=space&uid={0}",
+                            objFriend.bloguid
+                            );
+                }
+                else
+                {
+                    objFriend.titlelink = titleUrl;
+                }
                 Recommandlist.Add(objFriend);
             }
             dr.Close();

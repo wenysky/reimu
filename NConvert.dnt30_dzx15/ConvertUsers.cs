@@ -417,8 +417,36 @@ namespace NConvert.dnt30_dzx15
             System.Data.Common.DbDataReader dr = dbh.ExecuteReader(sql);
             if (dr == null)
             {
-                return 0;
                 System.Diagnostics.Debug.WriteLine(string.Format("【DEBUG】获取uid失败，username={0}", username));
+                return 0;
+            }
+            if (dr.Read())
+            {
+                uid = dr["uid"] != DBNull.Value ? Convert.ToInt32(dr["uid"]) : 0;
+            }
+            else
+            {
+                uid = 0;
+            }
+            dr.Close();
+            dr.Dispose();
+            return uid;
+        }
+
+        public int GetUIDbyBlogid(int blogid)
+        {
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            int uid;
+            string sql = string.Format(
+                "SELECT uid FROM {0}home_blog WHERE blogid=@blogid",
+                MainForm.cic.TargetDbTablePrefix, blogid
+                );
+            dbh.ParameterAdd("@blogid", blogid, System.Data.DbType.Int32, 4);
+            System.Data.Common.DbDataReader dr = dbh.ExecuteReader(sql);
+            if (dr == null)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Format("【DEBUG】获取uid失败，blogid={0}", blogid));
+                return 0;
             }
             if (dr.Read())
             {

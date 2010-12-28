@@ -3488,7 +3488,8 @@ VALUES (
 showtitle,
 rfirstid,    
 lastchangetime,
-recommendnum
+recommendnum,
+subjectid
 )
 VALUES (
 @blogid,
@@ -3522,7 +3523,8 @@ VALUES (
 @showtitle,
 @rfirstid,    
 @lastchangetime,
-@recommendnum
+@recommendnum,
+@subjectid
 )", MainForm.cic.TargetDbTablePrefix);
 
 
@@ -3611,6 +3613,7 @@ VALUES (
                     dbh.ParameterAdd("@magiccolor", objBlogPost.magiccolor, DbType.Int32, 4);
                     dbh.ParameterAdd("@magicpaper", objBlogPost.magicpaper, DbType.Int32, 4);
                     dbh.ParameterAdd("@pushedaid", objBlogPost.pushedaid, DbType.Int32, 4);
+                    dbh.ParameterAdd("@subjectid", objBlogPost.subjectid, DbType.Int32, 4);
                     #endregion
 
                     try
@@ -5228,7 +5231,8 @@ VALUES (
 `status` ,
 `recommendtime` ,
 `bloguid` ,
-`relateblog`
+`relateblog`,
+titlelink
 )
 VALUES (
 @rfid,
@@ -5238,7 +5242,8 @@ VALUES (
 @status,
 @recommendtime,
 @bloguid,
-@relateblog
+@relateblog,
+@titlelink
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
@@ -5255,11 +5260,12 @@ VALUES (
                         dbhConvertUserRecommandBlogs.ParameterAdd("@rfid", objUser.rfid, DbType.Int32, 4);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@blogid", objUser.blogid, DbType.Int32, 4);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@title", objUser.title, DbType.String, 200);
-                        dbhConvertUserRecommandBlogs.ParameterAdd("@content", objUser.content, DbType.String, 255);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@content", objUser.content, DbType.String, 4000);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@status", objUser.status, DbType.Int32, 4);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@recommendtime", objUser.recommendtime, DbType.Int32, 4);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@bloguid", objUser.bloguid, DbType.Int32, 4);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@relateblog", objUser.relateblog, DbType.String, 30);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@titlelink", objUser.titlelink, DbType.String, 120);
                         #endregion
                         dbhConvertUserRecommandBlogs.ExecuteNonQuery(sqlFriend);//插入dnt_users表
                         MainForm.SuccessedRecordCount++;
