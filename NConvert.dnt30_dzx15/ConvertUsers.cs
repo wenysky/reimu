@@ -251,6 +251,7 @@ namespace NConvert.dnt30_dzx15
                     else
                     {
                         objUser.usertype = blogshen;
+                        objUser.extgroupids = "20";
                     }
                     objUser.blogShowStatus = Convert.ToInt32(drKexueUser["ifgood"]);
                     objUser.organblog = Convert.ToInt32(drKexueUser["jigoublog"]);

@@ -65,8 +65,8 @@ namespace ConvertAvatars
                             Directory.CreateDirectory(destDir);
                         }
 
-                        string destLargeAvatarPath = Path.Combine(destDir, uid.Substring(7, 2) + "_avatar_large.jpg");
-                        string destMediumAvatarPath = Path.Combine(destDir, uid.Substring(7, 2) + "_avatar_medium.jpg");
+                        string destLargeAvatarPath = Path.Combine(destDir, uid.Substring(7, 2) + "_avatar_big.jpg");
+                        string destMediumAvatarPath = Path.Combine(destDir, uid.Substring(7, 2) + "_avatar_middle.jpg");
                         string destSmallAvatarPath = Path.Combine(destDir, uid.Substring(7, 2) + "_avatar_small.jpg");
 
 
