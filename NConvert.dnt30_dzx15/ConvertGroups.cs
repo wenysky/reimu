@@ -248,7 +248,7 @@ namespace NConvert.dnt30_dzx15
 
                 objForum.description = drBoard["group_demo"].ToString();
                 objForum.password = "";
-                objForum.icon = drBoard["group_logo"].ToString();
+                objForum.icon = drBoard["group_logo"] != DBNull.Value ? drBoard["group_logo"].ToString().Trim('/') : "";
                 objForum.redirect = "";
                 objForum.attachextensions = "";
                 objForum.creditspolicy = "";
