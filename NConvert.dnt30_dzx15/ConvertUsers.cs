@@ -352,7 +352,7 @@ namespace NConvert.dnt30_dzx15
                                 {
                                     ((Hashtable)((Hashtable)hBlock["parameters"])["block1"])["content"] += "\r\n";
                                 }
-                                ((Hashtable)((Hashtable)hBlock["parameters"])["block1"])["content"] += description;
+                                ((Hashtable)((Hashtable)hBlock["parameters"])["block1"])["content"] += annc;
                             }
                         }
 
