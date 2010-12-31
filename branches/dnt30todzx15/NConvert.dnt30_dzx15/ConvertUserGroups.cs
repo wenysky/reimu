@@ -201,8 +201,9 @@ namespace NConvert.dnt30_dzx15
                 objUser.allowdownlocalimg = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
                 objUser.allowpostarticlemod = 0;
                 objUser.allowspacediyhtml = GetGroupValueByAdminUsers(objUser.radminid, 0, 1);
-                objUser.allowspacediybbcode = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
-                objUser.allowspacediyimgcode = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                //为s站导入了空间自定义模块，所以下面两个必须默认为1
+                objUser.allowspacediybbcode = 1;//GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
+                objUser.allowspacediyimgcode = 1;// GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
                 objUser.allowcommentpost = GetGroupValueByLowerUsers(objUser.groupid, 0, 2);
                 objUser.allowcommentitem = GetGroupValueByLowerUsers(objUser.groupid, 0, 1);
                 objUser.ignorecensor = GetGroupValueByModers(objUser.radminid, 0, 1);
