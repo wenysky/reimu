@@ -165,6 +165,10 @@ namespace NConvert
                 ConvertBlogSubjects();
             }
 
+            if (MainForm.IsResetUserBlogCount)
+            {
+                ResetUserBlogCount();
+            }
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             MainForm.MessageForm.SetButtonStatus(false);
@@ -5369,6 +5373,147 @@ VALUES (
             dbhConvertUserRecommandBlogs.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换博客专题。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+        public static void ResetUserBlogCount()
+        {
+            MainForm.MessageForm.SetMessage("开始统计会员日志数\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+
+            Yuwen.Tools.Data.DBHelper topicCountDBH = MainForm.GetTargetDBH_OldVer();
+            Yuwen.Tools.Data.DBHelper replycountDBH = MainForm.GetTargetDBH_OldVer();
+            Yuwen.Tools.Data.DBHelper updatetopicDBH = MainForm.GetTargetDBH_OldVer();
+            string updateSql = string.Format("UPDATE {0}common_member_count SET blogs=@blogs WHERE uid=@uid", MainForm.cic.TargetDbTablePrefix);
+
+
+            topicCountDBH.Open();
+            MainForm.RecordCount = Convert.ToInt32(topicCountDBH.ExecuteScalar(string.Format("SELECT COUNT( DISTINCT uid ) FROM {0}home_blog", MainForm.cic.TargetDbTablePrefix)));
+            topicCountDBH.Dispose();
+
+
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //MainForm.MessageForm.InitTotalProgressBar(1);
+            //MainForm.MessageForm.InitCurrentProgressBar(topicCount);
+
+            replycountDBH.Open();
+            updatetopicDBH.Open();
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                string sql = string.Format("SELECT COUNT( 1 ) num , uid FROM {0}home_blog GROUP BY uid LIMIT {1} , {2}",
+                        MainForm.cic.TargetDbTablePrefix,
+                        MainForm.PageSize * (pagei - 1),
+                        MainForm.PageSize
+                        );
+
+                System.Data.Common.DbDataReader dr = replycountDBH.ExecuteReader(sql);
+
+                while (dr.Read())
+                {
+                    updatetopicDBH.ParametersClear();
+                    updatetopicDBH.ParameterAdd("@blogs", Convert.ToInt32(dr["num"]), System.Data.DbType.Int32, 4);
+                    updatetopicDBH.ParameterAdd("@uid", Convert.ToInt32(dr["uid"]), System.Data.DbType.Int32, 4);
+                    try
+                    {
+                        updatetopicDBH.ExecuteNonQuery(updateSql);
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}。uid={1}\r\n", ex.Message, Convert.ToInt32(dr["uid"])));
+                        MainForm.FailedRecordCount++;
+                    }
+
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+            }
+            replycountDBH.Dispose();
+            updatetopicDBH.Dispose();
+            MainForm.MessageForm.TotalProgressBarNumAdd();
+            MainForm.MessageForm.SetMessage(string.Format("完成统计会员日志数。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+
+        public static void ResetUserAlbumCount()
+        {
+            MainForm.MessageForm.SetMessage("开始统计会员相册数\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+
+            Yuwen.Tools.Data.DBHelper dbhRecordCount = MainForm.GetTargetDBH_OldVer();
+            Yuwen.Tools.Data.DBHelper dbhResetList = MainForm.GetTargetDBH_OldVer();
+            Yuwen.Tools.Data.DBHelper dbhUpdateMemberInfo = MainForm.GetTargetDBH_OldVer();
+            string updateSql = string.Format("UPDATE {0}common_member_count SET blogs=@blogs WHERE uid=@uid", MainForm.cic.TargetDbTablePrefix);
+
+
+            dbhRecordCount.Open();
+            MainForm.RecordCount = Convert.ToInt32(dbhRecordCount.ExecuteScalar(string.Format("SELECT COUNT( DISTINCT uid ) FROM {0}home_blog", MainForm.cic.TargetDbTablePrefix)));
+            dbhRecordCount.Dispose();
+
+
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //MainForm.MessageForm.InitTotalProgressBar(1);
+            //MainForm.MessageForm.InitCurrentProgressBar(topicCount);
+
+            dbhResetList.Open();
+            dbhUpdateMemberInfo.Open();
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                string sql = string.Format("SELECT COUNT( 1 ) num , uid FROM {0}home_album GROUP BY uid LIMIT {1} , {2}",
+                        MainForm.cic.TargetDbTablePrefix,
+                        MainForm.PageSize * (pagei - 1),
+                        MainForm.PageSize
+                        );
+
+                System.Data.Common.DbDataReader dr = dbhResetList.ExecuteReader(sql);
+
+                while (dr.Read())
+                {
+                    dbhUpdateMemberInfo.ParametersClear();
+                    dbhUpdateMemberInfo.ParameterAdd("@albums", Convert.ToInt32(dr["num"]), System.Data.DbType.Int32, 4);
+                    dbhUpdateMemberInfo.ParameterAdd("@uid", Convert.ToInt32(dr["uid"]), System.Data.DbType.Int32, 4);
+                    try
+                    {
+                        dbhUpdateMemberInfo.ExecuteNonQuery(updateSql);
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}。uid={1}\r\n", ex.Message, Convert.ToInt32(dr["uid"])));
+                        MainForm.FailedRecordCount++;
+                    }
+
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+            }
+            dbhResetList.Dispose();
+            dbhUpdateMemberInfo.Dispose();
+            MainForm.MessageForm.TotalProgressBarNumAdd();
+            MainForm.MessageForm.SetMessage(string.Format("完成统计会员相册数。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
     }
 }

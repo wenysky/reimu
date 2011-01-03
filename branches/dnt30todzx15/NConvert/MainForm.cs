@@ -138,6 +138,10 @@ namespace NConvert
         public static bool IsConvertIndexRecomandBlogs;//转换
         public static bool IsConvertBlogSubjects;//转换
 
+
+        public static bool IsResetUserBlogCount;//转换
+        public static bool IsResetUserAlbumCount;//转换
+
         /*
         public static bool IsConvert;//转换
         public static bool IsConvert;//转换
@@ -279,6 +283,9 @@ namespace NConvert
             IsConvertIndexRecomandBlogPicss = ckbxIsConvertIndexRecomandBlogPics.Checked;
             IsConvertIndexRecomandBlogs = ckbxIsConvertIndexRecomandBlogs.Checked;
             IsConvertBlogSubjects = ckbxIsConvertBlogSubjects.Checked;
+
+            IsResetUserBlogCount = ckbxIsResetUserBlogCount.Checked;
+            IsResetUserAlbumCount = ckbxIsResetUserAlbumCount.Checked;
 
             #endregion
         }

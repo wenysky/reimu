@@ -118,6 +118,8 @@
             this.ckbxConvertForums = new System.Windows.Forms.CheckBox();
             this.ckbxConvertUsers = new System.Windows.Forms.CheckBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.ckbxIsResetUserAlbumCount = new System.Windows.Forms.CheckBox();
+            this.ckbxIsResetUserBlogCount = new System.Windows.Forms.CheckBox();
             this.plSrcDBSetting_sql.SuspendLayout();
             this.plTargetDBSetting.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -622,6 +624,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.ckbxIsResetUserAlbumCount);
+            this.groupBox4.Controls.Add(this.ckbxIsResetUserBlogCount);
             this.groupBox4.Controls.Add(this.checkBox9);
             this.groupBox4.Controls.Add(this.checkBox4);
             this.groupBox4.Controls.Add(this.checkBox6);
@@ -1040,6 +1044,26 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // ckbxIsResetUserAlbumCount
+            // 
+            this.ckbxIsResetUserAlbumCount.AutoSize = true;
+            this.ckbxIsResetUserAlbumCount.Location = new System.Drawing.Point(6, 426);
+            this.ckbxIsResetUserAlbumCount.Name = "ckbxIsResetUserAlbumCount";
+            this.ckbxIsResetUserAlbumCount.Size = new System.Drawing.Size(110, 17);
+            this.ckbxIsResetUserAlbumCount.TabIndex = 38;
+            this.ckbxIsResetUserAlbumCount.Text = "统计会员相册数";
+            this.ckbxIsResetUserAlbumCount.UseVisualStyleBackColor = true;
+            // 
+            // ckbxIsResetUserBlogCount
+            // 
+            this.ckbxIsResetUserBlogCount.AutoSize = true;
+            this.ckbxIsResetUserBlogCount.Location = new System.Drawing.Point(6, 403);
+            this.ckbxIsResetUserBlogCount.Name = "ckbxIsResetUserBlogCount";
+            this.ckbxIsResetUserBlogCount.Size = new System.Drawing.Size(110, 17);
+            this.ckbxIsResetUserBlogCount.TabIndex = 37;
+            this.ckbxIsResetUserBlogCount.Text = "统计会员日志数";
+            this.ckbxIsResetUserBlogCount.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1176,6 +1200,8 @@
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.CheckBox ckbxIsConvertBlogSubjects;
         private System.Windows.Forms.CheckBox ckbxIsConvertIndexRecomandBlogs;
+        private System.Windows.Forms.CheckBox ckbxIsResetUserAlbumCount;
+        private System.Windows.Forms.CheckBox ckbxIsResetUserBlogCount;
     }
 }
 
