@@ -267,23 +267,23 @@ namespace NConvert.dnt30_dzx15
                     objUser.blogstartime = drKexueUser["savetime"] != DBNull.Value ? Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(drKexueUser["savetime"])) : 0;
 
                     #region bloglinks
-                    StringBuilder blogLinks = new StringBuilder();
-                    string sqlBlogLinkTemp = string.Format(
-                    "SELECT linkname,linkaddress FROM [science].[dbo].[kexue_bloglink] WHERE linkname>'' AND linkaddress>'' AND userid={0}",
-                    objUser.uid
-                    );
-                    System.Data.Common.DbDataReader drBlogLinkTemp = dbhBlogLinkTemp.ExecuteReader(sqlBlogLinkTemp);
-                    while (drBlogLinkTemp.Read())
-                    {
-                        blogLinks.Append(
-                            string.Format("[url={1}]{0}[/url]\r\n",
-                                drBlogLinkTemp["linkname"].ToString(),
-                                drBlogLinkTemp["linkaddress"].ToString()
-                                )
-                            );
-                    }
-                    drBlogLinkTemp.Close();
-                    drBlogLinkTemp.Dispose();
+                    //StringBuilder blogLinks = new StringBuilder();
+                    //string sqlBlogLinkTemp = string.Format(
+                    //"SELECT linkname,linkaddress FROM [science].[dbo].[kexue_bloglink] WHERE linkname>'' AND linkaddress>'' AND userid={0}",
+                    //objUser.uid
+                    //);
+                    //System.Data.Common.DbDataReader drBlogLinkTemp = dbhBlogLinkTemp.ExecuteReader(sqlBlogLinkTemp);
+                    //while (drBlogLinkTemp.Read())
+                    //{
+                    //    blogLinks.Append(
+                    //        string.Format("[url={1}]{0}[/url]\r\n",
+                    //            drBlogLinkTemp["linkname"].ToString(),
+                    //            drBlogLinkTemp["linkaddress"].ToString()
+                    //            )
+                    //        );
+                    //}
+                    //drBlogLinkTemp.Close();
+                    //drBlogLinkTemp.Dispose();
                     #endregion
 
                     #region blogmusic
@@ -305,7 +305,7 @@ namespace NConvert.dnt30_dzx15
                     drBlogMusicTemp.Dispose();
                     #endregion
 
-                    string bloglink = blogLinks.ToString();
+                    string bloglink = "";//blogLinks.ToString();不导入了
                     string description = drKexueUser["blogjie"] != DBNull.Value ? drKexueUser["blogjie"].ToString().Trim() : "";
                     string annc = drKexueUser["bloggong"] != DBNull.Value ? drKexueUser["bloggong"].ToString().Trim() : "";
 

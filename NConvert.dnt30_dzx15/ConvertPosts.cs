@@ -137,6 +137,11 @@ namespace NConvert.dnt30_dzx15
                             objPost.attachment = 1;
                             //[attach]
                             //objPost.message = Utils.Text.ReplaceRegex(@"/bbs/download\.aspx\?id=" + m.Groups[0].Value, objPost.message, m.Groups[0].Value);
+                            objPost.message = Utils.Text.ReplaceRegex(
+                                "<img alt=\"\" src=\"/images/icon_[0-9]+.gif\" /> &nbsp;<a style=\"COLOR: blue\" target=\"_Blank\" href=\"/bbs/download\\.aspx\\?id=([0-9]+)\">.*?</a>.*?<br /><br />",
+                                objPost.message,
+                                ""
+                                );
                         }
 
                         drExtattach.Close();
