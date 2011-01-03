@@ -5463,11 +5463,11 @@ VALUES (
             Yuwen.Tools.Data.DBHelper dbhRecordCount = MainForm.GetTargetDBH_OldVer();
             Yuwen.Tools.Data.DBHelper dbhResetList = MainForm.GetTargetDBH_OldVer();
             Yuwen.Tools.Data.DBHelper dbhUpdateMemberInfo = MainForm.GetTargetDBH_OldVer();
-            string updateSql = string.Format("UPDATE {0}common_member_count SET blogs=@blogs WHERE uid=@uid", MainForm.cic.TargetDbTablePrefix);
+            string updateSql = string.Format("UPDATE {0}common_member_count SET albums=@albums WHERE uid=@uid", MainForm.cic.TargetDbTablePrefix);
 
 
             dbhRecordCount.Open();
-            MainForm.RecordCount = Convert.ToInt32(dbhRecordCount.ExecuteScalar(string.Format("SELECT COUNT( DISTINCT uid ) FROM {0}home_blog", MainForm.cic.TargetDbTablePrefix)));
+            MainForm.RecordCount = Convert.ToInt32(dbhRecordCount.ExecuteScalar(string.Format("SELECT COUNT( DISTINCT uid ) FROM {0}home_album", MainForm.cic.TargetDbTablePrefix)));
             dbhRecordCount.Dispose();
 
 
