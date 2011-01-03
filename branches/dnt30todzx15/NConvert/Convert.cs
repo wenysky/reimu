@@ -170,6 +170,12 @@ namespace NConvert
                 ResetUserBlogCount();
             }
 
+
+            if (MainForm.IsResetUserAlbumCount)
+            {
+                ResetUserAlbumCount();
+            }
+
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             MainForm.MessageForm.SetButtonStatus(false);
         }
