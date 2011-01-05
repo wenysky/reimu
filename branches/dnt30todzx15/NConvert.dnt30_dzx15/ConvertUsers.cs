@@ -209,7 +209,7 @@ namespace NConvert.dnt30_dzx15
                 );
 
                 string sqlKexueUser = string.Format(
-                    "SELECT realname,blogtype,UserInfo,blogshen,ifgood,jigoublog,blogname,blogjie,bloggong,savetime FROM [sciencebbs].[dbo].[user] WHERE id={0}",
+                    "SELECT realname,blogtype,UserInfo,ifblog,blogshen,ifgood,jigoublog,blogname,blogjie,bloggong,savetime FROM [sciencebbs].[dbo].[user] WHERE id={0}",
                     objUser.uid
                     );
                 System.Data.Common.DbDataReader drKexueUser = dbhUserTemp.ExecuteReader(sqlKexueUser);
@@ -238,22 +238,32 @@ namespace NConvert.dnt30_dzx15
                         objUser.realname = drKexueUser["realname"] != DBNull.Value ? drKexueUser["realname"].ToString() : "";
                     }
 
-                    int blogshen = Convert.ToInt32(drKexueUser["blogshen"]);
-                    if (blogshen == -1)
+                    //如果blogshen=1, 那么usertype=1 groupid=原来的值 extgroupids='20';
+                    //如果blogshen!=1 并且 ifblog=1, 那么usertype=1 groupid='8' extgroupids='';
+                    //如果blogshen!=1 并且 ifblog=0, 那么usertype=0 groupid=原来的值 extgroupids=''
+
+                    int blogshen = drKexueUser["blogshen"] != DBNull.Value ? Convert.ToInt32(drKexueUser["blogshen"]) : 0;
+                    int ifblog = drKexueUser["ifblog"] != DBNull.Value ? Convert.ToInt32(drKexueUser["ifblog"]) : 0;
+
+                    if (blogshen == 1)
                     {
-                        objUser.usertype = 0;
-#warning TODO
-                    }
-                    else if (blogshen == -2)
-                    {
-                        objUser.usertype = 0;
+                        objUser.usertype = 1;
+                        objUser.extgroupids = "20";
                     }
                     else
                     {
-                        objUser.usertype = blogshen;
-                        objUser.extgroupids = "20";
+                        if (ifblog == 1)
+                        {
+                            objUser.usertype = 1;
+                            objUser.groupid = 8;
+                        }
+                        else
+                        {
+                            objUser.usertype = 0;
+                        }
                     }
-                    objUser.blogShowStatus = Convert.ToInt32(drKexueUser["ifgood"]);
+
+                    objUser.blogShowStatus = Convert.ToInt32(drKexueUser["ifgood"]) == -1 ? 0 : 1;
                     objUser.organblog = Convert.ToInt32(drKexueUser["jigoublog"]);
                     objUser.userlevel = Convert.ToInt32(drKexueUser["ifgood"]);
 

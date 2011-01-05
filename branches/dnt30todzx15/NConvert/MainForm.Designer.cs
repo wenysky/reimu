@@ -80,7 +80,9 @@
             this.lbDllName = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.ckbxIsResetUserAlbumCount = new System.Windows.Forms.CheckBox();
+            this.ckbxIsResetUserBlogCount = new System.Windows.Forms.CheckBox();
+            this.ckbxIsConvertAvatars = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
@@ -118,8 +120,6 @@
             this.ckbxConvertForums = new System.Windows.Forms.CheckBox();
             this.ckbxConvertUsers = new System.Windows.Forms.CheckBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.ckbxIsResetUserAlbumCount = new System.Windows.Forms.CheckBox();
-            this.ckbxIsResetUserBlogCount = new System.Windows.Forms.CheckBox();
             this.plSrcDBSetting_sql.SuspendLayout();
             this.plTargetDBSetting.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -131,9 +131,9 @@
             // 
             // btnConvertStart
             // 
-            this.btnConvertStart.Location = new System.Drawing.Point(403, 499);
+            this.btnConvertStart.Location = new System.Drawing.Point(403, 461);
             this.btnConvertStart.Name = "btnConvertStart";
-            this.btnConvertStart.Size = new System.Drawing.Size(75, 25);
+            this.btnConvertStart.Size = new System.Drawing.Size(75, 23);
             this.btnConvertStart.TabIndex = 0;
             this.btnConvertStart.Text = "开始转换";
             this.btnConvertStart.UseVisualStyleBackColor = true;
@@ -149,77 +149,77 @@
             this.plSrcDBSetting_sql.Controls.Add(this.tbxSrcLoginID);
             this.plSrcDBSetting_sql.Controls.Add(this.tbxSrcDBName);
             this.plSrcDBSetting_sql.Controls.Add(this.tbxSrcAddress);
-            this.plSrcDBSetting_sql.Location = new System.Drawing.Point(16, 42);
+            this.plSrcDBSetting_sql.Location = new System.Drawing.Point(16, 39);
             this.plSrcDBSetting_sql.Name = "plSrcDBSetting_sql";
-            this.plSrcDBSetting_sql.Size = new System.Drawing.Size(222, 117);
+            this.plSrcDBSetting_sql.Size = new System.Drawing.Size(222, 108);
             this.plSrcDBSetting_sql.TabIndex = 9;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 91);
+            this.label8.Location = new System.Drawing.Point(3, 84);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 13);
+            this.label8.Size = new System.Drawing.Size(53, 12);
             this.label8.TabIndex = 11;
             this.label8.Text = "登录密码";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 65);
+            this.label7.Location = new System.Drawing.Point(3, 60);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(55, 13);
+            this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 10;
             this.label7.Text = "登录用户";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 12);
+            this.label5.Location = new System.Drawing.Point(3, 11);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 13);
+            this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 8;
             this.label5.Text = "数据库IP";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 39);
+            this.label6.Location = new System.Drawing.Point(3, 36);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(55, 13);
+            this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 9;
             this.label6.Text = "数据库名";
             // 
             // tbxSrcPassword
             // 
-            this.tbxSrcPassword.Location = new System.Drawing.Point(62, 87);
+            this.tbxSrcPassword.Location = new System.Drawing.Point(62, 80);
             this.tbxSrcPassword.Name = "tbxSrcPassword";
             this.tbxSrcPassword.PasswordChar = '*';
-            this.tbxSrcPassword.Size = new System.Drawing.Size(160, 20);
+            this.tbxSrcPassword.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcPassword.TabIndex = 7;
             this.tbxSrcPassword.Text = "123321qq";
             // 
             // tbxSrcLoginID
             // 
-            this.tbxSrcLoginID.Location = new System.Drawing.Point(62, 61);
+            this.tbxSrcLoginID.Location = new System.Drawing.Point(62, 56);
             this.tbxSrcLoginID.Name = "tbxSrcLoginID";
-            this.tbxSrcLoginID.Size = new System.Drawing.Size(160, 20);
+            this.tbxSrcLoginID.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcLoginID.TabIndex = 6;
             this.tbxSrcLoginID.Text = "sa";
             // 
             // tbxSrcDBName
             // 
-            this.tbxSrcDBName.Location = new System.Drawing.Point(62, 35);
+            this.tbxSrcDBName.Location = new System.Drawing.Point(62, 32);
             this.tbxSrcDBName.Name = "tbxSrcDBName";
-            this.tbxSrcDBName.Size = new System.Drawing.Size(160, 20);
+            this.tbxSrcDBName.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcDBName.TabIndex = 5;
             this.tbxSrcDBName.Text = "dnt3";
             // 
             // tbxSrcAddress
             // 
-            this.tbxSrcAddress.Location = new System.Drawing.Point(62, 9);
+            this.tbxSrcAddress.Location = new System.Drawing.Point(62, 8);
             this.tbxSrcAddress.Name = "tbxSrcAddress";
-            this.tbxSrcAddress.Size = new System.Drawing.Size(160, 20);
+            this.tbxSrcAddress.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcAddress.TabIndex = 4;
             this.tbxSrcAddress.Text = "127.0.0.1";
             // 
@@ -233,95 +233,95 @@
             this.plTargetDBSetting.Controls.Add(this.tbxTargetLoginID);
             this.plTargetDBSetting.Controls.Add(this.tbxTargetDBName);
             this.plTargetDBSetting.Controls.Add(this.tbxTargetAddress);
-            this.plTargetDBSetting.Location = new System.Drawing.Point(20, 50);
+            this.plTargetDBSetting.Location = new System.Drawing.Point(20, 46);
             this.plTargetDBSetting.Name = "plTargetDBSetting";
-            this.plTargetDBSetting.Size = new System.Drawing.Size(221, 117);
+            this.plTargetDBSetting.Size = new System.Drawing.Size(221, 108);
             this.plTargetDBSetting.TabIndex = 9;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 92);
+            this.label3.Location = new System.Drawing.Point(3, 85);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 12;
             this.label3.Text = "登录密码";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 66);
+            this.label2.Location = new System.Drawing.Point(3, 61);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 13);
+            this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 12;
             this.label2.Text = "登录用户";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 39);
+            this.label4.Location = new System.Drawing.Point(3, 36);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 13);
+            this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 12;
             this.label4.Text = "数据库名";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 13);
+            this.label9.Location = new System.Drawing.Point(3, 12);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 13);
+            this.label9.Size = new System.Drawing.Size(53, 12);
             this.label9.TabIndex = 12;
             this.label9.Text = "数据库IP";
             // 
             // tbxTargetPassword
             // 
-            this.tbxTargetPassword.Location = new System.Drawing.Point(61, 87);
+            this.tbxTargetPassword.Location = new System.Drawing.Point(61, 80);
             this.tbxTargetPassword.Name = "tbxTargetPassword";
             this.tbxTargetPassword.PasswordChar = '*';
-            this.tbxTargetPassword.Size = new System.Drawing.Size(160, 20);
+            this.tbxTargetPassword.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetPassword.TabIndex = 7;
             this.tbxTargetPassword.Text = "123321qq";
             // 
             // tbxTargetLoginID
             // 
-            this.tbxTargetLoginID.Location = new System.Drawing.Point(61, 61);
+            this.tbxTargetLoginID.Location = new System.Drawing.Point(61, 56);
             this.tbxTargetLoginID.Name = "tbxTargetLoginID";
-            this.tbxTargetLoginID.Size = new System.Drawing.Size(160, 20);
+            this.tbxTargetLoginID.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetLoginID.TabIndex = 6;
             this.tbxTargetLoginID.Text = "root";
             // 
             // tbxTargetDBName
             // 
-            this.tbxTargetDBName.Location = new System.Drawing.Point(61, 35);
+            this.tbxTargetDBName.Location = new System.Drawing.Point(61, 32);
             this.tbxTargetDBName.Name = "tbxTargetDBName";
-            this.tbxTargetDBName.Size = new System.Drawing.Size(160, 20);
+            this.tbxTargetDBName.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetDBName.TabIndex = 5;
             this.tbxTargetDBName.Text = "snq";
             // 
             // tbxTargetAddress
             // 
-            this.tbxTargetAddress.Location = new System.Drawing.Point(61, 9);
+            this.tbxTargetAddress.Location = new System.Drawing.Point(61, 8);
             this.tbxTargetAddress.Name = "tbxTargetAddress";
-            this.tbxTargetAddress.Size = new System.Drawing.Size(160, 20);
+            this.tbxTargetAddress.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetAddress.TabIndex = 4;
             this.tbxTargetAddress.Text = "127.0.0.1";
             // 
             // tbxMessage
             // 
-            this.tbxMessage.Location = new System.Drawing.Point(11, 296);
+            this.tbxMessage.Location = new System.Drawing.Point(11, 273);
             this.tbxMessage.Multiline = true;
             this.tbxMessage.Name = "tbxMessage";
             this.tbxMessage.ReadOnly = true;
             this.tbxMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbxMessage.Size = new System.Drawing.Size(550, 197);
+            this.tbxMessage.Size = new System.Drawing.Size(550, 182);
             this.tbxMessage.TabIndex = 10;
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(486, 499);
+            this.btnStop.Location = new System.Drawing.Point(486, 461);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 25);
+            this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 11;
             this.btnStop.Text = "停止";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -329,9 +329,9 @@
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(403, 531);
+            this.btnTest.Location = new System.Drawing.Point(403, 490);
             this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(75, 25);
+            this.btnTest.Size = new System.Drawing.Size(75, 23);
             this.btnTest.TabIndex = 12;
             this.btnTest.Text = "测试";
             this.btnTest.UseVisualStyleBackColor = true;
@@ -339,9 +339,9 @@
             // 
             // pbTotal
             // 
-            this.pbTotal.Location = new System.Drawing.Point(78, 499);
+            this.pbTotal.Location = new System.Drawing.Point(78, 461);
             this.pbTotal.Name = "pbTotal";
-            this.pbTotal.Size = new System.Drawing.Size(214, 22);
+            this.pbTotal.Size = new System.Drawing.Size(214, 20);
             this.pbTotal.TabIndex = 13;
             // 
             // cbbxSrcDbType
@@ -352,9 +352,9 @@
             "SqlServer",
             "Mysql",
             "Access"});
-            this.cbbxSrcDbType.Location = new System.Drawing.Point(78, 22);
+            this.cbbxSrcDbType.Location = new System.Drawing.Point(78, 20);
             this.cbbxSrcDbType.Name = "cbbxSrcDbType";
-            this.cbbxSrcDbType.Size = new System.Drawing.Size(160, 21);
+            this.cbbxSrcDbType.Size = new System.Drawing.Size(160, 20);
             this.cbbxSrcDbType.TabIndex = 14;
             this.cbbxSrcDbType.SelectedIndexChanged += new System.EventHandler(this.cbbxSrcDbType_SelectedIndexChanged);
             // 
@@ -366,61 +366,61 @@
             "SqlServer",
             "Mysql",
             "Access"});
-            this.cbbxTargetDbType.Location = new System.Drawing.Point(81, 22);
+            this.cbbxTargetDbType.Location = new System.Drawing.Point(81, 20);
             this.cbbxTargetDbType.Name = "cbbxTargetDbType";
-            this.cbbxTargetDbType.Size = new System.Drawing.Size(160, 21);
+            this.cbbxTargetDbType.Size = new System.Drawing.Size(160, 20);
             this.cbbxTargetDbType.TabIndex = 15;
             this.cbbxTargetDbType.SelectedIndexChanged += new System.EventHandler(this.cbbxTargetDbType_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 25);
+            this.label1.Location = new System.Drawing.Point(19, 23);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 16;
             this.label1.Text = "数据类型";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(23, 25);
+            this.label10.Location = new System.Drawing.Point(23, 23);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(55, 13);
+            this.label10.Size = new System.Drawing.Size(53, 12);
             this.label10.TabIndex = 17;
             this.label10.Text = "数据类型";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(19, 170);
+            this.label11.Location = new System.Drawing.Point(19, 157);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 13);
+            this.label11.Size = new System.Drawing.Size(53, 12);
             this.label11.TabIndex = 13;
             this.label11.Text = "表 前 缀";
             // 
             // tbxSrcDbTablePrefix
             // 
-            this.tbxSrcDbTablePrefix.Location = new System.Drawing.Point(78, 166);
+            this.tbxSrcDbTablePrefix.Location = new System.Drawing.Point(78, 153);
             this.tbxSrcDbTablePrefix.Name = "tbxSrcDbTablePrefix";
-            this.tbxSrcDbTablePrefix.Size = new System.Drawing.Size(160, 20);
+            this.tbxSrcDbTablePrefix.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcDbTablePrefix.TabIndex = 12;
             this.tbxSrcDbTablePrefix.Text = "dnt_";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(23, 170);
+            this.label12.Location = new System.Drawing.Point(23, 157);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(49, 13);
+            this.label12.Size = new System.Drawing.Size(53, 12);
             this.label12.TabIndex = 15;
             this.label12.Text = "表 前 缀";
             // 
             // tbxTargetDbTablePrefix
             // 
-            this.tbxTargetDbTablePrefix.Location = new System.Drawing.Point(81, 166);
+            this.tbxTargetDbTablePrefix.Location = new System.Drawing.Point(81, 153);
             this.tbxTargetDbTablePrefix.Name = "tbxTargetDbTablePrefix";
-            this.tbxTargetDbTablePrefix.Size = new System.Drawing.Size(160, 20);
+            this.tbxTargetDbTablePrefix.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetDbTablePrefix.TabIndex = 14;
             this.tbxTargetDbTablePrefix.Text = "pre_";
             // 
@@ -432,9 +432,9 @@
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.tbxSrcDbTablePrefix);
-            this.groupBox1.Location = new System.Drawing.Point(12, 80);
+            this.groupBox1.Location = new System.Drawing.Point(12, 74);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(261, 204);
+            this.groupBox1.Size = new System.Drawing.Size(261, 188);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "源数据库信息";
@@ -444,17 +444,17 @@
             this.plSrcDBSetting_acc.Controls.Add(this.btnBrowerAccessDBFile);
             this.plSrcDBSetting_acc.Controls.Add(this.tbxSrcAccessDBPath);
             this.plSrcDBSetting_acc.Controls.Add(this.label21);
-            this.plSrcDBSetting_acc.Location = new System.Drawing.Point(16, 61);
+            this.plSrcDBSetting_acc.Location = new System.Drawing.Point(16, 56);
             this.plSrcDBSetting_acc.Name = "plSrcDBSetting_acc";
-            this.plSrcDBSetting_acc.Size = new System.Drawing.Size(222, 106);
+            this.plSrcDBSetting_acc.Size = new System.Drawing.Size(222, 98);
             this.plSrcDBSetting_acc.TabIndex = 12;
             this.plSrcDBSetting_acc.Visible = false;
             // 
             // btnBrowerAccessDBFile
             // 
-            this.btnBrowerAccessDBFile.Location = new System.Drawing.Point(131, 76);
+            this.btnBrowerAccessDBFile.Location = new System.Drawing.Point(131, 70);
             this.btnBrowerAccessDBFile.Name = "btnBrowerAccessDBFile";
-            this.btnBrowerAccessDBFile.Size = new System.Drawing.Size(88, 25);
+            this.btnBrowerAccessDBFile.Size = new System.Drawing.Size(88, 23);
             this.btnBrowerAccessDBFile.TabIndex = 13;
             this.btnBrowerAccessDBFile.Text = "浏览文件...";
             this.btnBrowerAccessDBFile.UseVisualStyleBackColor = true;
@@ -462,18 +462,18 @@
             // 
             // tbxSrcAccessDBPath
             // 
-            this.tbxSrcAccessDBPath.Location = new System.Drawing.Point(5, 28);
+            this.tbxSrcAccessDBPath.Location = new System.Drawing.Point(5, 26);
             this.tbxSrcAccessDBPath.Name = "tbxSrcAccessDBPath";
-            this.tbxSrcAccessDBPath.Size = new System.Drawing.Size(214, 20);
+            this.tbxSrcAccessDBPath.Size = new System.Drawing.Size(214, 21);
             this.tbxSrcAccessDBPath.TabIndex = 12;
             this.tbxSrcAccessDBPath.Text = "D:\\database\\dbconvert\\angelsu\\db.mdb";
             // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(3, 12);
+            this.label21.Location = new System.Drawing.Point(3, 11);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(91, 13);
+            this.label21.Size = new System.Drawing.Size(89, 12);
             this.label21.TabIndex = 8;
             this.label21.Text = "数据库文件地址";
             // 
@@ -484,9 +484,9 @@
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.cbbxTargetDbType);
             this.groupBox2.Controls.Add(this.tbxTargetDbTablePrefix);
-            this.groupBox2.Location = new System.Drawing.Point(300, 80);
+            this.groupBox2.Location = new System.Drawing.Point(300, 74);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(261, 204);
+            this.groupBox2.Size = new System.Drawing.Size(261, 188);
             this.groupBox2.TabIndex = 19;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "新数据库信息";
@@ -494,69 +494,69 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(14, 505);
+            this.label13.Location = new System.Drawing.Point(14, 466);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(49, 13);
+            this.label13.Size = new System.Drawing.Size(53, 12);
             this.label13.TabIndex = 20;
             this.label13.Text = "总 进 度";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(298, 505);
+            this.label14.Location = new System.Drawing.Point(298, 466);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(31, 13);
+            this.label14.Size = new System.Drawing.Size(29, 12);
             this.label14.TabIndex = 21;
             this.label14.Text = "总数";
             // 
             // lbTotalRecord
             // 
             this.lbTotalRecord.AutoSize = true;
-            this.lbTotalRecord.Location = new System.Drawing.Point(333, 505);
+            this.lbTotalRecord.Location = new System.Drawing.Point(333, 466);
             this.lbTotalRecord.Name = "lbTotalRecord";
-            this.lbTotalRecord.Size = new System.Drawing.Size(13, 13);
+            this.lbTotalRecord.Size = new System.Drawing.Size(11, 12);
             this.lbTotalRecord.TabIndex = 22;
             this.lbTotalRecord.Text = "0";
             // 
             // lbCurrentRecord
             // 
             this.lbCurrentRecord.AutoSize = true;
-            this.lbCurrentRecord.Location = new System.Drawing.Point(333, 536);
+            this.lbCurrentRecord.Location = new System.Drawing.Point(333, 495);
             this.lbCurrentRecord.Name = "lbCurrentRecord";
-            this.lbCurrentRecord.Size = new System.Drawing.Size(13, 13);
+            this.lbCurrentRecord.Size = new System.Drawing.Size(11, 12);
             this.lbCurrentRecord.TabIndex = 26;
             this.lbCurrentRecord.Text = "0";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(298, 536);
+            this.label16.Location = new System.Drawing.Point(298, 495);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(31, 13);
+            this.label16.Size = new System.Drawing.Size(29, 12);
             this.label16.TabIndex = 25;
             this.label16.Text = "当前";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(14, 536);
+            this.label17.Location = new System.Drawing.Point(14, 495);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(55, 13);
+            this.label17.Size = new System.Drawing.Size(53, 12);
             this.label17.TabIndex = 24;
             this.label17.Text = "当前进度";
             // 
             // pbCurrent
             // 
-            this.pbCurrent.Location = new System.Drawing.Point(78, 531);
+            this.pbCurrent.Location = new System.Drawing.Point(78, 490);
             this.pbCurrent.Name = "pbCurrent";
-            this.pbCurrent.Size = new System.Drawing.Size(214, 22);
+            this.pbCurrent.Size = new System.Drawing.Size(214, 20);
             this.pbCurrent.TabIndex = 23;
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(486, 531);
+            this.btnExit.Location = new System.Drawing.Point(486, 490);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(75, 25);
+            this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 27;
             this.btnExit.Text = "关闭退出";
             this.btnExit.UseVisualStyleBackColor = true;
@@ -565,18 +565,18 @@
             // 
             this.cbbxConvertType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbxConvertType.FormattingEnabled = true;
-            this.cbbxConvertType.Location = new System.Drawing.Point(78, 22);
+            this.cbbxConvertType.Location = new System.Drawing.Point(78, 20);
             this.cbbxConvertType.Name = "cbbxConvertType";
-            this.cbbxConvertType.Size = new System.Drawing.Size(183, 21);
+            this.cbbxConvertType.Size = new System.Drawing.Size(183, 20);
             this.cbbxConvertType.TabIndex = 28;
             this.cbbxConvertType.SelectionChangeCommitted += new System.EventHandler(this.cbbxConvertType_SelectionChangeCommitted);
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(19, 25);
+            this.label15.Location = new System.Drawing.Point(19, 23);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(55, 13);
+            this.label15.Size = new System.Drawing.Size(53, 12);
             this.label15.TabIndex = 17;
             this.label15.Text = "转换类型";
             // 
@@ -587,18 +587,18 @@
             this.groupBox3.Controls.Add(this.label18);
             this.groupBox3.Controls.Add(this.cbbxConvertType);
             this.groupBox3.Controls.Add(this.label15);
-            this.groupBox3.Location = new System.Drawing.Point(12, 13);
+            this.groupBox3.Location = new System.Drawing.Point(12, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(549, 61);
+            this.groupBox3.Size = new System.Drawing.Size(549, 56);
             this.groupBox3.TabIndex = 29;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "基本设置";
             // 
             // btnReadme
             // 
-            this.btnReadme.Location = new System.Drawing.Point(454, 22);
+            this.btnReadme.Location = new System.Drawing.Point(454, 20);
             this.btnReadme.Name = "btnReadme";
-            this.btnReadme.Size = new System.Drawing.Size(75, 25);
+            this.btnReadme.Size = new System.Drawing.Size(75, 23);
             this.btnReadme.TabIndex = 31;
             this.btnReadme.Text = "注意事项";
             this.btnReadme.UseVisualStyleBackColor = true;
@@ -607,18 +607,18 @@
             // lbDllName
             // 
             this.lbDllName.AutoSize = true;
-            this.lbDllName.Location = new System.Drawing.Point(327, 30);
+            this.lbDllName.Location = new System.Drawing.Point(327, 28);
             this.lbDllName.Name = "lbDllName";
-            this.lbDllName.Size = new System.Drawing.Size(55, 13);
+            this.lbDllName.Size = new System.Drawing.Size(59, 12);
             this.lbDllName.TabIndex = 30;
             this.lbDllName.Text = "lbDllName";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(286, 30);
+            this.label18.Location = new System.Drawing.Point(286, 28);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(34, 13);
+            this.label18.Size = new System.Drawing.Size(35, 12);
             this.label18.TabIndex = 29;
             this.label18.Text = "实体:";
             // 
@@ -626,7 +626,7 @@
             // 
             this.groupBox4.Controls.Add(this.ckbxIsResetUserAlbumCount);
             this.groupBox4.Controls.Add(this.ckbxIsResetUserBlogCount);
-            this.groupBox4.Controls.Add(this.checkBox9);
+            this.groupBox4.Controls.Add(this.ckbxIsConvertAvatars);
             this.groupBox4.Controls.Add(this.checkBox4);
             this.groupBox4.Controls.Add(this.checkBox6);
             this.groupBox4.Controls.Add(this.checkBox7);
@@ -663,29 +663,49 @@
             this.groupBox4.Controls.Add(this.ckbxConvertTopicTypes);
             this.groupBox4.Controls.Add(this.ckbxConvertForums);
             this.groupBox4.Controls.Add(this.ckbxConvertUsers);
-            this.groupBox4.Location = new System.Drawing.Point(567, 13);
+            this.groupBox4.Location = new System.Drawing.Point(567, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(185, 543);
+            this.groupBox4.Size = new System.Drawing.Size(185, 501);
             this.groupBox4.TabIndex = 30;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "转换项目";
             // 
-            // checkBox9
+            // ckbxIsResetUserAlbumCount
             // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(95, 384);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(50, 17);
-            this.checkBox9.TabIndex = 36;
-            this.checkBox9.Text = "呵呵";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.ckbxIsResetUserAlbumCount.AutoSize = true;
+            this.ckbxIsResetUserAlbumCount.Location = new System.Drawing.Point(6, 393);
+            this.ckbxIsResetUserAlbumCount.Name = "ckbxIsResetUserAlbumCount";
+            this.ckbxIsResetUserAlbumCount.Size = new System.Drawing.Size(108, 16);
+            this.ckbxIsResetUserAlbumCount.TabIndex = 38;
+            this.ckbxIsResetUserAlbumCount.Text = "统计会员相册数";
+            this.ckbxIsResetUserAlbumCount.UseVisualStyleBackColor = true;
+            // 
+            // ckbxIsResetUserBlogCount
+            // 
+            this.ckbxIsResetUserBlogCount.AutoSize = true;
+            this.ckbxIsResetUserBlogCount.Location = new System.Drawing.Point(6, 372);
+            this.ckbxIsResetUserBlogCount.Name = "ckbxIsResetUserBlogCount";
+            this.ckbxIsResetUserBlogCount.Size = new System.Drawing.Size(108, 16);
+            this.ckbxIsResetUserBlogCount.TabIndex = 37;
+            this.ckbxIsResetUserBlogCount.Text = "统计会员日志数";
+            this.ckbxIsResetUserBlogCount.UseVisualStyleBackColor = true;
+            // 
+            // ckbxIsConvertAvatars
+            // 
+            this.ckbxIsConvertAvatars.AutoSize = true;
+            this.ckbxIsConvertAvatars.Location = new System.Drawing.Point(95, 354);
+            this.ckbxIsConvertAvatars.Name = "ckbxIsConvertAvatars";
+            this.ckbxIsConvertAvatars.Size = new System.Drawing.Size(72, 16);
+            this.ckbxIsConvertAvatars.TabIndex = 36;
+            this.ckbxIsConvertAvatars.Text = "转换头像";
+            this.ckbxIsConvertAvatars.UseVisualStyleBackColor = true;
             // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(6, 384);
+            this.checkBox4.Location = new System.Drawing.Point(6, 354);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(50, 17);
+            this.checkBox4.Size = new System.Drawing.Size(48, 16);
             this.checkBox4.TabIndex = 35;
             this.checkBox4.Text = "呵呵";
             this.checkBox4.UseVisualStyleBackColor = true;
@@ -693,9 +713,9 @@
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(95, 361);
+            this.checkBox6.Location = new System.Drawing.Point(95, 333);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(50, 17);
+            this.checkBox6.Size = new System.Drawing.Size(48, 16);
             this.checkBox6.TabIndex = 34;
             this.checkBox6.Text = "呵呵";
             this.checkBox6.UseVisualStyleBackColor = true;
@@ -703,9 +723,9 @@
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(6, 361);
+            this.checkBox7.Location = new System.Drawing.Point(6, 333);
             this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(50, 17);
+            this.checkBox7.Size = new System.Drawing.Size(48, 16);
             this.checkBox7.TabIndex = 33;
             this.checkBox7.Text = "呵呵";
             this.checkBox7.UseVisualStyleBackColor = true;
@@ -713,9 +733,9 @@
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(95, 338);
+            this.checkBox8.Location = new System.Drawing.Point(95, 312);
             this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(50, 17);
+            this.checkBox8.Size = new System.Drawing.Size(48, 16);
             this.checkBox8.TabIndex = 32;
             this.checkBox8.Text = "呵呵";
             this.checkBox8.UseVisualStyleBackColor = true;
@@ -723,9 +743,9 @@
             // ckbxIsConvertBlogSubjects
             // 
             this.ckbxIsConvertBlogSubjects.AutoSize = true;
-            this.ckbxIsConvertBlogSubjects.Location = new System.Drawing.Point(6, 338);
+            this.ckbxIsConvertBlogSubjects.Location = new System.Drawing.Point(6, 312);
             this.ckbxIsConvertBlogSubjects.Name = "ckbxIsConvertBlogSubjects";
-            this.ckbxIsConvertBlogSubjects.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertBlogSubjects.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertBlogSubjects.TabIndex = 31;
             this.ckbxIsConvertBlogSubjects.Text = "博文专题";
             this.ckbxIsConvertBlogSubjects.UseVisualStyleBackColor = true;
@@ -733,9 +753,9 @@
             // ckbxIsConvertIndexRecomandBlogs
             // 
             this.ckbxIsConvertIndexRecomandBlogs.AutoSize = true;
-            this.ckbxIsConvertIndexRecomandBlogs.Location = new System.Drawing.Point(95, 315);
+            this.ckbxIsConvertIndexRecomandBlogs.Location = new System.Drawing.Point(95, 291);
             this.ckbxIsConvertIndexRecomandBlogs.Name = "ckbxIsConvertIndexRecomandBlogs";
-            this.ckbxIsConvertIndexRecomandBlogs.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertIndexRecomandBlogs.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertIndexRecomandBlogs.TabIndex = 30;
             this.ckbxIsConvertIndexRecomandBlogs.Text = "首页博文";
             this.ckbxIsConvertIndexRecomandBlogs.UseVisualStyleBackColor = true;
@@ -743,9 +763,9 @@
             // ckbxIsConvertGroupBlogType
             // 
             this.ckbxIsConvertGroupBlogType.AutoSize = true;
-            this.ckbxIsConvertGroupBlogType.Location = new System.Drawing.Point(6, 269);
+            this.ckbxIsConvertGroupBlogType.Location = new System.Drawing.Point(6, 248);
             this.ckbxIsConvertGroupBlogType.Name = "ckbxIsConvertGroupBlogType";
-            this.ckbxIsConvertGroupBlogType.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertGroupBlogType.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertGroupBlogType.TabIndex = 29;
             this.ckbxIsConvertGroupBlogType.Text = "群志分类";
             this.ckbxIsConvertGroupBlogType.UseVisualStyleBackColor = true;
@@ -753,9 +773,9 @@
             // ckbxIsConvertAlbumCategory
             // 
             this.ckbxIsConvertAlbumCategory.AutoSize = true;
-            this.ckbxIsConvertAlbumCategory.Location = new System.Drawing.Point(6, 223);
+            this.ckbxIsConvertAlbumCategory.Location = new System.Drawing.Point(6, 206);
             this.ckbxIsConvertAlbumCategory.Name = "ckbxIsConvertAlbumCategory";
-            this.ckbxIsConvertAlbumCategory.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertAlbumCategory.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertAlbumCategory.TabIndex = 28;
             this.ckbxIsConvertAlbumCategory.Text = "相册分类";
             this.ckbxIsConvertAlbumCategory.UseVisualStyleBackColor = true;
@@ -763,9 +783,9 @@
             // ckbxIsConvertIndexRecomandBlogPics
             // 
             this.ckbxIsConvertIndexRecomandBlogPics.AutoSize = true;
-            this.ckbxIsConvertIndexRecomandBlogPics.Location = new System.Drawing.Point(6, 315);
+            this.ckbxIsConvertIndexRecomandBlogPics.Location = new System.Drawing.Point(6, 291);
             this.ckbxIsConvertIndexRecomandBlogPics.Name = "ckbxIsConvertIndexRecomandBlogPics";
-            this.ckbxIsConvertIndexRecomandBlogPics.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertIndexRecomandBlogPics.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertIndexRecomandBlogPics.TabIndex = 27;
             this.ckbxIsConvertIndexRecomandBlogPics.Text = "推荐博图";
             this.ckbxIsConvertIndexRecomandBlogPics.UseVisualStyleBackColor = true;
@@ -773,9 +793,9 @@
             // ckbxIsConvertRateLogs
             // 
             this.ckbxIsConvertRateLogs.AutoSize = true;
-            this.ckbxIsConvertRateLogs.Location = new System.Drawing.Point(95, 292);
+            this.ckbxIsConvertRateLogs.Location = new System.Drawing.Point(95, 270);
             this.ckbxIsConvertRateLogs.Name = "ckbxIsConvertRateLogs";
-            this.ckbxIsConvertRateLogs.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertRateLogs.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertRateLogs.TabIndex = 26;
             this.ckbxIsConvertRateLogs.Text = "评分记录";
             this.ckbxIsConvertRateLogs.UseVisualStyleBackColor = true;
@@ -783,9 +803,9 @@
             // ckbxIsConvertBlogPostFavorite
             // 
             this.ckbxIsConvertBlogPostFavorite.AutoSize = true;
-            this.ckbxIsConvertBlogPostFavorite.Location = new System.Drawing.Point(6, 292);
+            this.ckbxIsConvertBlogPostFavorite.Location = new System.Drawing.Point(6, 270);
             this.ckbxIsConvertBlogPostFavorite.Name = "ckbxIsConvertBlogPostFavorite";
-            this.ckbxIsConvertBlogPostFavorite.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertBlogPostFavorite.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertBlogPostFavorite.TabIndex = 25;
             this.ckbxIsConvertBlogPostFavorite.Text = "日志收藏";
             this.ckbxIsConvertBlogPostFavorite.UseVisualStyleBackColor = true;
@@ -793,9 +813,9 @@
             // ckbxIsConvertGroupBlog
             // 
             this.ckbxIsConvertGroupBlog.AutoSize = true;
-            this.ckbxIsConvertGroupBlog.Location = new System.Drawing.Point(95, 269);
+            this.ckbxIsConvertGroupBlog.Location = new System.Drawing.Point(95, 248);
             this.ckbxIsConvertGroupBlog.Name = "ckbxIsConvertGroupBlog";
-            this.ckbxIsConvertGroupBlog.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertGroupBlog.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertGroupBlog.TabIndex = 24;
             this.ckbxIsConvertGroupBlog.Text = "转换群志";
             this.ckbxIsConvertGroupBlog.UseVisualStyleBackColor = true;
@@ -803,9 +823,9 @@
             // ckbxIsConvertUserRecommand
             // 
             this.ckbxIsConvertUserRecommand.AutoSize = true;
-            this.ckbxIsConvertUserRecommand.Location = new System.Drawing.Point(95, 200);
+            this.ckbxIsConvertUserRecommand.Location = new System.Drawing.Point(95, 185);
             this.ckbxIsConvertUserRecommand.Name = "ckbxIsConvertUserRecommand";
-            this.ckbxIsConvertUserRecommand.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertUserRecommand.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertUserRecommand.TabIndex = 23;
             this.ckbxIsConvertUserRecommand.Text = "博主推荐";
             this.ckbxIsConvertUserRecommand.UseVisualStyleBackColor = true;
@@ -813,9 +833,9 @@
             // ckbxIsConvertFriend
             // 
             this.ckbxIsConvertFriend.AutoSize = true;
-            this.ckbxIsConvertFriend.Location = new System.Drawing.Point(95, 246);
+            this.ckbxIsConvertFriend.Location = new System.Drawing.Point(95, 227);
             this.ckbxIsConvertFriend.Name = "ckbxIsConvertFriend";
-            this.ckbxIsConvertFriend.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertFriend.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertFriend.TabIndex = 22;
             this.ckbxIsConvertFriend.Text = "转换好友";
             this.ckbxIsConvertFriend.UseVisualStyleBackColor = true;
@@ -823,9 +843,9 @@
             // ckbxIsConvertUserBlogClass
             // 
             this.ckbxIsConvertUserBlogClass.AutoSize = true;
-            this.ckbxIsConvertUserBlogClass.Location = new System.Drawing.Point(95, 177);
+            this.ckbxIsConvertUserBlogClass.Location = new System.Drawing.Point(95, 163);
             this.ckbxIsConvertUserBlogClass.Name = "ckbxIsConvertUserBlogClass";
-            this.ckbxIsConvertUserBlogClass.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertUserBlogClass.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertUserBlogClass.TabIndex = 21;
             this.ckbxIsConvertUserBlogClass.Text = "用户分类";
             this.ckbxIsConvertUserBlogClass.UseVisualStyleBackColor = true;
@@ -833,9 +853,9 @@
             // ckbxIsConvertPics
             // 
             this.ckbxIsConvertPics.AutoSize = true;
-            this.ckbxIsConvertPics.Location = new System.Drawing.Point(6, 246);
+            this.ckbxIsConvertPics.Location = new System.Drawing.Point(6, 227);
             this.ckbxIsConvertPics.Name = "ckbxIsConvertPics";
-            this.ckbxIsConvertPics.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertPics.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertPics.TabIndex = 20;
             this.ckbxIsConvertPics.Text = "相册图片";
             this.ckbxIsConvertPics.UseVisualStyleBackColor = true;
@@ -843,9 +863,9 @@
             // ckbxIsConvertAlbum
             // 
             this.ckbxIsConvertAlbum.AutoSize = true;
-            this.ckbxIsConvertAlbum.Location = new System.Drawing.Point(95, 223);
+            this.ckbxIsConvertAlbum.Location = new System.Drawing.Point(95, 206);
             this.ckbxIsConvertAlbum.Name = "ckbxIsConvertAlbum";
-            this.ckbxIsConvertAlbum.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertAlbum.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertAlbum.TabIndex = 19;
             this.ckbxIsConvertAlbum.Text = "转换相册";
             this.ckbxIsConvertAlbum.UseVisualStyleBackColor = true;
@@ -853,9 +873,9 @@
             // ckbxIsConvertUserComment
             // 
             this.ckbxIsConvertUserComment.AutoSize = true;
-            this.ckbxIsConvertUserComment.Location = new System.Drawing.Point(6, 200);
+            this.ckbxIsConvertUserComment.Location = new System.Drawing.Point(6, 185);
             this.ckbxIsConvertUserComment.Name = "ckbxIsConvertUserComment";
-            this.ckbxIsConvertUserComment.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertUserComment.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertUserComment.TabIndex = 18;
             this.ckbxIsConvertUserComment.Text = "转换留言";
             this.ckbxIsConvertUserComment.UseVisualStyleBackColor = true;
@@ -863,9 +883,9 @@
             // ckbxIsConvertBlogComment
             // 
             this.ckbxIsConvertBlogComment.AutoSize = true;
-            this.ckbxIsConvertBlogComment.Location = new System.Drawing.Point(6, 177);
+            this.ckbxIsConvertBlogComment.Location = new System.Drawing.Point(6, 163);
             this.ckbxIsConvertBlogComment.Name = "ckbxIsConvertBlogComment";
-            this.ckbxIsConvertBlogComment.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertBlogComment.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertBlogComment.TabIndex = 17;
             this.ckbxIsConvertBlogComment.Text = "日志评论";
             this.ckbxIsConvertBlogComment.UseVisualStyleBackColor = true;
@@ -873,9 +893,9 @@
             // ckbxIsConvertBlogPosts
             // 
             this.ckbxIsConvertBlogPosts.AutoSize = true;
-            this.ckbxIsConvertBlogPosts.Location = new System.Drawing.Point(95, 154);
+            this.ckbxIsConvertBlogPosts.Location = new System.Drawing.Point(95, 142);
             this.ckbxIsConvertBlogPosts.Name = "ckbxIsConvertBlogPosts";
-            this.ckbxIsConvertBlogPosts.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertBlogPosts.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertBlogPosts.TabIndex = 16;
             this.ckbxIsConvertBlogPosts.Text = "转换日志";
             this.ckbxIsConvertBlogPosts.UseVisualStyleBackColor = true;
@@ -883,9 +903,9 @@
             // ckbxIsConvertGroupPost
             // 
             this.ckbxIsConvertGroupPost.AutoSize = true;
-            this.ckbxIsConvertGroupPost.Location = new System.Drawing.Point(6, 154);
+            this.ckbxIsConvertGroupPost.Location = new System.Drawing.Point(6, 142);
             this.ckbxIsConvertGroupPost.Name = "ckbxIsConvertGroupPost";
-            this.ckbxIsConvertGroupPost.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertGroupPost.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertGroupPost.TabIndex = 15;
             this.ckbxIsConvertGroupPost.Text = "群组帖子";
             this.ckbxIsConvertGroupPost.UseVisualStyleBackColor = true;
@@ -893,9 +913,9 @@
             // ckbxIsConvertGroups
             // 
             this.ckbxIsConvertGroups.AutoSize = true;
-            this.ckbxIsConvertGroups.Location = new System.Drawing.Point(95, 131);
+            this.ckbxIsConvertGroups.Location = new System.Drawing.Point(95, 121);
             this.ckbxIsConvertGroups.Name = "ckbxIsConvertGroups";
-            this.ckbxIsConvertGroups.Size = new System.Drawing.Size(74, 17);
+            this.ckbxIsConvertGroups.Size = new System.Drawing.Size(72, 16);
             this.ckbxIsConvertGroups.TabIndex = 14;
             this.ckbxIsConvertGroups.Text = "转换群组";
             this.ckbxIsConvertGroups.UseVisualStyleBackColor = true;
@@ -903,9 +923,9 @@
             // ckbxConvertPollRecords
             // 
             this.ckbxConvertPollRecords.AutoSize = true;
-            this.ckbxConvertPollRecords.Location = new System.Drawing.Point(95, 85);
+            this.ckbxConvertPollRecords.Location = new System.Drawing.Point(95, 78);
             this.ckbxConvertPollRecords.Name = "ckbxConvertPollRecords";
-            this.ckbxConvertPollRecords.Size = new System.Drawing.Size(86, 17);
+            this.ckbxConvertPollRecords.Size = new System.Drawing.Size(84, 16);
             this.ckbxConvertPollRecords.TabIndex = 13;
             this.ckbxConvertPollRecords.Text = "转换投票人";
             this.ckbxConvertPollRecords.UseVisualStyleBackColor = true;
@@ -913,9 +933,9 @@
             // ckbxConvertUserGroups
             // 
             this.ckbxConvertUserGroups.AutoSize = true;
-            this.ckbxConvertUserGroups.Location = new System.Drawing.Point(6, 16);
+            this.ckbxConvertUserGroups.Location = new System.Drawing.Point(6, 15);
             this.ckbxConvertUserGroups.Name = "ckbxConvertUserGroups";
-            this.ckbxConvertUserGroups.Size = new System.Drawing.Size(86, 17);
+            this.ckbxConvertUserGroups.Size = new System.Drawing.Size(84, 16);
             this.ckbxConvertUserGroups.TabIndex = 12;
             this.ckbxConvertUserGroups.Text = "转换用户组";
             this.ckbxConvertUserGroups.UseVisualStyleBackColor = true;
@@ -923,9 +943,9 @@
             // ckbxUpdatePostsInfo
             // 
             this.ckbxUpdatePostsInfo.AutoSize = true;
-            this.ckbxUpdatePostsInfo.Location = new System.Drawing.Point(6, 510);
+            this.ckbxUpdatePostsInfo.Location = new System.Drawing.Point(6, 471);
             this.ckbxUpdatePostsInfo.Name = "ckbxUpdatePostsInfo";
-            this.ckbxUpdatePostsInfo.Size = new System.Drawing.Size(98, 17);
+            this.ckbxUpdatePostsInfo.Size = new System.Drawing.Size(96, 16);
             this.ckbxUpdatePostsInfo.TabIndex = 11;
             this.ckbxUpdatePostsInfo.Text = "更新帖子信息";
             this.ckbxUpdatePostsInfo.UseVisualStyleBackColor = true;
@@ -933,9 +953,9 @@
             // ckbxResetTopicReplies
             // 
             this.ckbxResetTopicReplies.AutoSize = true;
-            this.ckbxResetTopicReplies.Location = new System.Drawing.Point(6, 486);
+            this.ckbxResetTopicReplies.Location = new System.Drawing.Point(6, 449);
             this.ckbxResetTopicReplies.Name = "ckbxResetTopicReplies";
-            this.ckbxResetTopicReplies.Size = new System.Drawing.Size(122, 17);
+            this.ckbxResetTopicReplies.Size = new System.Drawing.Size(120, 16);
             this.ckbxResetTopicReplies.TabIndex = 10;
             this.ckbxResetTopicReplies.Text = "重建主题回复数量";
             this.ckbxResetTopicReplies.UseVisualStyleBackColor = true;
@@ -943,9 +963,9 @@
             // ckbxResetTopicLastpostid
             // 
             this.ckbxResetTopicLastpostid.AutoSize = true;
-            this.ckbxResetTopicLastpostid.Location = new System.Drawing.Point(6, 463);
+            this.ckbxResetTopicLastpostid.Location = new System.Drawing.Point(6, 427);
             this.ckbxResetTopicLastpostid.Name = "ckbxResetTopicLastpostid";
-            this.ckbxResetTopicLastpostid.Size = new System.Drawing.Size(122, 17);
+            this.ckbxResetTopicLastpostid.Size = new System.Drawing.Size(120, 16);
             this.ckbxResetTopicLastpostid.TabIndex = 9;
             this.ckbxResetTopicLastpostid.Text = "重建主题排序信息";
             this.ckbxResetTopicLastpostid.UseVisualStyleBackColor = true;
@@ -953,9 +973,9 @@
             // ckbxConvertForumLinks
             // 
             this.ckbxConvertForumLinks.AutoSize = true;
-            this.ckbxConvertForumLinks.Location = new System.Drawing.Point(6, 131);
+            this.ckbxConvertForumLinks.Location = new System.Drawing.Point(6, 121);
             this.ckbxConvertForumLinks.Name = "ckbxConvertForumLinks";
-            this.ckbxConvertForumLinks.Size = new System.Drawing.Size(74, 17);
+            this.ckbxConvertForumLinks.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertForumLinks.TabIndex = 8;
             this.ckbxConvertForumLinks.Text = "友情链接";
             this.ckbxConvertForumLinks.UseVisualStyleBackColor = true;
@@ -963,9 +983,9 @@
             // ckbxConvertPms
             // 
             this.ckbxConvertPms.AutoSize = true;
-            this.ckbxConvertPms.Location = new System.Drawing.Point(95, 108);
+            this.ckbxConvertPms.Location = new System.Drawing.Point(95, 100);
             this.ckbxConvertPms.Name = "ckbxConvertPms";
-            this.ckbxConvertPms.Size = new System.Drawing.Size(86, 17);
+            this.ckbxConvertPms.Size = new System.Drawing.Size(84, 16);
             this.ckbxConvertPms.TabIndex = 7;
             this.ckbxConvertPms.Text = "转换短消息";
             this.ckbxConvertPms.UseVisualStyleBackColor = true;
@@ -973,9 +993,9 @@
             // ckbxConvertAttachments
             // 
             this.ckbxConvertAttachments.AutoSize = true;
-            this.ckbxConvertAttachments.Location = new System.Drawing.Point(6, 108);
+            this.ckbxConvertAttachments.Location = new System.Drawing.Point(6, 100);
             this.ckbxConvertAttachments.Name = "ckbxConvertAttachments";
-            this.ckbxConvertAttachments.Size = new System.Drawing.Size(74, 17);
+            this.ckbxConvertAttachments.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertAttachments.TabIndex = 6;
             this.ckbxConvertAttachments.Text = "转换附件";
             this.ckbxConvertAttachments.UseVisualStyleBackColor = true;
@@ -983,9 +1003,9 @@
             // ckbxConvertPolls
             // 
             this.ckbxConvertPolls.AutoSize = true;
-            this.ckbxConvertPolls.Location = new System.Drawing.Point(6, 85);
+            this.ckbxConvertPolls.Location = new System.Drawing.Point(6, 78);
             this.ckbxConvertPolls.Name = "ckbxConvertPolls";
-            this.ckbxConvertPolls.Size = new System.Drawing.Size(74, 17);
+            this.ckbxConvertPolls.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertPolls.TabIndex = 5;
             this.ckbxConvertPolls.Text = "转换投票";
             this.ckbxConvertPolls.UseVisualStyleBackColor = true;
@@ -993,9 +1013,9 @@
             // ckbxConvertPosts
             // 
             this.ckbxConvertPosts.AutoSize = true;
-            this.ckbxConvertPosts.Location = new System.Drawing.Point(95, 62);
+            this.ckbxConvertPosts.Location = new System.Drawing.Point(95, 57);
             this.ckbxConvertPosts.Name = "ckbxConvertPosts";
-            this.ckbxConvertPosts.Size = new System.Drawing.Size(74, 17);
+            this.ckbxConvertPosts.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertPosts.TabIndex = 4;
             this.ckbxConvertPosts.Text = "转换帖子";
             this.ckbxConvertPosts.UseVisualStyleBackColor = true;
@@ -1003,9 +1023,9 @@
             // ckbxConvertTopics
             // 
             this.ckbxConvertTopics.AutoSize = true;
-            this.ckbxConvertTopics.Location = new System.Drawing.Point(6, 62);
+            this.ckbxConvertTopics.Location = new System.Drawing.Point(6, 57);
             this.ckbxConvertTopics.Name = "ckbxConvertTopics";
-            this.ckbxConvertTopics.Size = new System.Drawing.Size(74, 17);
+            this.ckbxConvertTopics.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertTopics.TabIndex = 3;
             this.ckbxConvertTopics.Text = "转换主题";
             this.ckbxConvertTopics.UseVisualStyleBackColor = true;
@@ -1013,9 +1033,9 @@
             // ckbxConvertTopicTypes
             // 
             this.ckbxConvertTopicTypes.AutoSize = true;
-            this.ckbxConvertTopicTypes.Location = new System.Drawing.Point(95, 39);
+            this.ckbxConvertTopicTypes.Location = new System.Drawing.Point(95, 36);
             this.ckbxConvertTopicTypes.Name = "ckbxConvertTopicTypes";
-            this.ckbxConvertTopicTypes.Size = new System.Drawing.Size(74, 17);
+            this.ckbxConvertTopicTypes.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertTopicTypes.TabIndex = 2;
             this.ckbxConvertTopicTypes.Text = "主题分类";
             this.ckbxConvertTopicTypes.UseVisualStyleBackColor = true;
@@ -1023,9 +1043,9 @@
             // ckbxConvertForums
             // 
             this.ckbxConvertForums.AutoSize = true;
-            this.ckbxConvertForums.Location = new System.Drawing.Point(6, 39);
+            this.ckbxConvertForums.Location = new System.Drawing.Point(6, 36);
             this.ckbxConvertForums.Name = "ckbxConvertForums";
-            this.ckbxConvertForums.Size = new System.Drawing.Size(74, 17);
+            this.ckbxConvertForums.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertForums.TabIndex = 1;
             this.ckbxConvertForums.Text = "转换版块";
             this.ckbxConvertForums.UseVisualStyleBackColor = true;
@@ -1033,9 +1053,9 @@
             // ckbxConvertUsers
             // 
             this.ckbxConvertUsers.AutoSize = true;
-            this.ckbxConvertUsers.Location = new System.Drawing.Point(95, 16);
+            this.ckbxConvertUsers.Location = new System.Drawing.Point(95, 15);
             this.ckbxConvertUsers.Name = "ckbxConvertUsers";
-            this.ckbxConvertUsers.Size = new System.Drawing.Size(74, 17);
+            this.ckbxConvertUsers.Size = new System.Drawing.Size(72, 16);
             this.ckbxConvertUsers.TabIndex = 0;
             this.ckbxConvertUsers.Text = "转换用户";
             this.ckbxConvertUsers.UseVisualStyleBackColor = true;
@@ -1044,31 +1064,11 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // ckbxIsResetUserAlbumCount
-            // 
-            this.ckbxIsResetUserAlbumCount.AutoSize = true;
-            this.ckbxIsResetUserAlbumCount.Location = new System.Drawing.Point(6, 426);
-            this.ckbxIsResetUserAlbumCount.Name = "ckbxIsResetUserAlbumCount";
-            this.ckbxIsResetUserAlbumCount.Size = new System.Drawing.Size(110, 17);
-            this.ckbxIsResetUserAlbumCount.TabIndex = 38;
-            this.ckbxIsResetUserAlbumCount.Text = "统计会员相册数";
-            this.ckbxIsResetUserAlbumCount.UseVisualStyleBackColor = true;
-            // 
-            // ckbxIsResetUserBlogCount
-            // 
-            this.ckbxIsResetUserBlogCount.AutoSize = true;
-            this.ckbxIsResetUserBlogCount.Location = new System.Drawing.Point(6, 403);
-            this.ckbxIsResetUserBlogCount.Name = "ckbxIsResetUserBlogCount";
-            this.ckbxIsResetUserBlogCount.Size = new System.Drawing.Size(110, 17);
-            this.ckbxIsResetUserBlogCount.TabIndex = 37;
-            this.ckbxIsResetUserBlogCount.Text = "统计会员日志数";
-            this.ckbxIsResetUserBlogCount.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(764, 569);
+            this.ClientSize = new System.Drawing.Size(764, 525);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnExit);
@@ -1193,7 +1193,7 @@
         private System.Windows.Forms.CheckBox ckbxIsConvertGroupBlog;
         private System.Windows.Forms.CheckBox ckbxIsConvertGroupBlogType;
         private System.Windows.Forms.CheckBox ckbxIsConvertAlbumCategory;
-        private System.Windows.Forms.CheckBox checkBox9;
+        private System.Windows.Forms.CheckBox ckbxIsConvertAvatars;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox7;

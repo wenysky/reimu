@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using NConvert.Entity;
 using Yuwen.Tools.TinyData;
+using System.IO;
 
 namespace NConvert
 {
@@ -175,6 +176,12 @@ namespace NConvert
             {
                 ResetUserAlbumCount();
             }
+
+            if (MainForm.IsConvertAvatars)
+            {
+                ConvertAvatars();
+            }
+
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             MainForm.MessageForm.SetButtonStatus(false);
@@ -5520,6 +5527,134 @@ VALUES (
             dbhUpdateMemberInfo.Dispose();
             MainForm.MessageForm.TotalProgressBarNumAdd();
             MainForm.MessageForm.SetMessage(string.Format("完成统计会员相册数。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+        public static void ConvertAvatars()
+        {
+            MainForm.MessageForm.SetMessage("开始转换头像\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            Yuwen.Tools.Data.DBHelper userlistDBH = MainForm.GetSrcDBH_OldVer();
+            DataTable avatars = userlistDBH.ExecuteDataSet("SELECT ID,userphoto FROM [sciencebbs].[dbo].[user] WHERE userphoto<>'images/upphoto/nophoto.gif' AND userphoto LIKE '%images%.%' ORDER BY ID").Tables[0];
+
+            MainForm.RecordCount = avatars.Rows.Count;
+
+            MainForm.PageSize = 10000000;
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                foreach (DataRow dr in avatars.Rows)
+                {
+                    string url = dr["userphoto"].ToString().Trim().Trim('/').Replace('/', Path.DirectorySeparatorChar);
+                    string sourceAvatarPath = Path.Combine(
+                        AppDomain.CurrentDomain.BaseDirectory,
+                        "source" +
+                        Path.DirectorySeparatorChar + url
+                        );
+                    string targetAvatarPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "target");
+                    string uid = dr["id"].ToString().PadLeft(9, '0');
+
+#if DEBUG
+                if (!File.Exists(sourceAvatarPath))
+                {
+                    string debugPath = Path.GetDirectoryName(sourceAvatarPath);
+                    if (!Directory.Exists(debugPath))
+                    {
+                        Directory.CreateDirectory(debugPath);
+                    }
+                    try
+                    {
+
+                        File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "nophoto.gif"), sourceAvatarPath, true);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+#endif
+
+
+                    if (File.Exists(sourceAvatarPath))
+                    {
+                        string destDir = Path.Combine(targetAvatarPath, uid.Substring(0, 3));
+                        destDir = Path.Combine(destDir, uid.Substring(3, 2));
+                        destDir = Path.Combine(destDir, uid.Substring(5, 2));
+
+                        //string.Format("{0}avatars/upload/{1}/{2}/{3}", targetAvatarPath, uid.Substring(0, 3), uid.Substring(3, 2), uid.Substring(5, 2));
+                        try
+                        {
+                            if (!Directory.Exists(destDir))
+                            {
+                                Directory.CreateDirectory(destDir);
+                            }
+
+                            string destLargeAvatarPath = Path.Combine(destDir, uid.Substring(7, 2) + "_avatar_big.jpg");
+                            string destMediumAvatarPath = Path.Combine(destDir, uid.Substring(7, 2) + "_avatar_middle.jpg");
+                            string destSmallAvatarPath = Path.Combine(destDir, uid.Substring(7, 2) + "_avatar_small.jpg");
+
+
+                            File.Copy(sourceAvatarPath, destLargeAvatarPath, true);
+                            File.Copy(sourceAvatarPath, destMediumAvatarPath, true);
+                            File.Copy(sourceAvatarPath, destSmallAvatarPath, true);
+                            Discuz.Common.Thumbnail thumb = new Discuz.Common.Thumbnail();
+                            thumb.SetImage(destLargeAvatarPath);
+                            thumb.SaveThumbnailImage(200, 200);
+
+                            thumb.SetImage(destMediumAvatarPath);
+                            thumb.SaveThumbnailImage(120, 120);
+
+                            thumb.SetImage(destSmallAvatarPath);
+                            thumb.SaveThumbnailImage(48, 48);
+
+
+                            MainForm.SuccessedRecordCount++;
+                        }
+                        catch (Exception ex)
+                        {
+                            MainForm.MessageForm.SetMessage(
+                                string.Format(
+                                    "错误:{0}。uid={1},img={2}\r\n", 
+                                    ex.Message,
+                                    Convert.ToInt32(dr["id"]),
+                                    dr["userphoto"]
+                                    )
+                                );
+                            MainForm.FailedRecordCount++;
+                        }
+                            MainForm.MessageForm.CurrentProgressBarNumAdd();
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("");
+                        System.Console.WriteLine();
+                        MainForm.MessageForm.SetMessage(
+                            string.Format(
+                                "未找到uid={0}的头像{1}\r\n",
+                                dr["id"],
+                                dr["userphoto"]
+                                )
+                            );
+                        MainForm.FailedRecordCount++;
+                    }
+                }
+
+            }
+            MainForm.MessageForm.TotalProgressBarNumAdd();
+            //提示:头像转换程序已经成功转换了{0}/{1}个头像.
+            MainForm.MessageForm.SetMessage(string.Format("完成转换头像。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
     }
 }
