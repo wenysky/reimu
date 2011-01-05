@@ -141,6 +141,7 @@ namespace NConvert
 
         public static bool IsResetUserBlogCount;//转换
         public static bool IsResetUserAlbumCount;//转换
+        public static bool IsConvertAvatars;
 
         /*
         public static bool IsConvert;//转换
@@ -286,6 +287,8 @@ namespace NConvert
 
             IsResetUserBlogCount = ckbxIsResetUserBlogCount.Checked;
             IsResetUserAlbumCount = ckbxIsResetUserAlbumCount.Checked;
+
+            IsConvertAvatars = ckbxIsConvertAvatars.Checked;
 
             #endregion
         }
@@ -588,6 +591,7 @@ namespace NConvert
                 {
                     SetMessage("正在终止线程...");
                 }
+                SetButtonStatus(false);
                 SetMessage("已手动停止转换\r\n");
             }
             else

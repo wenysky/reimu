@@ -330,7 +330,7 @@ namespace NConvert.Entity
         /// </summary>
         public int usertype { get; set; }
         /// <summary>
-        /// 该用户博文是否在博客首页显示 1:显示(默认) 0:不显示  （原数据库[user][ifgood]-1对应文章不显示）
+        /// 该用户博文是否在博客首页显示 1:显示(默认) 0:不显示  （原数据库[user][ifgood]-1对应文章不显示）(把0 1 2 对应成1，-1对应成0)
         /// </summary>
         public int blogShowStatus { get; set; }
         /// <summary>
