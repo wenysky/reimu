@@ -5451,6 +5451,8 @@ VALUES (
 
                     MainForm.MessageForm.CurrentProgressBarNumAdd();
                 }
+                dr.Close();
+                dr.Dispose();
             }
             replycountDBH.Dispose();
             updatetopicDBH.Dispose();
@@ -5522,6 +5524,9 @@ VALUES (
 
                     MainForm.MessageForm.CurrentProgressBarNumAdd();
                 }
+                dr.Close();
+                dr.Dispose();
+                //System.Threading.Thread.Sleep(1000);
             }
             dbhResetList.Dispose();
             dbhUpdateMemberInfo.Dispose();
@@ -5626,7 +5631,7 @@ VALUES (
                         {
                             MainForm.MessageForm.SetMessage(
                                 string.Format(
-                                    "错误:{0}。uid={1},img={2}\r\n", 
+                                    "错误:{0}。uid={1},img={2}\r\n",
                                     ex.Message,
                                     Convert.ToInt32(dr["id"]),
                                     dr["userphoto"]
@@ -5634,7 +5639,7 @@ VALUES (
                                 );
                             MainForm.FailedRecordCount++;
                         }
-                            MainForm.MessageForm.CurrentProgressBarNumAdd();
+                        MainForm.MessageForm.CurrentProgressBarNumAdd();
                     }
                     else
                     {
