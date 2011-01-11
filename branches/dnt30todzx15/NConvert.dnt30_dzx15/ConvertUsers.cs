@@ -239,8 +239,7 @@ namespace NConvert.dnt30_dzx15
                     }
 
                     //如果blogshen=1, 那么usertype=1 groupid=原来的值 extgroupids='20';
-                    //如果blogshen!=1 并且 ifblog=1, 那么usertype=1 groupid='8' extgroupids='';
-                    //如果blogshen!=1 并且 ifblog=0, 那么usertype=0 groupid=原来的值 extgroupids=''
+                    //如果blogshen!=1， 那么usertype=0 groupid=原来的值 extgroupids=''
 
                     int blogshen = drKexueUser["blogshen"] != DBNull.Value ? Convert.ToInt32(drKexueUser["blogshen"]) : 0;
                     int ifblog = drKexueUser["ifblog"] != DBNull.Value ? Convert.ToInt32(drKexueUser["ifblog"]) : 0;
@@ -252,15 +251,7 @@ namespace NConvert.dnt30_dzx15
                     }
                     else
                     {
-                        if (ifblog == 1)
-                        {
-                            objUser.usertype = 1;
-                            objUser.groupid = 8;
-                        }
-                        else
-                        {
-                            objUser.usertype = 0;
-                        }
+                        objUser.usertype = 0;
                     }
 
                     objUser.blogShowStatus = Convert.ToInt32(drKexueUser["ifgood"]) == -1 ? 0 : 1;

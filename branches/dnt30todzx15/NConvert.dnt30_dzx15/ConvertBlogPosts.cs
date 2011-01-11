@@ -30,12 +30,12 @@ namespace NConvert.dnt30_dzx15
             if (CurrentPage <= 1)
             {
                 sql = string.Format
-                       ("SELECT TOP {1} id,fuurl,username,homeurl,title,typeid,field,hits,commen,writetime,iszz,upimages,ifcommen,del,closed,ifgood,blogclose,isview,subtitle,updatetime,tuijian,content,subid FROM [science].[dbo].[kexue_blogarticle] ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
+                       ("SELECT TOP {1} id,fuurl,username,homeurl,title,typeid,field,hits,commen,writetime,iszz,upimages,ifcommen,del,closed,ifgood,blogclose,isview,subtitle,updatetime,tuijian,content,subid,sourceurl FROM [science].[dbo].[kexue_blogarticle] ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize);
             }
             else
             {
                 sql = string.Format
-                       ("SELECT TOP {1} id,fuurl,username,homeurl,title,typeid,field,hits,commen,writetime,iszz,upimages,ifcommen,del,closed,ifgood,blogclose,isview,subtitle,updatetime,tuijian,content,subid FROM [science].[dbo].[kexue_blogarticle] WHERE id NOT IN (SELECT TOP {2} id FROM [science].[dbo].[kexue_blogarticle] ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
+                       ("SELECT TOP {1} id,fuurl,username,homeurl,title,typeid,field,hits,commen,writetime,iszz,upimages,ifcommen,del,closed,ifgood,blogclose,isview,subtitle,updatetime,tuijian,content,subid,sourceurl FROM [science].[dbo].[kexue_blogarticle] WHERE id NOT IN (SELECT TOP {2} id FROM [science].[dbo].[kexue_blogarticle] ORDER BY id) ORDER BY id", MainForm.cic.SrcDbTablePrefix, MainForm.PageSize, MainForm.PageSize * (CurrentPage - 1));
             }
             #endregion
 
@@ -151,7 +151,7 @@ namespace NConvert.dnt30_dzx15
 
 
                 objBlogPostInfo.pic = "";
-                objBlogPostInfo.tag = "";
+                objBlogPostInfo.tag = dr["sourceurl"] != DBNull.Value ? dr["sourceurl"].ToString().Trim() : "";
                 objBlogPostInfo.message = dr["content"].ToString();
                 objBlogPostInfo.postip = "";
                 objBlogPostInfo.related = "";
