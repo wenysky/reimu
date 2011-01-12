@@ -3681,11 +3681,15 @@ VALUES (
             #region sql语句
             string sqlTrashBlogPost = string.Format(@"INSERT INTO {0}home_blog_trash (
 `blogid` ,
-`content` 
+`content`,
+uid,
+username
 )
 VALUES (
 @blogid,
-@content
+@content,
+@uid,
+@username
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
@@ -3703,7 +3707,11 @@ VALUES (
                     objBlogPost.postip,
                     objBlogPost.message
                     );
+
+                content = System.Text.Encoding.GetEncoding("gb2312").GetString(PHPSerializer.Serialize(objBlogPost, System.Text.Encoding.GetEncoding("gb2312")));
                 dbh.ParameterAdd("@content", content, DbType.String, 955350000);
+                dbh.ParameterAdd("@uid", objBlogPost.uid, DbType.Int32, 4);
+                dbh.ParameterAdd("@username", objBlogPost.username, DbType.String, 15);
                 #endregion
 
                 try
