@@ -3695,20 +3695,22 @@ VALUES (
 
             foreach (BlogPostInfo objBlogPost in MainForm.trashBlogPostList)
             {
+                System.Reflection.PropertyInfo[] properties = objBlogPost.GetType().GetProperties();
+                System.Collections.ArrayList arrayTemplist = new System.Collections.ArrayList();
+
+                foreach (System.Reflection.PropertyInfo info in properties)
+                {
+                    System.Collections.Hashtable ht = new System.Collections.Hashtable();
+                    object value = info.GetValue(objBlogPost, null);
+                    ht.Add(info.Name, value);
+                    arrayTemplist.Add(ht);
+                }
+                string content =  System.Text.Encoding.GetEncoding("gb2312").GetString(PHPSerializer.Serialize(arrayTemplist, System.Text.Encoding.GetEncoding("gb2312")));
+
                 //清理上次执行的参数
                 dbh.ParametersClear();
                 #region 参数
                 dbh.ParameterAdd("@blogid", objBlogPost.blogid, DbType.Int32, 4);
-                string content = string.Format(
-                    "uid:{0}||username:{1}||postdate:{2}||ip:{3}||message:{4}",
-                    objBlogPost.uid,
-                    objBlogPost.username,
-                    objBlogPost.dateline,
-                    objBlogPost.postip,
-                    objBlogPost.message
-                    );
-
-                content = System.Text.Encoding.GetEncoding("gb2312").GetString(PHPSerializer.Serialize(objBlogPost, System.Text.Encoding.GetEncoding("gb2312")));
                 dbh.ParameterAdd("@content", content, DbType.String, 955350000);
                 dbh.ParameterAdd("@uid", objBlogPost.uid, DbType.Int32, 4);
                 dbh.ParameterAdd("@username", objBlogPost.username, DbType.String, 15);
