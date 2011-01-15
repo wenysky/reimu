@@ -3646,6 +3646,9 @@ VALUES (
                     }
                     MainForm.MessageForm.CurrentProgressBarNumAdd();
                 }
+                blogPostList.Clear();
+                blogPostList = null;
+                GC.Collect();
                 //一次分页完毕
                 MainForm.MessageForm.TotalProgressBarNumAdd();
             }
@@ -5374,7 +5377,7 @@ VALUES (
                         dbhConvertUserRecommandBlogs.ParameterAdd("@content", objUser.content, DbType.String, 1000);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@sbtype", objUser.sbtype, DbType.Int32, 4);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@sborder", objUser.sborder, DbType.Int32, 4);
-                        dbhConvertUserRecommandBlogs.ParameterAdd("@logo", objUser.logo, DbType.String, 50);
+                        dbhConvertUserRecommandBlogs.ParameterAdd("@logo", objUser.logo, DbType.String, 200);
                         dbhConvertUserRecommandBlogs.ParameterAdd("@updatetime", objUser.updatetime, DbType.Int32, 4);
                         #endregion
                         dbhConvertUserRecommandBlogs.ExecuteNonQuery(sqlFriend);//插入dnt_users表
