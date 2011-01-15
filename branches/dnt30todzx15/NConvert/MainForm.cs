@@ -32,7 +32,7 @@ namespace NConvert
         /// <summary>
         /// 分页大小
         /// </summary>
-        public static int PageSize = 1000;
+        public static int PageSize = 5000;
         /// <summary>
         /// 当前表分页数
         /// </summary>
