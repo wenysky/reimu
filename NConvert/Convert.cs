@@ -3696,16 +3696,14 @@ VALUES (
             foreach (BlogPostInfo objBlogPost in MainForm.trashBlogPostList)
             {
                 System.Reflection.PropertyInfo[] properties = objBlogPost.GetType().GetProperties();
-                System.Collections.ArrayList arrayTemplist = new System.Collections.ArrayList();
+                System.Collections.Hashtable ht = new System.Collections.Hashtable();
 
                 foreach (System.Reflection.PropertyInfo info in properties)
                 {
-                    System.Collections.Hashtable ht = new System.Collections.Hashtable();
                     object value = info.GetValue(objBlogPost, null);
                     ht.Add(info.Name, value);
-                    arrayTemplist.Add(ht);
                 }
-                string content =  System.Text.Encoding.GetEncoding("gb2312").GetString(PHPSerializer.Serialize(arrayTemplist, System.Text.Encoding.GetEncoding("gb2312")));
+                string content = System.Text.Encoding.GetEncoding("gb2312").GetString(PHPSerializer.Serialize(ht, System.Text.Encoding.GetEncoding("gb2312")));
 
                 //清理上次执行的参数
                 dbh.ParametersClear();
