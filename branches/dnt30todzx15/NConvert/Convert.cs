@@ -182,6 +182,22 @@ namespace NConvert
                 ConvertAvatars();
             }
 
+            Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
+            dbh.Open();
+            object maxpid = dbh.ExecuteScalar(string.Format(
+                        "SELECT MAX(pid) FROM {0}forum_post",
+                        MainForm.cic.TargetDbTablePrefix
+                        )
+                    );
+            dbh.ExecuteNonQuery(
+                string.Format(
+                    "INSERT INTO {0}forum_post_tableid(`pid`) VALUES ({1})",
+                    MainForm.cic.TargetDbTablePrefix,
+                    Convert.ToInt32(maxpid)
+                    )
+                );
+            dbh.Dispose();
+            MainForm.MessageForm.SetMessage(string.Format("更新了postid\r\n", DateTime.Now));
 
             MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
             MainForm.MessageForm.SetButtonStatus(false);

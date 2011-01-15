@@ -82,6 +82,14 @@ namespace NConvert.dnt30_dzx15
                                 uid
                                 );
                         }
+                        else if (objFriend.pictype == 2)
+                        {
+                            //如果pictype==2，就是空间链接(姑且相信)
+                            objFriend.linksrc = string.Format(
+                                "home.php?mod=space&uid={0}",
+                                dr["userid"].ToString().Trim()
+                                );
+                        }
                         else
                         {
                             //blogid=0,uid=0，那么就保持原装吧
