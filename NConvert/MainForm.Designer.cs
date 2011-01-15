@@ -197,7 +197,7 @@
             this.tbxSrcPassword.PasswordChar = '*';
             this.tbxSrcPassword.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcPassword.TabIndex = 7;
-            this.tbxSrcPassword.Text = "123321qq";
+            this.tbxSrcPassword.Text = "5110362";
             // 
             // tbxSrcLoginID
             // 
@@ -297,7 +297,7 @@
             this.tbxTargetDBName.Name = "tbxTargetDBName";
             this.tbxTargetDBName.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetDBName.TabIndex = 5;
-            this.tbxTargetDBName.Text = "snq";
+            this.tbxTargetDBName.Text = "snu";
             // 
             // tbxTargetAddress
             // 

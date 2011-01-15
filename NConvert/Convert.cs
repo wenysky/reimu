@@ -3082,7 +3082,7 @@ VALUES (
 
             //清理数据库
             dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_thread WHERE tid>200000", MainForm.cic.TargetDbTablePrefix));
-            dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_post WHERE pid>600000", MainForm.cic.TargetDbTablePrefix));
+            dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_post WHERE pid>700000", MainForm.cic.TargetDbTablePrefix));
 
             #region sql语句
             string sqlTopic = string.Format(@"INSERT INTO {0}forum_thread (
@@ -3266,7 +3266,7 @@ VALUES (
                         #endregion
 
                         #region post参数
-                        dbh.ParameterAdd("@pid", objTopic.tid + 600000, DbType.Int32, 4);
+                        dbh.ParameterAdd("@pid", objTopic.tid + 700000, DbType.Int32, 4);
                         dbh.ParameterAdd("@first", 1, DbType.Int32, 4);
                         dbh.ParameterAdd("@message", objTopic.message, DbType.String, 10000);
                         dbh.ParameterAdd("@useip", "127.0.0.1", DbType.String, 15);
@@ -3325,7 +3325,7 @@ VALUES (
             MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
 
             //清理数据库
-            dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_post WHERE pid>700000", MainForm.cic.TargetDbTablePrefix));
+            dbh.ExecuteNonQuery(string.Format("DELETE FROM {0}forum_post WHERE pid>750000", MainForm.cic.TargetDbTablePrefix));
 
             #region sql语句
             string sqlPost = string.Format(@"INSERT INTO {0}forum_post (
@@ -3390,7 +3390,7 @@ VALUES (
                     //清理上次执行的参数
                     dbh.ParametersClear();
                     #region dnt_posts表参数
-                    dbh.ParameterAdd("@pid", objPost.pid + 700000, DbType.Int32, 4);
+                    dbh.ParameterAdd("@pid", objPost.pid + 750000, DbType.Int32, 4);
                     dbh.ParameterAdd("@fid", objPost.fid, DbType.Int32, 4);
                     dbh.ParameterAdd("@tid", objPost.tid + 200000, DbType.Int32, 4);
                     dbh.ParameterAdd("@first", objPost.first, DbType.Int32, 4);
