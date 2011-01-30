@@ -54,7 +54,7 @@
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.0.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\DeepinSummer\trunk\DeepinSummer\RefApp\MySql.Data.dll</HintPath>
+      <HintPath>..\..\..\..\DeepinSummer\trunk\DeepinSummer\RefApp\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -91,6 +91,20 @@
     <Compile Include="Entity\TopicTypes.cs" />
     <Compile Include="Entity\UserGroupInfo.cs" />
     <Compile Include="Entity\Users.cs" />
+    <Compile Include="Entity\BlogPostInfo.cs" />
+    <Compile Include="Entity\TopicsP.cs" />
+    <Compile Include="Entity\CommentInfo.cs" />
+    <Compile Include="Entity\HomeClassInfo.cs" />
+    <Compile Include="Entity\FriendInfo.cs" />
+    <Compile Include="Entity\UserRecommandBlogInfo.cs" />
+    <Compile Include="Entity\AlbumPicInfo.cs" />
+    <Compile Include="Entity\GroupBlogTypeInfo.cs" />
+    <Compile Include="Entity\GroupShowBlogInfo.cs" />
+    <Compile Include="Entity\BlogFavoriteInfo.cs" />
+    <Compile Include="Entity\RateLogInfo.cs" />
+    <Compile Include="Entity\IndexRecomandBlogPicInfo.cs" />
+    <Compile Include="Entity\IndexRecomandBlogInfo.cs" />
+    <Compile Include="Entity\BlogSubjectInfo.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,7 +141,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Data\DBHelper.cd" />
+    <Compile Include="Entity\AlbumCategoryInfo.cs" />
+    <Compile Include="Entity\AlbumInfo.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -141,9 +156,13 @@
     <Compile Include="Provider\Provider.cs" />
     <Compile Include="TestThread.cs" />
     <Compile Include="Utils\Attachments.cs" />
+    <Compile Include="Utils\PHPSerializer.cs" />
     <Compile Include="Utils\Posts.cs" />
+    <Compile Include="Utils\Text.cs" />
+    <Compile Include="Utils\Thumbnail.cs" />
     <Compile Include="Utils\Topics.cs" />
     <Compile Include="Utils\Forums.cs" />
+    <Compile Include="Utils\TypeParse.cs" />
     <Compile Include="Utils\UBB.cs" />
   </ItemGroup>
   <ItemGroup>

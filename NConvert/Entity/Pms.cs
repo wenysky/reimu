@@ -6,155 +6,35 @@ namespace NConvert.Entity
 {
     public class Pms
     {
-        private int m_pmid = -1;
-
-        private string m_msgfrom = "发件人";
-
-        private int m_msgfromid = -1;
-
-        private string m_msgto = "收件人";
-
-        private int m_msgtoid = -1;
-
-        private short m_folder = 0;
-
-        private int m_new = 0;
-
-        private string m_subject = "标题";
-
-        private System.DateTime m_postdatetime = DateTime.Now;
-
-        private string m_message = "内容";
-
-
-        /// <summary> pmid </summary>
-        public int pmid
-        {
-            get
-            {
-                return this.m_pmid;
-            }
-            set
-            {
-                this.m_pmid = value;
-            }
-        }
-
-        /// <summary> msgfrom </summary>
-        public string msgfrom
-        {
-            get
-            {
-                return this.m_msgfrom;
-            }
-            set
-            {
-                this.m_msgfrom = value;
-            }
-        }
-
-        /// <summary> msgfromid </summary>
-        public int msgfromid
-        {
-            get
-            {
-                return this.m_msgfromid;
-            }
-            set
-            {
-                this.m_msgfromid = value;
-            }
-        }
-
-        /// <summary> msgto </summary>
-        public string msgto
-        {
-            get
-            {
-                return this.m_msgto;
-            }
-            set
-            {
-                this.m_msgto = value;
-            }
-        }
-
-        /// <summary> msgtoid </summary>
-        public int msgtoid
-        {
-            get
-            {
-                return this.m_msgtoid;
-            }
-            set
-            {
-                this.m_msgtoid = value;
-            }
-        }
-
-        /// <summary> folder </summary>
-        public short folder
-        {
-            get
-            {
-                return this.m_folder;
-            }
-            set
-            {
-                this.m_folder = value;
-            }
-        }
-
-        /// <summary> new </summary>
-        public int newmessage
-        {
-            get
-            {
-                return this.m_new;
-            }
-            set
-            {
-                this.m_new = value;
-            }
-        }
-
-        /// <summary> subject </summary>
-        public string subject
-        {
-            get
-            {
-                return this.m_subject;
-            }
-            set
-            {
-                this.m_subject = value;
-            }
-        }
-
-        /// <summary> postdatetime </summary>
-        public System.DateTime postdatetime
-        {
-            get
-            {
-                return this.m_postdatetime;
-            }
-            set
-            {
-                this.m_postdatetime = value;
-            }
-        }
-
-        /// <summary> message </summary>
-        public string message
-        {
-            get
-            {
-                return this.m_message;
-            }
-            set
-            {
-                this.m_message = value;
-            }
-        }
+        public int pmid { get; set; }
+        /// <summary>
+        /// char15 发送人姓名
+        /// </summary>
+        public string msgfrom { get; set; }
+        public int msgfromid { get; set; }
+        public int msgtoid { get; set; }
+        /// <summary>
+        /// 收件箱inbox/发件箱outbox
+        /// </summary>
+        public string folder { get; set; }
+        /// <summary>
+        /// 是否看过
+        /// </summary>
+        public int isnew { get; set; }
+        /// <summary>
+        /// char75
+        /// </summary>
+        public string subject { get; set; }
+        public int dateline { get; set; }
+        public string message { get; set; }
+        /// <summary>
+        /// 删除状态 1表示接收方删除 3表示双方都删除
+        /// </summary>
+        public int delstatus { get; set; }
+        /// <summary>
+        /// 关联的主题id  （tid）
+        /// </summary>
+        public int related { get; set; }
+        public int fromappid { get; set; }
     }
 }

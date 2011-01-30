@@ -139,6 +139,104 @@ namespace NConvert.Provider
         #endregion
 
 
-        
+        //#region 转换群组
+        //List<Attachments> GetGroupList(int pagei);
+        //#endregion
+
+
+        #region 转换日志
+        int GetBlogRecordCount();
+
+        List<BlogPostInfo> GetBlogList(int pagei);
+        #endregion
+
+
+        #region 转换群组
+        int GetGroupRecordCount();
+
+        List<Forums> GetGroupList();
+        #endregion
+
+
+        #region 转换群组主题
+        int GetGroupTopicRecordCount();
+
+        List<TopicsP> GetGroupTopicList(int pagei);
+        #endregion
+
+
+
+        #region 转换群组主题
+        int GetGroupPostRecordCount();
+
+        List<Posts> GetGroupPostList(int pagei);
+        #endregion
+
+        #region 日志评论
+        int GetBlogCommentRecordCount();
+        List<CommentInfo> GetBlogCommentList(int pagei);
+        #endregion
+
+
+        #region 空间留言
+        int GetHomeCommentRecordCount();
+        List<CommentInfo> GetHomeCommentList(int pagei);
+        #endregion
+
+
+
+
+        int GetUIDbyUsername(string username);
+
+        Dictionary<string, int> GetGroupDic();
+
+        int GetHomeClassRecordCount();
+        List<HomeClassInfo> GetHomeClassList();
+
+
+        int GetFriendRecordCount();
+        List<FriendInfo> GetFriendList(int pagei);
+
+        int GetUserRecommandBlogRecordCount();
+        List<UserRecommandBlogInfo> GetUserRecommandBlogList(int pagei);
+
+
+        int GetAlbumCategoryRecordCount();
+        List<AlbumCategoryInfo> GetAlbumCategoryList(int pagei);
+
+
+        int GetAlbumRecordCount();
+        List<AlbumInfo> GetAlbumList(int pagei);
+
+
+        int GetAlbumPicRecordCount();
+        List<AlbumPicInfo> GetAlbumPicList(int pagei);
+
+
+        int GetGroupBlogTypeRecordCount();
+        List<GroupBlogTypeInfo> GetGroupBlogTypeList(int pagei);
+
+
+        int GetGroupShowBlogRecordCount();
+        List<GroupShowBlogInfo> GetGroupShowBlogList(int pagei);
+
+        int GetBlogFavoriteRecordCount();
+        List<BlogFavoriteInfo> GetBlogFavoriteList(int pagei);
+
+
+        int GetRateLogRecordCount();
+        List<RateLogInfo> GetRateLogList(int pagei);
+
+
+        int GetIndexRecomandBlogPicRecordCount();
+        List<IndexRecomandBlogPicInfo> GetIndexRecomandBlogPicList(int pagei);
+
+
+        int GetIndexRecomandBlogRecordCount();
+        List<IndexRecomandBlogInfo> GetIndexRecomandBlogList(int pagei);
+
+
+        int GetBlogSubjectRecordCount();
+        List<BlogSubjectInfo> GetBlogSubjectList(int pagei);
     }
 }
