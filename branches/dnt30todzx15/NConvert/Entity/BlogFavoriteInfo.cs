@@ -7,7 +7,7 @@ namespace NConvert.Entity
     /// <summary>
     /// 相册系统栏目
     /// </summary>
-    public class BlogFavoriteInfo
+    public class FavoriteInfo
     {
         public int favid { get; set; }
         /// <summary>
