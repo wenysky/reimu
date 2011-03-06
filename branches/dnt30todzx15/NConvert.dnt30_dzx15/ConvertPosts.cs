@@ -73,7 +73,54 @@ namespace NConvert.dnt30_dzx15
                 objPost.parseurloff = Convert.ToInt32(dr["parseurloff"]);
                 objPost.attachment = Convert.ToInt32(dr["attachment"]);
 
-                MatchCollection mc = Utils.Text.GetMatchFull(objPost.message, @"/bbs/download\.aspx\?id=([0-9]+)");
+                objPost.rate = Convert.ToInt32(dr["rate"]);
+                objPost.ratetimes = Convert.ToInt32(dr["ratetimes"]);
+                objPost.status = Convert.ToInt32(dr["invisible"]) == -2 ? 1 : 0;
+                objPost.tags = "";
+                objPost.comment = 0;
+
+                bool isConvertDownloadAspxAttach = true;
+                bool isConvertUrlAttach = true;
+#if DEBUG
+                isConvertDownloadAspxAttach = false;
+                bool isAddPost = false;
+#endif
+                MatchCollection mc;
+
+                //@"/bbs/upload/(.*)\.*"
+                mc = isConvertUrlAttach ? Utils.Text.GetMatchFull(objPost.message, "<img alt=\"\" src=\"/images/icon_[0-9]+.gif\" /> &nbsp;<a style=\"COLOR: blue\" target=\"_Blank\" href=\"(.*?)\">(.*?)</a>.*?<br />") : null;
+                if (mc != null && mc.Count > 0)
+                {
+                    AddAttachment(objPost, mc);
+                    objPost.message = Utils.Text.ReplaceRegex(
+                        "<img alt=\"\" src=\"/images/icon_[0-9]+.gif\" /> &nbsp;<a style=\"COLOR: blue\" target=\"_Blank\" href=\"(.*?)\">(.*?)</a>.*?<br />",
+                        objPost.message,
+                        ""
+                        );
+
+#if DEBUG
+                    isAddPost = true;
+#endif
+                }
+
+
+                mc = isConvertUrlAttach ? Utils.Text.GetMatchFull(objPost.message, "<a.*?href=\"(/bbs/upload/.*?)\".*?>(.*?)</a>") : null;
+                if (mc != null && mc.Count > 0)
+                {
+                    AddAttachment(objPost, mc);
+                    objPost.message = Utils.Text.ReplaceRegex(
+                        "<a.*?href=\"(/bbs/upload/.*?)\".*?>(.*?)</a>",
+                        objPost.message,
+                        ""
+                        );
+#if DEBUG
+                    isAddPost = true;
+#endif
+                }
+
+
+
+                mc = isConvertDownloadAspxAttach ? Utils.Text.GetMatchFull(objPost.message, @"/bbs/download\.aspx\?id=([0-9]+)") : null;
                 if (mc != null && mc.Count > 0)
                 {
                     foreach (Match m in mc)
@@ -149,16 +196,77 @@ namespace NConvert.dnt30_dzx15
                     }
                 }
 
-                objPost.rate = Convert.ToInt32(dr["rate"]);
-                objPost.ratetimes = Convert.ToInt32(dr["ratetimes"]);
-                objPost.status = Convert.ToInt32(dr["invisible"]) == -2 ? 1 : 0;
-                objPost.tags = "";
-                objPost.comment = 0;
+#if DEBUG
+                if (!isAddPost)
+                {
+                    continue;
+                }
+#endif
                 postlist.Add(objPost);
             }
             dr.Close();
             dr.Dispose();
             return postlist;
+        }
+
+        private static void AddAttachment(Posts objPost, MatchCollection mc)
+        {
+            foreach (Match m in mc)
+            {
+                int extNewaid1;
+                if (MainForm.extAttachList.Count > 0)
+                {
+                    extNewaid1 = MainForm.extAttachList[MainForm.extAttachList.Count - 1].aid + 1;
+                }
+                else
+                {
+                    extNewaid1 = MainForm.extAttachAidStartIndex + 1;
+                }
+                Attachments objAttachment = new Attachments();
+                objAttachment.aid = extNewaid1;
+                objAttachment.tid = objPost.tid;
+                objAttachment.pid = objPost.pid;
+                objAttachment.width = 0;
+                objAttachment.dateline = 0;
+                objAttachment.readperm = 0;
+                objAttachment.price = 0;
+                objAttachment.attachment = m.Groups[1].Value.Trim('/').Trim('\\').Trim();
+                objAttachment.filename = System.IO.Path.GetFileName(objAttachment.attachment);
+                if (objAttachment.filename.Trim() == string.Empty)
+                {
+                    objAttachment.filename = "附件";
+                }
+                objAttachment.filetype = "application/octet-stream";// dr["filetype"].ToString();
+                objAttachment.filesize = 0;
+                objAttachment.downloads = 0;
+
+                string ext = System.IO.Path.GetExtension(objAttachment.attachment);
+                //if (ext == string.Empty)
+                //{
+                //    continue;
+                //}
+                List<string> isImage = new List<string>();
+                isImage.Add(".jpg");
+                isImage.Add(".gif");
+                isImage.Add(".png");
+                isImage.Add(".jpeg");
+                if (isImage.Contains(ext))
+                {
+                    objAttachment.isimage = -1;
+                }
+                else
+                {
+                    objAttachment.isimage = 0;
+                }
+                objAttachment.uid = objPost.authorid;
+                objAttachment.thumb = 0;
+                objAttachment.remote = 0;
+                objAttachment.picid = 0;
+                objAttachment.description = 0;
+                MainForm.extAttachList.Add(objAttachment);
+
+                objPost.attachment = 1;
+            }
         }
 
         /// <summary>
