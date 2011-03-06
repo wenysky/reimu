@@ -142,6 +142,7 @@ namespace NConvert
         public static bool IsResetUserBlogCount;//转换
         public static bool IsResetUserAlbumCount;//转换
         public static bool IsConvertAvatars;
+        public static bool IsConvertUserss4Other;
 
         /*
         public static bool IsConvert;//转换
@@ -289,6 +290,8 @@ namespace NConvert
             IsResetUserAlbumCount = ckbxIsResetUserAlbumCount.Checked;
 
             IsConvertAvatars = ckbxIsConvertAvatars.Checked;
+
+            IsConvertUserss4Other = ckbxIsConvertUsers4Other.Checked;
 
             #endregion
         }

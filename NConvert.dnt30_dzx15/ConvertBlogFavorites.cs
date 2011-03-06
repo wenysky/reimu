@@ -21,7 +21,7 @@ namespace NConvert.dnt30_dzx15
             }
         }
 
-        public List<BlogFavoriteInfo> GetBlogFavoriteList(int CurrentPage)
+        public List<FavoriteInfo> GetBlogFavoriteList(int CurrentPage)
         {
             string sql;
 
@@ -39,15 +39,15 @@ namespace NConvert.dnt30_dzx15
             #endregion
             System.Data.Common.DbDataReader drGroupBlogType = MainForm.srcDBH.ExecuteReader(sql);
 
-            List<BlogFavoriteInfo> forumList = new List<BlogFavoriteInfo>();
+            List<FavoriteInfo> forumList = new List<FavoriteInfo>();
             while (drGroupBlogType.Read())
             {
-                BlogFavoriteInfo objGroupBlogTypeInfo = new BlogFavoriteInfo();
+                FavoriteInfo objGroupBlogTypeInfo = new FavoriteInfo();
                 objGroupBlogTypeInfo.favid = Convert.ToInt32(drGroupBlogType["id"]);
                 objGroupBlogTypeInfo.uid = drGroupBlogType["username"] != DBNull.Value ? GetUIDbyUsername(drGroupBlogType["username"].ToString()) : 0;
                 objGroupBlogTypeInfo.id = Convert.ToInt32(drGroupBlogType["xxid"]);
                 objGroupBlogTypeInfo.idtype = "blogid";
-                objGroupBlogTypeInfo.spaceuid = objGroupBlogTypeInfo.uid;
+                objGroupBlogTypeInfo.spaceuid = GetUIDbyBlogid(objGroupBlogTypeInfo.id);
                 objGroupBlogTypeInfo.title = drGroupBlogType["title"] != DBNull.Value ? drGroupBlogType["title"].ToString() : "";
                 objGroupBlogTypeInfo.description = "";
                 objGroupBlogTypeInfo.dateline = 0;

@@ -79,6 +79,8 @@
     <Compile Include="ConvertIndexRecomandBlogPics.cs" />
     <Compile Include="ConvertIndexRecomandBlogs.cs" />
     <Compile Include="ConvertBlogSubjects.cs" />
+    <Compile Include="ConvertUsers4Ohter.cs" />
+    <Compile Include="ConvertTopicFavorites.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj">

@@ -36,7 +36,7 @@ namespace NConvert.Provider
 
         #endregion
         
-        #region 转换用户
+        #region 转换用户组
         /// <summary>
         /// 得到用户组表中记录数.优先读取全局静态变量,如果变量为-1,则从数据库读取.
         /// </summary>
@@ -62,6 +62,11 @@ namespace NConvert.Provider
         /// <param name="CurrentPage">获取第几页</param>
         /// <returns>用户列表</returns>
         List<Users> GetUserList(int CurrentPage);
+
+
+
+        int GetUsers4OtherRecordCount();
+        List<Users> GetUser4OtherList(int CurrentPage);
         #endregion
 
         #region 转换论坛版块
@@ -221,7 +226,9 @@ namespace NConvert.Provider
         List<GroupShowBlogInfo> GetGroupShowBlogList(int pagei);
 
         int GetBlogFavoriteRecordCount();
-        List<BlogFavoriteInfo> GetBlogFavoriteList(int pagei);
+        List<FavoriteInfo> GetBlogFavoriteList(int pagei);
+        int GetTopicFavoriteRecordCount();
+        List<FavoriteInfo> GetTopicFavoriteList(int pagei);
 
 
         int GetRateLogRecordCount();

@@ -83,7 +83,7 @@
             this.ckbxIsResetUserAlbumCount = new System.Windows.Forms.CheckBox();
             this.ckbxIsResetUserBlogCount = new System.Windows.Forms.CheckBox();
             this.ckbxIsConvertAvatars = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.ckbxIsConvertUsers4Other = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
@@ -197,7 +197,7 @@
             this.tbxSrcPassword.PasswordChar = '*';
             this.tbxSrcPassword.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcPassword.TabIndex = 7;
-            this.tbxSrcPassword.Text = "5110362";
+            this.tbxSrcPassword.Text = "123321qq";
             // 
             // tbxSrcLoginID
             // 
@@ -627,7 +627,7 @@
             this.groupBox4.Controls.Add(this.ckbxIsResetUserAlbumCount);
             this.groupBox4.Controls.Add(this.ckbxIsResetUserBlogCount);
             this.groupBox4.Controls.Add(this.ckbxIsConvertAvatars);
-            this.groupBox4.Controls.Add(this.checkBox4);
+            this.groupBox4.Controls.Add(this.ckbxIsConvertUsers4Other);
             this.groupBox4.Controls.Add(this.checkBox6);
             this.groupBox4.Controls.Add(this.checkBox7);
             this.groupBox4.Controls.Add(this.checkBox8);
@@ -700,15 +700,15 @@
             this.ckbxIsConvertAvatars.Text = "转换头像";
             this.ckbxIsConvertAvatars.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // ckbxIsConvertUsers4Other
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(6, 354);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(48, 16);
-            this.checkBox4.TabIndex = 35;
-            this.checkBox4.Text = "呵呵";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.ckbxIsConvertUsers4Other.AutoSize = true;
+            this.ckbxIsConvertUsers4Other.Location = new System.Drawing.Point(6, 354);
+            this.ckbxIsConvertUsers4Other.Name = "ckbxIsConvertUsers4Other";
+            this.ckbxIsConvertUsers4Other.Size = new System.Drawing.Size(72, 16);
+            this.ckbxIsConvertUsers4Other.TabIndex = 35;
+            this.ckbxIsConvertUsers4Other.Text = "额外用户";
+            this.ckbxIsConvertUsers4Other.UseVisualStyleBackColor = true;
             // 
             // checkBox6
             // 
@@ -1194,7 +1194,7 @@
         private System.Windows.Forms.CheckBox ckbxIsConvertGroupBlogType;
         private System.Windows.Forms.CheckBox ckbxIsConvertAlbumCategory;
         private System.Windows.Forms.CheckBox ckbxIsConvertAvatars;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox ckbxIsConvertUsers4Other;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.CheckBox checkBox8;

@@ -25,6 +25,9 @@ namespace NConvert
             if (MainForm.IsConvertUsers)
                 ConvertUsers();
 
+            if (MainForm.IsConvertUserss4Other)
+                ConvertUsers4Other();
+
             if (MainForm.IsConvertForums)
                 ConvertForums();
 
@@ -145,7 +148,11 @@ namespace NConvert
             }
             if (MainForm.IsConvertBlogFavorites)
             {
-                ConvertBlogPostFavorites();
+                if (1 == 0)
+                {
+                    ConvertBlogPostFavorites();
+                }
+                ConvertTopicPostFavorites();
             }
             if (MainForm.IsConvertRateLogs)
             {
@@ -182,6 +189,17 @@ namespace NConvert
                 ConvertAvatars();
             }
 
+            if (MainForm.IsConvertPosts || MainForm.IsConvertGroupPosts)
+            {
+                UpdateLastPoststableid();
+            }
+
+            MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
+            MainForm.MessageForm.SetButtonStatus(false);
+        }
+
+        private static void UpdateLastPoststableid()
+        {
             Yuwen.Tools.Data.DBHelper dbh = MainForm.GetTargetDBH_OldVer();
             dbh.Open();
             object maxpid = dbh.ExecuteScalar(string.Format(
@@ -198,9 +216,6 @@ namespace NConvert
                 );
             dbh.Dispose();
             MainForm.MessageForm.SetMessage(string.Format("更新了postid\r\n", DateTime.Now));
-
-            MainForm.MessageForm.SetMessage(string.Format("========={0}==========\r\n", DateTime.Now));
-            MainForm.MessageForm.SetButtonStatus(false);
         }
 
 
@@ -1216,6 +1231,605 @@ VALUES (
             dbhConvertUsers.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换用户。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+        public static void ConvertUsers4Other()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertUsers = MainForm.GetTargetDBH_OldVer();
+            dbhConvertUsers.Open();
+            MainForm.MessageForm.SetMessage("开始转换补充用户\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetUsers4OtherRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            int pageid = 1;
+            if (pageid <= 1)
+            {
+                //清理数据库
+                dbhConvertUsers.TruncateTable(string.Format("{0}ucenter_members", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}ucenter_memberfields", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_count", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_field_forum", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_profile", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_status", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_education", MainForm.cic.TargetDbTablePrefix));
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_field_home", MainForm.cic.TargetDbTablePrefix));
+            }
+            else
+            {
+                MainForm.MessageForm.SetTotalProgressBarNum(pageid - 1);
+                MainForm.MessageForm.SetCurrentProgressBarNum((pageid - 1) * MainForm.PageSize);
+            }
+
+
+            #region sql语句
+            string sqlUCUser = string.Format(@"INSERT INTO {0}ucenter_members (
+uid,
+username,
+password,
+email,
+myid,
+myidkey,
+regip,
+regdate,
+lastloginip,
+lastlogintime,
+salt,
+secques
+)
+VALUES (
+@uid,
+@username,
+@ucpassword,
+@email,
+'',
+'',
+@regip,
+@regdate,
+@lastloginip,
+@lastlogintime,
+@salt,
+''
+)", MainForm.cic.TargetDbTablePrefix);
+
+            string sqlUCUserfield = string.Format(@"INSERT INTO {0}ucenter_memberfields (
+`uid`,
+`blacklist` 
+)
+VALUES (
+@uid,
+'' 
+)", MainForm.cic.TargetDbTablePrefix);
+
+            string sqlMember = string.Format(@"INSERT INTO {0}common_member (
+`uid` ,
+`email` ,
+`username` ,
+`password` ,
+`status` ,
+`emailstatus` ,
+`avatarstatus` ,
+`videophotostatus` ,
+`adminid` ,
+`groupid` ,
+`groupexpiry` ,
+`extgroupids` ,
+`regdate` ,
+`credits` ,
+`notifysound` ,
+`timeoffset` ,
+`newpm` ,
+`newprompt` ,
+`accessmasks` ,
+`allowadmincp` ,
+`usertype` ,
+`blogShowStatus` ,
+`organblog` ,
+`userlevel` 
+)
+VALUES (
+@uid,
+@email,
+@username,
+@password,
+@status,
+@emailstatus,
+@avatarstatus,
+@videophotostatus,
+@adminid,
+@groupid,
+@groupexpiry,
+@extgroupids,
+@regdate,
+@credits,
+@notifysound,
+@timeoffset,
+@newpm,
+@newprompt,
+@accessmasks,
+@allowadmincp,
+@usertype,
+@blogShowStatus,
+@organblog,
+@userlevel
+)", MainForm.cic.TargetDbTablePrefix);
+            string sqlMembercount = string.Format(@"INSERT INTO {0}common_member_count (
+`uid` ,
+`extcredits1` ,
+`extcredits2` ,
+`extcredits3` ,
+`extcredits4` ,
+`extcredits5` ,
+`extcredits6` ,
+`extcredits7` ,
+`extcredits8` ,
+`friends` ,
+`posts` ,
+`threads` ,
+`digestposts` ,
+`doings` ,
+`blogs` ,
+`albums` ,
+`sharings` ,
+`attachsize` ,
+`views` ,
+`oltime` 
+)
+VALUES (
+@uid,
+@extcredits1,
+@extcredits2,
+@extcredits3,
+@extcredits4,
+@extcredits5,
+@extcredits6,
+@extcredits7,
+@extcredits8,
+@friends,
+@posts,
+@threads,
+@digestposts,
+@doings,
+@blogs,
+@albums,
+@sharings,
+@attachsize,
+@views,
+@oltime
+)", MainForm.cic.TargetDbTablePrefix);
+
+
+            string sqlMemberfieldforum = string.Format(@"INSERT INTO {0}common_member_field_forum (
+`uid` ,
+`publishfeed` ,
+`customshow` ,
+`customstatus` ,
+`medals` ,
+`sightml` ,
+`groupterms` ,
+`authstr` ,
+`groups` ,
+`attentiongroup` 
+)
+VALUES (
+@uid,
+@publishfeed,
+@customshow,
+@customstatus,
+@medals,
+@sightml,
+@groupterms,
+@authstr,
+@groups,
+@attentiongroup
+)", MainForm.cic.TargetDbTablePrefix);
+            string sqlMemberprofile = string.Format(@"INSERT INTO {0}common_member_profile (
+`uid` ,
+`realname` ,
+`gender` ,
+`birthyear` ,
+`birthmonth` ,
+`birthday` ,
+`constellation` ,
+`zodiac` ,
+`telephone` ,
+`mobile` ,
+`idcardtype` ,
+`idcard` ,
+`address` ,
+`zipcode` ,
+`nationality` ,
+`birthprovince` ,
+`birthcity` ,
+`resideprovince` ,
+`residecity` ,
+`residedist` ,
+`residecommunity` ,
+`residesuite` ,
+`graduateschool` ,
+`company` ,
+`education` ,
+`occupation` ,
+`position` ,
+`revenue` ,
+`affectivestatus` ,
+`lookingfor` ,
+`bloodtype` ,
+`height` ,
+`weight` ,
+`alipay` ,
+`icq` ,
+`qq` ,
+`yahoo` ,
+`msn` ,
+`taobao` ,
+`site` ,
+`bio` ,
+`interest` ,
+`realm` ,
+`field2` ,
+`field3` ,
+`field4` ,
+`field5` ,
+`field6` ,
+`field7` ,
+`field8` 
+)
+VALUES (
+@uid,
+@realname,
+@gender,
+@birthyear,
+@birthmonth,
+@birthday,
+@constellation,
+@zodiac,
+@telephone,
+@mobile,
+@idcardtype,
+@idcard,
+@address,
+@zipcode,
+@nationality,
+@birthprovince,
+@birthcity,
+@resideprovince,
+@residecity,
+@residedist,
+@residecommunity,
+@residesuite,
+@graduateschool,
+@company,
+@education,
+@occupation,
+@position,
+@revenue,
+@affectivestatus,
+@lookingfor,
+@bloodtype,
+@height,
+@weight,
+@alipay,
+@icq,
+@qq,
+@yahoo,
+@msn,
+@taobao,
+@site,
+@bio,
+@interest,
+@field1,
+@field2,
+@field3,
+@field4,
+@field5,
+@field6,
+@field7,
+@field8
+)", MainForm.cic.TargetDbTablePrefix);
+            string sqlMemberstatus = string.Format(@"INSERT INTO {0}common_member_status (
+`uid` ,
+`regip` ,
+`lastip` ,
+`lastvisit` ,
+`lastactivity` ,
+`lastpost` ,
+`lastsendmail` ,
+`notifications` ,
+`myinvitations` ,
+`pokes` ,
+`pendingfriends` ,
+`invisible` ,
+`buyercredit` ,
+`sellercredit` ,
+`favtimes` ,
+`sharetimes` 
+)
+VALUES (
+@uid,
+@regip,
+@lastip,
+@lastvisit,
+@lastactivity,
+@lastpost,
+@lastsendmail,
+@notifications,
+@myinvitations,
+@pokes,
+@pendingfriends,
+@invisible,
+@buyercredit,
+@sellercredit,
+@favtimes,
+@sharetimes
+)", MainForm.cic.TargetDbTablePrefix);
+
+            string sqlMemberEducation = string.Format(@"INSERT INTO {0}common_member_education (
+`uid` ,
+`username` ,
+`university` ,
+`universityid` ,
+`laboratory` ,
+`initialstudyear` ,
+`educational` ,
+`grade` 
+)
+VALUES (
+@uid,
+@username,
+@university,
+@universityid,
+@laboratory,
+@initialstudyear,
+@educational,
+@grade
+)", MainForm.cic.TargetDbTablePrefix);
+
+
+            string sqlFieldHome = string.Format(@"INSERT INTO {0}common_member_field_home (
+`uid` ,
+`videophoto` ,
+`spacename` ,
+`spacedescription` ,
+`domain` ,
+`addsize` ,
+`addfriend` ,
+`menunum` ,
+`theme` ,
+`spacecss` ,
+`blockposition` ,
+`recentnote` ,
+`spacenote` ,
+`privacy` ,
+`feedfriend` ,
+`acceptemail` ,
+`magicgift` ,
+`blogstartime` 
+)
+VALUES (
+@uid,
+@videophoto,
+@spacename,
+@spacedescription,
+@domain,
+@addsize,
+@addfriend,
+@menunum,
+@theme,
+@spacecss,
+@blockposition,
+@recentnote,
+@spacenote,
+@privacy,
+@feedfriend,
+@acceptemail,
+@magicgift,
+@blogstartime
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = pageid; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<Users> userList = Provider.Provider.GetInstance().GetUser4OtherList(pagei);
+                foreach (Users objUser in userList)
+                {
+                    try
+                    {
+                        dbhConvertUsers.ParametersClear();
+                        #region users参数
+                        dbhConvertUsers.ParameterAdd("@uid", objUser.uid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@lastloginip", 0, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@lastlogintime", 0, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@salt", objUser.salt, DbType.String, 6);
+                        dbhConvertUsers.ParameterAdd("@email", objUser.email, DbType.String, 40);
+                        dbhConvertUsers.ParameterAdd("@username", objUser.username, DbType.String, 15);
+                        dbhConvertUsers.ParameterAdd("@password", objUser.password, DbType.String, 32);
+                        dbhConvertUsers.ParameterAdd("@ucpassword", objUser.ucpassword, DbType.String, 32);
+                        dbhConvertUsers.ParameterAdd("@status", objUser.status, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@emailstatus", objUser.emailstatus, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@avatarstatus", objUser.avatarstatus, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@videophotostatus", objUser.videophotostatus, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@adminid", objUser.adminid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@groupid", objUser.groupid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@groupexpiry", objUser.groupexpiry, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@extgroupids", objUser.extgroupids, DbType.String, 20);
+                        dbhConvertUsers.ParameterAdd("@regdate", objUser.regdate, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@credits", objUser.credits, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@notifysound", objUser.notifysound, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@timeoffset", objUser.timeoffset, DbType.String, 4);
+                        dbhConvertUsers.ParameterAdd("@newpm", objUser.newpm, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@newprompt", objUser.newprompt, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@accessmasks", objUser.accessmasks, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@allowadmincp", objUser.allowadmincp, DbType.Int32, 4);
+
+                        dbhConvertUsers.ParameterAdd("@extcredits1", objUser.extcredits1, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@extcredits2", objUser.extcredits2, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@extcredits3", objUser.extcredits3, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@extcredits4", objUser.extcredits4, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@extcredits5", objUser.extcredits5, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@extcredits6", objUser.extcredits6, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@extcredits7", objUser.extcredits7, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@extcredits8", objUser.extcredits8, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@friends", objUser.friends, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@posts", objUser.posts, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@threads", objUser.threads, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@digestposts", objUser.digestposts, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@doings", objUser.doings, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@blogs", objUser.blogs, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@albums", objUser.albums, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@sharings", objUser.sharings, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@attachsize", objUser.attachsize, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@views", objUser.views, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@oltime", objUser.oltime, DbType.Int32, 4);
+
+                        dbhConvertUsers.ParameterAdd("@publishfeed", objUser.publishfeed, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@customshow", objUser.customshow, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@customstatus", objUser.customstatus, DbType.String, 30);
+                        dbhConvertUsers.ParameterAdd("@medals", objUser.medals, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@sightml", objUser.sightml, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@groupterms", objUser.groupterms, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@authstr", objUser.authstr, DbType.String, 20);
+                        dbhConvertUsers.ParameterAdd("@groups", objUser.groups, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@attentiongroup", objUser.attentiongroup, DbType.String, 255);
+
+                        dbhConvertUsers.ParameterAdd("@realname", objUser.realname, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@gender", objUser.gender, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@birthyear", objUser.birthyear, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@birthmonth", objUser.birthmonth, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@birthday", objUser.birthday, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@constellation", objUser.constellation, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@zodiac", objUser.zodiac, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@telephone", objUser.telephone, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@mobile", objUser.mobile, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@idcardtype", objUser.idcardtype, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@idcard", objUser.idcard, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@address", objUser.address, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@zipcode", objUser.zipcode, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@nationality", objUser.nationality, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@birthprovince", objUser.birthprovince, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@birthcity", objUser.birthcity, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@resideprovince", objUser.resideprovince, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@residecity", objUser.residecity, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@residedist", objUser.residedist, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@residecommunity", objUser.residecommunity, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@residesuite", objUser.residesuite, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@graduateschool", objUser.graduateschool, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@company", objUser.company, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@education", objUser.education, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@occupation", objUser.occupation, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@position", objUser.position, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@revenue", objUser.revenue, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@affectivestatus", objUser.affectivestatus, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@lookingfor", objUser.lookingfor, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@bloodtype", objUser.bloodtype, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@height", objUser.height, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@weight", objUser.weight, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@alipay", objUser.alipay, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@icq", objUser.icq, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@qq", objUser.qq, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@yahoo", objUser.yahoo, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@msn", objUser.msn, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@taobao", objUser.taobao, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@site", objUser.site, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@bio", objUser.bio, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@interest", objUser.interest, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@field1", objUser.field1, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@field2", objUser.field2, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@field3", objUser.field3, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@field4", objUser.field4, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@field5", objUser.field5, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@field6", objUser.field6, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@field7", objUser.field7, DbType.String, 5000);
+                        dbhConvertUsers.ParameterAdd("@field8", objUser.field8, DbType.String, 5000);
+
+                        dbhConvertUsers.ParameterAdd("@regip", objUser.regip, DbType.String, 15);
+                        dbhConvertUsers.ParameterAdd("@lastip", objUser.lastip, DbType.String, 15);
+                        dbhConvertUsers.ParameterAdd("@lastvisit", objUser.lastvisit, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@lastactivity", objUser.lastactivity, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@lastpost", objUser.lastpost, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@lastsendmail", objUser.lastsendmail, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@notifications", objUser.notifications, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@myinvitations", objUser.myinvitations, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@pokes", objUser.pokes, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@pendingfriends", objUser.pendingfriends, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@invisible", objUser.invisible, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@buyercredit", objUser.buyercredit, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@sellercredit", objUser.sellercredit, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@favtimes", objUser.favtimes, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@sharetimes", objUser.sharetimes, DbType.Int32, 4);
+
+                        //额外
+                        dbhConvertUsers.ParameterAdd("@university", objUser.university, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@universityid", objUser.universityid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@laboratory", objUser.laboratory, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@initialstudyear", objUser.initialstudyear, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@educational", objUser.educational, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@grade", objUser.grade, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@usertype", objUser.usertype, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@blogShowStatus", objUser.blogShowStatus, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@organblog", objUser.organblog, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@userlevel", objUser.userlevel, DbType.Int32, 4);
+
+                        //home field
+                        dbhConvertUsers.ParameterAdd("@videophoto", objUser.videophoto, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@spacename", objUser.spacename, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@spacedescription", objUser.spacedescription, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@domain", objUser.domain, DbType.String, 15);
+                        dbhConvertUsers.ParameterAdd("@addsize", objUser.addsize, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@addfriend", objUser.addfriend, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@menunum", objUser.menunum, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@theme", objUser.theme, DbType.String, 20);
+                        dbhConvertUsers.ParameterAdd("@spacecss", objUser.spacecss, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@blockposition", objUser.blockposition, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@recentnote", objUser.recentnote, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@spacenote", objUser.spacenote, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@privacy", objUser.privacy, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@feedfriend", objUser.feedfriend, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@acceptemail", objUser.acceptemail, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@magicgift", objUser.magicgift, DbType.String, 655300000);
+                        dbhConvertUsers.ParameterAdd("@blogstartime", objUser.blogstartime, DbType.Int32, 4);
+
+                        #endregion
+                        dbhConvertUsers.ExecuteNonQuery(sqlUCUser);
+                        dbhConvertUsers.ExecuteNonQuery(sqlUCUserfield);
+                        dbhConvertUsers.ExecuteNonQuery(sqlMember);//插入dnt_users表
+                        dbhConvertUsers.ExecuteNonQuery(sqlMembercount);
+                        dbhConvertUsers.ExecuteNonQuery(sqlMemberfieldforum);//插入dnt_userfields表
+                        dbhConvertUsers.ExecuteNonQuery(sqlMemberprofile);
+                        dbhConvertUsers.ExecuteNonQuery(sqlMemberstatus);
+                        dbhConvertUsers.ExecuteNonQuery(sqlFieldHome);
+
+                        dbhConvertUsers.ExecuteNonQuery(sqlMemberEducation);//插入额外表
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.uid={1}\r\n", ex.Message, objUser.uid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertUsers.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换额外用户。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
         /// <summary>
@@ -5037,8 +5651,8 @@ VALUES (
             for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
             {
                 //分段得到用户列表
-                List<BlogFavoriteInfo> recommandList = Provider.Provider.GetInstance().GetBlogFavoriteList(pagei);
-                foreach (BlogFavoriteInfo objAlbumCategoryInfo in recommandList)
+                List<FavoriteInfo> recommandList = Provider.Provider.GetInstance().GetBlogFavoriteList(pagei);
+                foreach (FavoriteInfo objAlbumCategoryInfo in recommandList)
                 {
                     try
                     {
@@ -5070,6 +5684,86 @@ VALUES (
             dbhGroupBlogTypes.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换日志收藏。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+        private static void ConvertTopicPostFavorites()
+        {
+            Yuwen.Tools.Data.DBHelper dbhGroupBlogTypes = MainForm.GetTargetDBH_OldVer();
+            dbhGroupBlogTypes.Open();
+            MainForm.MessageForm.SetMessage("开始帖子收藏\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetTopicFavoriteRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            //清理数据库
+            dbhGroupBlogTypes.TruncateTable(string.Format("{0}home_favorite", MainForm.cic.TargetDbTablePrefix));
+
+            #region sql语句
+            string sqlBlogFavorite = string.Format(@"INSERT INTO {0}home_favorite (
+`uid` ,
+`id` ,
+`idtype` ,
+`spaceuid` ,
+`title` ,
+`description` ,
+`dateline` 
+)
+VALUES (
+@uid,
+@id,
+@idtype,
+@spaceuid,
+@title,
+@description,
+@dateline
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = 1; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<FavoriteInfo> recommandList = Provider.Provider.GetInstance().GetTopicFavoriteList(pagei);
+                foreach (FavoriteInfo objAlbumCategoryInfo in recommandList)
+                {
+                    try
+                    {
+                        dbhGroupBlogTypes.ParametersClear();
+                        #region users参数
+                        dbhGroupBlogTypes.ParameterAdd("@uid", objAlbumCategoryInfo.uid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@id", objAlbumCategoryInfo.id, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@idtype", objAlbumCategoryInfo.idtype, DbType.String, 255);
+                        dbhGroupBlogTypes.ParameterAdd("@spaceuid", objAlbumCategoryInfo.spaceuid, DbType.Int32, 4);
+                        dbhGroupBlogTypes.ParameterAdd("@title", objAlbumCategoryInfo.title, DbType.String, 255);
+                        dbhGroupBlogTypes.ParameterAdd("@description", objAlbumCategoryInfo.description, DbType.String, 655350000);
+                        dbhGroupBlogTypes.ParameterAdd("@dateline", objAlbumCategoryInfo.dateline, DbType.Int32, 4);
+                        #endregion
+                        dbhGroupBlogTypes.ExecuteNonQuery(sqlBlogFavorite);//插入
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.tid={1}\r\n", ex.Message, objAlbumCategoryInfo.id));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhGroupBlogTypes.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换帖子收藏。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
 
