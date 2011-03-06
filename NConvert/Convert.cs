@@ -209,7 +209,7 @@ namespace NConvert
                     );
             dbh.ExecuteNonQuery(
                 string.Format(
-                    "INSERT INTO {0}forum_post_tableid(`pid`) VALUES ({1})",
+                    "REPLACE INTO {0}forum_post_tableid(`pid`) VALUES ({1})",
                     MainForm.cic.TargetDbTablePrefix,
                     Convert.ToInt32(maxpid)
                     )
@@ -2552,7 +2552,7 @@ VALUES (
                     );
             dbh.ExecuteNonQuery(
                 string.Format(
-                    "INSERT INTO {0}forum_post_tableid(`pid`) VALUES ({1})",
+                    "REPLACE INTO {0}forum_post_tableid(`pid`) VALUES ({1})",
                     MainForm.cic.TargetDbTablePrefix,
                     Convert.ToInt32(maxpid)
                     )
