@@ -52,7 +52,12 @@ namespace NConvert
                         );
                 if (maxaid != DBNull.Value)
                 {
+                    //如果有值
                     MainForm.extAttachAidStartIndex = 1 + Convert.ToInt32(maxaid);
+                }
+                else
+                {
+                    MainForm.extAttachAidStartIndex = 1;
                 }
                 dbhExtattach.Dispose();
                 ConvertPosts();

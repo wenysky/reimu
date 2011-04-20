@@ -221,7 +221,7 @@
             this.tbxSrcAddress.Name = "tbxSrcAddress";
             this.tbxSrcAddress.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcAddress.TabIndex = 4;
-            this.tbxSrcAddress.Text = "127.0.0.1";
+            this.tbxSrcAddress.Text = "10.0.4.230";
             // 
             // plTargetDBSetting
             // 
@@ -305,7 +305,7 @@
             this.tbxTargetAddress.Name = "tbxTargetAddress";
             this.tbxTargetAddress.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetAddress.TabIndex = 4;
-            this.tbxTargetAddress.Text = "127.0.0.1";
+            this.tbxTargetAddress.Text = "10.0.4.230";
             // 
             // tbxMessage
             // 
