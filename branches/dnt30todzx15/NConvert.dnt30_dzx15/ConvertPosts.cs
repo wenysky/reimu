@@ -88,12 +88,12 @@ namespace NConvert.dnt30_dzx15
                 MatchCollection mc;
 
                 //@"/bbs/upload/(.*)\.*"
-                mc = isConvertUrlAttach ? Utils.Text.GetMatchFull(objPost.message, "<img alt=\"\" src=\"/images/icon_[0-9]+.gif\" /> &nbsp;<a style=\"COLOR: blue\" target=\"_Blank\" href=\"(.*?)\">(.*?)</a>.*?<br />") : null;
+                mc = isConvertUrlAttach ? Utils.Text.GetMatchFull(objPost.message, "<img alt=\"\" src=\"/images/icon_[0-9]+.gif\" /> &nbsp;<a style=\"COLOR: blue\" target=\"_Blank\" href=\"(/bbs/upload/.*?)\">(.*?)</a>.*?<br />") : null;
                 if (mc != null && mc.Count > 0)
                 {
                     AddAttachment(objPost, mc);
                     objPost.message = Utils.Text.ReplaceRegex(
-                        "<img alt=\"\" src=\"/images/icon_[0-9]+.gif\" /> &nbsp;<a style=\"COLOR: blue\" target=\"_Blank\" href=\"(.*?)\">(.*?)</a>.*?<br />",
+                        "<img alt=\"\" src=\"/images/icon_[0-9]+.gif\" /> &nbsp;<a style=\"COLOR: blue\" target=\"_Blank\" href=\"(/bbs/upload/.*?)\">(.*?)</a>.*?<br />",
                         objPost.message,
                         ""
                         );
@@ -220,7 +220,7 @@ namespace NConvert.dnt30_dzx15
                 }
                 else
                 {
-                    extNewaid1 = MainForm.extAttachAidStartIndex + 1;
+                    extNewaid1 = MainForm.extAttachAidStartIndex;
                 }
                 Attachments objAttachment = new Attachments();
                 objAttachment.aid = extNewaid1;
