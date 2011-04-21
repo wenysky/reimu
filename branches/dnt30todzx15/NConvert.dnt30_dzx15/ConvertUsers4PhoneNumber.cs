@@ -57,9 +57,9 @@ namespace NConvert.dnt30_dzx15
 
                 string userInfo = dr["UserInfo"] != DBNull.Value ? dr["UserInfo"].ToString() : "";
                 string[] arrayUserInfo = userInfo.Split('\\');//一共有15个
-                objUser.telephone = arrayUserInfo.Length == 15 ? arrayUserInfo[12] : "";
+                objUser.telephone = arrayUserInfo.Length > 0 ? arrayUserInfo[12] : "";
 
-                if (objUser.mobile == string.Empty || objUser.telephone == string.Empty)
+                if (objUser.mobile == string.Empty && objUser.telephone == string.Empty)
                 {
                     continue;
                 }
