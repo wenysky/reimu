@@ -26,7 +26,12 @@ namespace NConvert
                 ConvertUsers();
 
             if (MainForm.IsConvertUserss4Other)
-                ConvertUsers4Other();
+            {
+                //补充额外用户，转过了不用了
+                //ConvertUsers4Other();
+                //留给新的补充电话号码
+                ConvertUsers4PhoneNumber();
+            }
 
             if (MainForm.IsConvertForums)
                 ConvertForums();
@@ -1835,6 +1840,91 @@ VALUES (
             dbhConvertUsers.Dispose();
             MainForm.RecordCount = -1;
             MainForm.MessageForm.SetMessage(string.Format("完成转换额外用户。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
+        }
+
+
+        public static void ConvertUsers4PhoneNumber()
+        {
+            Yuwen.Tools.Data.DBHelper dbhConvertUsers = MainForm.GetTargetDBH_OldVer();
+            dbhConvertUsers.Open();
+            MainForm.MessageForm.SetMessage("开始转换电话用户\r\n");
+            MainForm.SuccessedRecordCount = 0;
+            MainForm.FailedRecordCount = 0;
+
+            MainForm.RecordCount = Provider.Provider.GetInstance().GetUsers4PhoneNumberRecordCount();
+            if (MainForm.RecordCount % MainForm.PageSize != 0)
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize + 1;
+            }
+            else
+            {
+                MainForm.PageCount = MainForm.RecordCount / MainForm.PageSize;
+            }
+            MainForm.MessageForm.InitTotalProgressBar(MainForm.PageCount);
+            MainForm.MessageForm.InitCurrentProgressBar(MainForm.RecordCount);
+
+            int pageid = 1;
+            if (pageid <= 1)
+            {
+                //清理数据库
+                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_profile", MainForm.cic.TargetDbTablePrefix));
+            }
+            else
+            {
+                MainForm.MessageForm.SetTotalProgressBarNum(pageid - 1);
+                MainForm.MessageForm.SetCurrentProgressBarNum((pageid - 1) * MainForm.PageSize);
+            }
+
+
+            #region sql语句
+            
+            string sqlMemberprofile = string.Format(@"INSERT INTO {0}common_member_profile (
+`uid` ,
+`username`,
+`telephone` ,
+`mobile`
+)
+VALUES (
+@uid,
+@username,
+@telephone,
+@mobile
+)", MainForm.cic.TargetDbTablePrefix);
+            #endregion
+
+            for (int pagei = pageid; pagei <= MainForm.PageCount; pagei++)
+            {
+                //分段得到用户列表
+                List<Users> userList = Provider.Provider.GetInstance().GetUser4PhoneNumberList(pagei);
+                foreach (Users objUser in userList)
+                {
+                    try
+                    {
+                        dbhConvertUsers.ParametersClear();
+                        #region users参数
+                        dbhConvertUsers.ParameterAdd("@uid", objUser.uid, DbType.Int32, 4);
+                        dbhConvertUsers.ParameterAdd("@username", objUser.username, DbType.String, 15);
+                        dbhConvertUsers.ParameterAdd("@telephone", objUser.telephone, DbType.String, 255);
+                        dbhConvertUsers.ParameterAdd("@mobile", objUser.mobile, DbType.String, 255);
+                        #endregion
+                        dbhConvertUsers.ExecuteNonQuery(sqlMemberprofile);
+
+                        MainForm.SuccessedRecordCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.MessageForm.SetMessage(string.Format("错误:{0}.uid={1}\r\n", ex.Message, objUser.uid));
+                        MainForm.FailedRecordCount++;
+                    }
+                    MainForm.MessageForm.CurrentProgressBarNumAdd();
+                }
+                MainForm.MessageForm.TotalProgressBarNumAdd();
+            }
+
+            //dbhConvertUsers.Close();
+            dbhConvertUsers.Dispose();
+            MainForm.RecordCount = -1;
+            MainForm.MessageForm.SetMessage(string.Format("完成转换电话用户。成功{0}，失败{1}\r\n", MainForm.SuccessedRecordCount, MainForm.FailedRecordCount));
         }
 
         /// <summary>

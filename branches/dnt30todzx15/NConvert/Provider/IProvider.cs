@@ -64,9 +64,21 @@ namespace NConvert.Provider
         List<Users> GetUserList(int CurrentPage);
 
 
-
+        /// <summary>
+        /// 后来临时补充的主站待审核用户数据
+        /// </summary>
+        /// <returns></returns>
         int GetUsers4OtherRecordCount();
+        /// <summary>
+        /// 后来临时补充的主站待审核用户数据
+        /// </summary>
+        /// <param name="CurrentPage"></param>
+        /// <returns></returns>
         List<Users> GetUser4OtherList(int CurrentPage);
+
+
+        int GetUsers4PhoneNumberRecordCount();
+        List<Users> GetUser4PhoneNumberList(int CurrentPage);
         #endregion
 
         #region 转换论坛版块
