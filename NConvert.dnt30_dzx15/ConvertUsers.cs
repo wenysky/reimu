@@ -209,7 +209,7 @@ namespace NConvert.dnt30_dzx15
                 );
 
                 string sqlKexueUser = string.Format(
-                    "SELECT realname,blogtype,UserInfo,ifblog,blogshen,ifgood,jigoublog,blogname,blogjie,bloggong,savetime FROM [sciencebbs].[dbo].[user] WHERE id={0}",
+                    "SELECT realname,blogtype,UserInfo,ifblog,blogshen,ifgood,jigoublog,blogname,blogjie,bloggong,savetime,UserMobile FROM [sciencebbs].[dbo].[user] WHERE id={0}",
                     objUser.uid
                     );
                 System.Data.Common.DbDataReader drKexueUser = dbhUserTemp.ExecuteReader(sqlKexueUser);
@@ -218,6 +218,10 @@ namespace NConvert.dnt30_dzx15
                 {
                     //field1被用作八大研究领域了，那边的参数写作“realm”对应[user]-blogtype
                     objUser.field1 = drKexueUser["blogtype"] != DBNull.Value ? drKexueUser["blogtype"].ToString() : "";
+                    if (dr["UserMobile"] != DBNull.Value && dr["UserMobile"].ToString().Trim() != string.Empty)
+                    {
+                        objUser.mobile = dr["UserMobile"].ToString().Trim();
+                    }
 
                     string userInfo = drKexueUser["UserInfo"] != DBNull.Value ? drKexueUser["UserInfo"].ToString() : "";
                     string[] arrayUserInfo = userInfo.Split('\\');//一共有15个
@@ -227,6 +231,11 @@ namespace NConvert.dnt30_dzx15
                     objUser.initialstudyear = 0;
                     objUser.educational = arrayUserInfo.Length == 15 ? arrayUserInfo[9] : "";
                     objUser.grade = 1;
+
+                    if (arrayUserInfo.Length == 15 && arrayUserInfo[12].ToString() != string.Empty)
+                    {
+                        objUser.telephone = arrayUserInfo[12].ToString();
+                    }
 
                     //objUser.realname = dr["realname"].ToString(); 
                     if (arrayUserInfo.Length == 15 && arrayUserInfo[0].Trim() != string.Empty)
