@@ -40,7 +40,9 @@ namespace NConvert.Entity
             }
         }
 
-        /// <summary> name </summary>
+        /// <summary>
+        /// char 255
+        /// </summary>
         public string name
         {
             get
@@ -65,5 +67,12 @@ namespace NConvert.Entity
                 this.m_description = value;
             }
         }
+
+        public int fid { get; set; }
+
+        /// <summary>
+        /// char 255
+        /// </summary>
+        public string icon { get; set; }
     }
 }

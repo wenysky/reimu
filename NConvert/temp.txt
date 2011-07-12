@@ -1,29 +1,155 @@
-﻿text(16)=DbType.String, 4000
-ntext(16)=DbType.String, 4000
+﻿@groupid
+@radminid 
+@type 
+@system 
+@grouptitle 
+@creditshigher 
+@creditslower 
+@stars 
+@color 
+@icon 
+@allowvisit 
+@allowsendpm 
+@allowinvite 
+@allowmailinvite 
+@maxinvitenum 
+@inviteprice 
+@maxinviteday 
+@readaccess 
+@allowpost 
+@allowreply 
+@allowpostpoll 
+@allowpostreward 
+@allowposttrade 
+@allowpostactivity 
+@allowdirectpost 
+@allowgetattach 
+@allowpostattach 
+@allowpostimage 
+@allowvote 
+@allowmultigroups 
+@allowsearch 
+@allowcstatus 
+@allowinvisible 
+@allowtransfer 
+@allowsetreadperm 
+@allowsetattachperm 
+@allowhidecode 
+@allowhtml 
+@allowanonymous 
+@allowsigbbcode 
+@allowsigimgcode 
+@allowmagics 
+@disableperiodctrl 
+@reasonpm 
+@maxprice 
+@maxsigsize 
+@maxattachsize 
+@maxsizeperday 
+@maxpostsperhour 
+@attachextensions 
+@raterange 
+@mintradeprice 
+@maxtradeprice 
+@minrewardprice 
+@maxrewardprice 
+@magicsdiscount 
+@maxmagicsweight 
+@allowpostdebate 
+@tradestick 
+@exempt 
+@maxattachnum 
+@allowposturl 
+@allowrecommend 
+@allowpostrushreply 
+@maxfriendnum 
+@maxspacesize 
+@allowcomment 
+@allowcommentarticle 
+@searchinterval 
+@searchignore 
+@allowblog 
+@allowdoing 
+@allowupload 
+@allowshare 
+@allowblogmod 
+@allowdoingmod 
+@allowuploadmod 
+@allowsharemod 
+@allowcss 
+@allowpoke 
+@allowfriend 
+@allowclick 
+@allowmagic 
+@allowstat 
+@allowstatdata 
+@videophotoignore 
+@allowviewvideophoto 
+@allowmyop 
+@magicdiscount 
+@domainlength 
+@seccode 
+@disablepostctrl 
+@allowbuildgroup 
+@allowgroupdirectpost 
+@allowgroupposturl 
+@edittimelimit 
+@allowpostarticle 
+@allowdownlocalimg 
+@allowpostarticlemod 
+@allowspacediyhtml 
+@allowspacediybbcode 
+@allowspacediyimgcode 
+@allowcommentpost 
+@allowcommentitem 
+@ignorecensor
 
+
+
+
+
+INSERT INTO `dzx15c`.`dzx15c_ucenter_members` (
+uid,
+username,
+password,
+email,
+myid,
+myidkey,
+regip,
+regdate,
+lastloginip,
+lastlogintime,
+salt,
+secques
+)
+VALUES (
+NULL , 'wysky', 'c8837b23ff8aaa8a2dde915473ce0991', 'wysky@wysky.org', '', '', '127.0.0.1', '0', '0', '0', '', ''
+);
+
+
+member
+
+@uid
+@email
 @username
-@nickname
 @password
-@secques
-@spaceid
-@gender
+@status
+@emailstatus
+@avatarstatus
+@videophotostatus
 @adminid
 @groupid
 @groupexpiry
 @extgroupids
-@regip
-@joindate
-@lastip
-@lastvisit
-@lastactivity
-@lastpost
-@lastpostid
-@lastposttitle
-@posts
-@digestposts
-@oltime
-@pageviews
+@regdate
 @credits
+@notifysound
+@timeoffset
+@newpm
+@newprompt
+@accessmasks
+@allowadmincp
+
 @extcredits1
 @extcredits2
 @extcredits3
@@ -32,425 +158,1403 @@ ntext(16)=DbType.String, 4000
 @extcredits6
 @extcredits7
 @extcredits8
-@avatarshowid
-@email
-@bday
-@sigstatus
-@tpp
-@ppp
-@templateid
-@pmsound
-@showemail
-@invisible
-@newpm
-@newpmcount
-@accessmasks
-@onlinestate
-@newsletter
+@friends
+@posts
+@threads
+@digestposts
+@doings
+@blogs
+@albums
+@sharings
+@attachsize
+@views
+@oltime
 
+@publishfeed
+@customshow
+@customstatus
+@medals
+@sightml
+@groupterms
+@authstr
+@groups
+@attentiongroup
 
-
-
-
-
-
-
-@uid
-@website
+@realname
+@gender
+@birthyear
+@birthmonth
+@birthday
+@constellation
+@zodiac
+@telephone
+@mobile
+@idcardtype
+@idcard
+@address
+@zipcode
+@nationality
+@birthprovince
+@birthcity
+@resideprovince
+@residecity
+@residedist
+@residecommunity
+@residesuite
+@graduateschool
+@company
+@education
+@occupation
+@position
+@revenue
+@affectivestatus
+@lookingfor
+@bloodtype
+@height
+@weight
+@alipay
 @icq
 @qq
 @yahoo
 @msn
-@skype
-@location
-@customstatus
-@avatar
-@avatarwidth
-@avatarheight
-@medals
+@taobao
+@site
 @bio
-@signature
-@sightml
-@authstr
-@authtime
-@authflag
-@realname
-@idcard
-@mobile
-@phone
+@interest
+@field1
+@field2
+@field3
+@field4
+@field5
+@field6
+@field7
+@field8
+
+@regip
+@lastip
+@lastvisit
+@lastactivity
+@lastpost
+@lastsendmail
+@notifications
+@myinvitations
+@pokes
+@pendingfriends
+@invisible
+@buyercredit
+@sellercredit
+@favtimes
+@sharetimes
 
 
-
-
-
-
-
-
-
-
-@fid, @layer, @parentid, @pathlist, @parentidlist, @subforumcount, @name, @status, @colcount, @
-      displayorder, @templateid, @topics, @curtopics, @posts, @todayposts, @lasttid, @lasttitle, @
-      lastpost, @lastposterid, @lastposter, @allowsmilies, @allowrss, @allowhtml, @allowbbcode, @
-      allowimgcode, @allowblog, @allowtrade, @alloweditrules, @allowthumbnail, @recyclebin, @
-      modnewposts, @jammer, @disablewatermark, @inheritedmod, @autoclose
-      
-      
-INSERT INTO dnt_forums
-(
-fid, 
-layer, 
-parentid, 
-pathlist, 
-parentidlist, 
-subforumcount, 
-name, 
-status, 
-colcount, 
-displayorder, 
-templateid, 
-topics, 
-curtopics, 
-posts, 
-todayposts, 
-lasttid, 
-lasttitle, 
-lastpost, 
-lastposterid, 
-lastposter, 
-allowsmilies, 
-allowrss, 
-allowhtml, 
-allowbbcode, 
-allowimgcode, 
-allowblog, 
-allowtrade, 
-alloweditrules, 
-allowthumbnail, 
-recyclebin, 
-modnewposts, 
-jammer, 
-disablewatermark, 
-inheritedmod, 
-autoclose
+INSERT INTO `dzx15c`.`pre_forum_forum` (
+`fid` ,
+`fup` ,
+`type` ,
+`name` ,
+`status` ,
+`displayorder` ,
+`styleid` ,
+`threads` ,
+`posts` ,
+`todayposts` ,
+`lastpost` ,
+`domain` ,
+`allowsmilies` ,
+`allowhtml` ,
+`allowbbcode` ,
+`allowimgcode` ,
+`allowmediacode` ,
+`allowanonymous` ,
+`allowpostspecial` ,
+`allowspecialonly` ,
+`allowappend` ,
+`alloweditrules` ,
+`allowfeed` ,
+`allowside` ,
+`recyclebin` ,
+`modnewposts` ,
+`jammer` ,
+`disablewatermark` ,
+`inheritedmod` ,
+`autoclose` ,
+`forumcolumns` ,
+`threadcaches` ,
+`alloweditpost` ,
+`simple` ,
+`modworks` ,
+`allowtag` ,
+`allowglobalstick` ,
+`level` ,
+`commoncredits` ,
+`archive` ,
+`recommend` ,
+`favtimes` ,
+`sharetimes` 
 )
 VALUES (
-@fid, 
-@layer, 
-@parentid, 
-@pathlist, 
-@parentidlist, 
-@subforumcount, 
-@name, 
-@status, 
-@colcount, 
-@displayorder, 
-@templateid, 
-@topics, 
-@curtopics, 
-@posts, 
-@todayposts, 
-@lasttid, 
-@lasttitle, 
-@lastpost, 
-@lastposterid,
-@lastposter, 
-@allowsmilies, 
-@allowrss, 
-@allowhtml, 
-@allowbbcode, 
-@allowimgcode, 
-@allowblog, 
-@allowtrade, 
-@alloweditrules, 
-@allowthumbnail, 
-@recyclebin, 
-@modnewposts, 
-@jammer, 
-@disablewatermark, 
-@inheritedmod, 
-@autoclose
+NULL , '0', 'forum', '', '0', '0', '0', '0', '0', '0', '', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0'
+);
 
+
+INSERT INTO `dzx15c`.`pre_forum_forumfield` (
+`fid` ,
+`description` ,
+`password` ,
+`icon` ,
+`redirect` ,
+`attachextensions` ,
+`creditspolicy` ,
+`formulaperm` ,
+`moderators` ,
+`rules` ,
+`threadtypes` ,
+`threadsorts` ,
+`viewperm` ,
+`postperm` ,
+`replyperm` ,
+`getattachperm` ,
+`postattachperm` ,
+`postimageperm` ,
+`spviewperm` ,
+`keywords` ,
+`supe_pushsetting` ,
+`modrecommend` ,
+`threadplugin` ,
+`extra` ,
+`jointype` ,
+`gviewperm` ,
+`membernum` ,
+`dateline` ,
+`lastupdate` ,
+`activity` ,
+`founderuid` ,
+`foundername` ,
+`banner` ,
+`groupnum` ,
+`commentitem` ,
+`hidemenu` 
 )
-      
-      
-      
-      @fid,@password,@icon,@postcredits,@replycredits,@redirect,@attachextensions,@rules,@
-      topictypes,@viewperm,@postperm,@replyperm,@getattachperm,@postattachperm,@
-      moderators,@description,@applytopictype,@postbytopictype,@viewbytopictype,@
-      topictypeprefix,@permuserlist
-      
-      
-INSERT INTO dnt_forumfields
-(
-fid 
-password 
-icon 
-postcredits 
-replycredits 
-redirect 
-attachextensions 
-rules 
-topictypes 
-viewperm 
-postperm 
-replyperm 
-getattachperm 
-postattachperm 
-moderators 
-description 
-applytopictype 
-postbytopictype 
-viewbytopictype 
-topictypeprefix 
-permuserlist
+VALUES (
+'0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', '0', '0', '0', '0', '0', '0', '', '', '0', '', '0'
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fid
+fup
+type
+name
+status
+displayorder
+styleid
+threads
+posts
+todayposts
+lastpost
+domain
+allowsmilies
+allowhtml
+allowbbcode
+allowimgcode
+allowmediacode
+allowanonymous
+allowpostspecial
+allowspecialonly
+allowappend
+alloweditrules
+allowfeed
+allowside
+recyclebin
+modnewposts
+jammer
+disablewatermark
+inheritedmod
+autoclose
+forumcolumns
+threadcaches
+alloweditpost
+simple
+modworks
+allowtag
+allowglobalstick
+level
+commoncredits
+archive
+recommend
+favtimes
+sharetimes
+
+
+description
+password
+icon
+redirect
+attachextensions
+creditspolicy
+formulaperm
+moderators
+rules
+threadtypes
+threadsorts
+viewperm
+postperm
+replyperm
+getattachperm
+postattachperm
+postimageperm
+spviewperm
+keywords
+supe_pushsetting
+modrecommend
+threadplugin
+extra
+jointype
+gviewperm
+membernum
+dateline
+lastupdate
+activity
+founderuid
+foundername
+banner
+groupnum
+commentitem
+hidemenu
+
+
+
+INSERT INTO `dzx15c`.`pre_forum_thread` (
+`tid` ,
+`fid` ,
+`posttableid` ,
+`typeid` ,
+`sortid` ,
+`readperm` ,
+`price` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`lastpost` ,
+`lastposter` ,
+`views` ,
+`replies` ,
+`displayorder` ,
+`highlight` ,
+`digest` ,
+`rate` ,
+`special` ,
+`attachment` ,
+`moderated` ,
+`closed` ,
+`stickreply` ,
+`recommends` ,
+`recommend_add` ,
+`recommend_sub` ,
+`heats` ,
+`status` ,
+`isgroup` ,
+`favtimes` ,
+`sharetimes` ,
+`stamp` ,
+`icon` ,
+`pushedaid` 
 )
-VALUES 
-(
+VALUES (
+NULL , '0', '0', '0', '0', '0', '0', '', '0', '', '0', '0', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '-1', '-1', '0'
+);
+
+
+tid
+fid
+posttableid
+typeid
+sortid
+readperm
+price
+author
+authorid
+subject
+dateline
+lastpost
+lastposter
+views
+replies
+displayorder
+highlight
+digest
+rate
+special
+attachment
+moderated
+closed
+stickreply
+recommends
+recommend_add
+recommend_sub
+heats
+status
+isgroup
+favtimes
+sharetimes
+stamp
+icon
+pushedaid
+
+
+
+INSERT INTO `dzx15c`.`pre_forum_post` (
+`pid` ,
+`fid` ,
+`tid` ,
+`first` ,
+`author` ,
+`authorid` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`useip` ,
+`invisible` ,
+`anonymous` ,
+`usesig` ,
+`htmlon` ,
+`bbcodeoff` ,
+`smileyoff` ,
+`parseurloff` ,
+`attachment` ,
+`rate` ,
+`ratetimes` ,
+`status` ,
+`tags` ,
+`comment` 
+)
+VALUES (@pid,
 @fid,
-@password,
-@icon,
-@postcredits,
-@replycredits,
-@redirect,
-@attachextensions,
-@rules,
-@topictypes,
-@viewperm,
-@postperm,
-@replyperm,
-@getattachperm,
-@postattachperm,
-@moderators,
-@description,
-@applytopictype,
-@postbytopictype,
-@viewbytopictype,
-@topictypeprefix,
-@permuserlist
-)
+@tid,
+@first,
+@author,
+@authorid,
+@subject,
+@dateline,
+@message,
+@useip,
+@invisible,
+@anonymous,
+@usesig,
+@htmlon,
+@bbcodeoff,
+@smileyoff,
+@parseurloff,
+@attachment,
+@rate,
+@ratetimes,
+@status,
+@tags,
+@comment
+);
 
 
-
-
-
-tid,
-fid,
-iconid,
-typeid,
-readperm,
-price,
-poster,
-posterid,
-title,
-postdatetime,
-lastpost,
-lastpostid,
-lastposter,
-lastposterid,
-views,replies,
-displayorder,
-highlight,
-digest,
-rate,
-hide,
-poll,
-attachment,
-moderated,
-closed,
-magic,
-identify
-
-
-
-
-
-
-
-
-
-
-
-
-tid 
-fid 
-iconid 
-typeid 
-readperm 
-price 
-poster 
-posterid 
-title 
-postdatetime 
-lastpost 
-lastpostid 
-lastposter 
-lastposterid 
-views 
-replies 
-displayorder 
-highlight 
-digest 
-rate 
-hide 
-poll 
-attachment 
-moderated 
-closed 
-magic 
-identify
-
-
-
-INSERT INTO dnt_posts1
-(
-pid 
-fid 
-tid 
-parentid 
-layer 
-poster 
-posterid 
-title 
-postdatetime 
-message 
-ip 
-lastedit
-invisible 
-usesig 
-htmlon 
-smileyoff 
-parseurloff 
-bbcodeoff 
-attachment 
-rate 
+pid
+fid
+tid
+first
+author
+authorid
+subject
+dateline
+message
+useip
+invisible
+anonymous
+usesig
+htmlon
+bbcodeoff
+smileyoff
+parseurloff
+attachment
+rate
 ratetimes
+status
+tags
+comment
+
+
+
+INSERT INTO `dzx15c`.`pre_forum_attachment` (
+`aid` ,
+`tid` ,
+`pid` ,
+`width` ,
+`dateline` ,
+`readperm` ,
+`price` ,
+`filename` ,
+`filetype` ,
+`filesize` ,
+`attachment` ,
+`downloads` ,
+`isimage` ,
+`uid` ,
+`thumb` ,
+`remote` ,
+`picid` 
 )
-VALUES (,,,,,,,,,,,,,,,,,,,,)
+VALUES (
+);
 
 
-INSERT INTO web.dnt_attachments
-(
+INSERT INTO `dzx15c`.`pre_forum_attachmentfield` (
+`aid` ,
+`tid` ,
+`pid` ,
+`uid` ,
+`description` 
+)
+VALUES (
+);
 
-uid 
-tid 
-pid 
-postdatetime 
-readperm 
-filename 
-description 
-filetype 
+
+
+aid
+tid
+pid
+width
+dateline
+readperm
+price
+filename
+filetype
 filesize
-attachment 
+attachment
 downloads
+isimage
+uid
+thumb
+remote
+picid
+description
 
+
+INSERT INTO `dzx15c`.`pre_ucenter_pms` (
+`pmid` ,
+`msgfrom` ,
+`msgfromid` ,
+`msgtoid` ,
+`folder` ,
+`new` ,
+`subject` ,
+`dateline` ,
+`message` ,
+`delstatus` ,
+`related` ,
+`fromappid` 
 )
-VALUES (,,,,,,,,,,)
+VALUES (
+NULL , '', '0', '0', 'inbox', '0', '', '0', '', '0', '0', '0'
+);
 
 
-
-INSERT INTO dnt_pms      
-(
 pmid
 msgfrom
 msgfromid
-msgto
 msgtoid
 folder
 new
 subject
-postdatetime
+dateline
 message
-)
-VALUES (,,,,,,,,,)
+delstatus
+related
+fromappid
 
 
 
-INSERT INTO dnt_topictypes
-(
-typeid
-displayorder
-name
-description
+ADMIN SEND TO wysky (1=>2 null)
+
+
+
+
+INSERT INTO `dzx15c`.`pre_home_blog` (
+`blogid` ,
+`uid` ,
+`username` ,
+`subject` ,
+`classid` ,
+`catid` ,
+`viewnum` ,
+`replynum` ,
+`hot` ,
+`dateline` ,
+`blogtype` ,
+`picflag` ,
+`noreply` ,
+`friend` ,
+`password` ,
+`favtimes` ,
+`sharetimes` ,
+`status` ,
+`click1` ,
+`click2` ,
+`click3` ,
+`click4` ,
+`click5` ,
+`click6` ,
+`click7` ,
+`click8` ,
+`stickstatus` ,
+`recommendstatus` 
 )
 VALUES (
-,,,)
+NULL , '0', '', '', '0', '0', '0', '0', '0', '0', '', '0', '0', '0', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'
+);
 
-
-
-INSERT INTO web.dnt_forumlinks
-
-(
-id
-displayorder
-name
-url
-note
-logo
+INSERT INTO `dzx15c`.`pre_home_blogfield` (
+`blogid` ,
+`uid` ,
+`pic` ,
+`tag` ,
+`message` ,
+`postip` ,
+`related` ,
+`relatedtime` ,
+`target_ids` ,
+`hotuser` ,
+`magiccolor` ,
+`magicpaper` ,
+`pushedaid` 
 )
-VALUES (,,,,,)
+VALUES (
+'0', '0', '', '', '', '', '', '0', '', '', '0', '0', '0'
+);
 
 
 
 
 
+blogid
+uid
+username
+subject
+classid
+catid
+viewnum
+replynum
+hot
+dateline
+blogtype
+picflag
+noreply
+friend
+password
+favtimes
+sharetimes
+status
+click1
+click2
+click3
+click4
+click5
+click6
+click7
+click8
+stickstatus
+recommendstatus
+pic
+tag
+message
+postip
+related
+relatedtime
+target_ids
+hotuser
+magiccolor
+magicpaper
+pushedaid
+
+showtitle     
+rfirstid      
+lastchangetime
+recommendnum  
+
+
+INSERT INTO `snp`.`pre_home_comment` (
+
+
+
+`cid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`authorid` ,
+`author` ,
+`ip` ,
+`dateline` ,
+`message` ,
+`magicflicker` ,
+`status` 
+)
+VALUES (
+NULL , '0', '0', '', '0', '', '', '0', '', '0', '0'
+);
+
+
+
+cid
+uid
+id
+idtype
+authorid
+author
+ip
+dateline
+message
+magicflicker
+status
+INSERT INTO `dzx15c`.`pre_home_class` (
+`classid` ,
+`classname` ,
+`uid` ,
+`dateline`
+)
+VALUES (
+NULL , '', '0', '0'
+);
+
+
+classid
+classname
+uid
+dateline
+
+
+INSERT INTO `dzx15c`.`pre_home_friend` (
+`uid` ,
+`fuid` ,
+`fusername` ,
+`gid` ,
+`num` ,
+`dateline` ,
+`note`
+)
+VALUES (
+'0', '0', '', '0', '0', '0', ''
+);
+
+
+uid
+fuid
+fusername
+gid
+num
+dateline
+note
+
+
+INSERT INTO `sno`.`pre_home_recommend` (
+`rid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`authorid` ,
+`author` ,
+`ip` ,
+`dateline`
+)
+VALUES (
+NULL , '0', '0', '', '0', '', '', '0'
+);
+
+
+rid
+uid
+id
+idtype
+authorid
+author
+ip
+dateline
+
+
+
+INSERT INTO `sno`.`pre_forum_threadclass` (
+`typeid` ,
+`fid` ,
+`name` ,
+`displayorder` ,
+`icon` 
+)
+VALUES (
+NULL , '', '', '', ''
+);
+
+
+typeid
+fid
+name
+displayorder
+icon
+
+
+INSERT INTO `sn`.`pre_common_member_education` (
+`uid` ,
+`username` ,
+`university` ,
+`universityid` ,
+`laboratory` ,
+`initialstudyear` ,
+`educational` ,
+`grade` 
+)
+VALUES (
+'', '', '', '', '', '', '', ''
+);
+
+
+uid
+username
+university
+universityid
+laboratory
+initialstudyear
+educational
+grade
+
+@uid,
+@username,
+@university,
+@universityid,
+@laboratory,
+@initialstudyear,
+@educational,
+@grade
+
+
+
+INSERT INTO `sn`.`pre_common_member` (
+`uid` ,
+`email` ,
+`username` ,
+`password` ,
+`status` ,
+`emailstatus` ,
+`avatarstatus` ,
+`videophotostatus` ,
+`adminid` ,
+`groupid` ,
+`groupexpiry` ,
+`extgroupids` ,
+`regdate` ,
+`credits` ,
+`notifysound` ,
+`timeoffset` ,
+`newpm` ,
+`newprompt` ,
+`accessmasks` ,
+`allowadmincp` ,
+`usertype` ,
+`blogShowStatus` ,
+`organblog` ,
+`userlevel` 
+)
+VALUES (
+NULL , '', '', '0', '', '0', '0', '0', '0', '0', '0', '0', '', '0', '0', '0', '', '0', '0', '0', '0', '1', '0', ''
+);
+
+
+
+
+@usertype,
+@blogShowStatus,
+@organblog,
+@userlevel
+
+
+usertype
+blogShowStatus
+organblog
+userlevel
+
+
+uid
+username
+
+university
+universityid
+laboratory
+initialstudyear
+educational
+grade
+usertype
+blogShowStatus
+organblog
+userlevel
+
+
+INSERT INTO `sn`.`pre_home_album_category` (
+`catid` ,
+`upid` ,
+`catname` ,
+`num` ,
+`displayorder` 
+)
+VALUES (
+NULL , '0', '', '0', '0'
+);
+
+catid
+upid
+catname
+num
+displayorder
+
+@catid,
+@upid,
+@catname,
+@num,
+@displayorder
+
+
+INSERT INTO `sn`.`pre_home_album` (
+`albumid` ,
+`albumname` ,
+`catid` ,
+`uid` ,
+`username` ,
+`dateline` ,
+`updatetime` ,
+`picnum` ,
+`pic` ,
+`picflag` ,
+`friend` ,
+`password` ,
+`target_ids` ,
+`favtimes` ,
+`sharetimes` 
+)
+VALUES (
+@albumid,
+@albumname,
+@catid,
+@uid,
+@username,
+@dateline,
+@updatetime,
+@picnum,
+@pic,
+@picflag,
+@friend,
+@password,
+@target_ids,
+@favtimes,
+@sharetimes
+);
 
 
 
 
 
-dbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbhdbh
-dbh
-dbh
-dbh
-dbh
-dbh
+@albumid,
+@albumname,
+@catid,
+@uid,
+@username,
+@dateline,
+@updatetime,
+@picnum,
+@pic,
+@picflag,
+@friend,
+@password,
+@target_ids,
+@favtimes,
+@sharetimes
+
+
+albumid
+albumname
+catid
+uid
+username
+dateline
+updatetime
+picnum
+pic
+picflag
+friend
+password
+target_ids
+favtimes
+sharetimes
+
+
+
+INSERT INTO `sn`.`pre_home_pic` (
+`picid` ,
+`albumid` ,
+`uid` ,
+`username` ,
+`dateline` ,
+`postip` ,
+`filename` ,
+`title` ,
+`type` ,
+`size` ,
+`filepath` ,
+`thumb` ,
+`remote` ,
+`hot` ,
+`sharetimes` ,
+`click1` ,
+`click2` ,
+`click3` ,
+`click4` ,
+`click5` ,
+`click6` ,
+`click7` ,
+`click8` ,
+`magicframe` ,
+`status` 
+)
+VALUES (
+@picid,
+@albumid,
+@uid,
+@username,
+@dateline,
+@postip,
+@filename,
+@title,
+@type,
+@size,
+@filepath,
+@thumb,
+@remote,
+@hot,
+@sharetimes,
+@click1,
+@click2,
+@click3,
+@click4,
+@click5,
+@click6,
+@click7,
+@click8,
+@magicframe,
+@status
+);
+
+picid
+albumid
+uid
+username
+dateline
+postip
+filename
+title
+type
+size
+filepath
+thumb
+remote
+hot
+sharetimes
+click1
+click2
+click3
+click4
+click5
+click6
+click7
+click8
+magicframe
+status
+
+
+INSERT INTO `sn`.`pre_forum_groupblogtype` (
+`gtid` ,
+`typename` ,
+`groupid` ,
+`createtime` 
+)
+VALUES (
+@gtid,
+@typename,
+@groupid,
+@createtime
+);
+
+
+
+
+gtid
+typename
+groupid
+createtime
+
+
+INSERT INTO `sn`.`pre_forum_groupshowblog` (
+`gid` ,
+`blogid` ,
+`fid` ,
+`commend` ,
+`senduser` ,
+`status` ,
+`sendtime` ,
+`grouptype` 
+)
+VALUES (
+@blogid,
+@fid,
+@commend,
+@senduser,
+@status,
+@sendtime,
+@grouptype
+);
+
+blogid
+fid
+commend
+senduser
+status
+sendtime
+grouptype
+
+
+INSERT INTO `sn`.`pre_home_favorite` (
+`favid` ,
+`uid` ,
+`id` ,
+`idtype` ,
+`spaceuid` ,
+`title` ,
+`description` ,
+`dateline` 
+)
+VALUES (
+@favid,
+@uid,
+@id,
+@idtype,
+@spaceuid,
+@title,
+@description,
+@datelin
+);
+
+
+favid
+uid
+id
+idtype
+spaceuid
+title
+description
+dateline
+
+
+
+INSERT INTO `sno`.`pre_forum_ratelog` (
+`pid` ,
+`uid` ,
+`username` ,
+`extcredits` ,
+`dateline` ,
+`score` ,
+`reason`
+)
+VALUES (
+@pid,
+@uid,
+@username,
+@extcredits,
+@dateline,
+@score,
+@reason
+);
+
+
+
+pid
+uid
+username
+extcredits
+dateline
+score
+reason
+
+
+
+INSERT INTO `sns`.`pre_common_member_field_home` (
+`uid` ,
+`videophoto` ,
+`spacename` ,
+`spacedescription` ,
+`domain` ,
+`addsize` ,
+`addfriend` ,
+`menunum` ,
+`theme` ,
+`spacecss` ,
+`blockposition` ,
+`recentnote` ,
+`spacenote` ,
+`privacy` ,
+`feedfriend` ,
+`acceptemail` ,
+`magicgift` ,
+`blogstartime` 
+)
+VALUES (
+@uid,
+@videophoto,
+@spacename,
+@spacedescription,
+@domain,
+@addsize,
+@addfriend,
+@menunum,
+@theme,
+@spacecss,
+@blockposition,
+@recentnote,
+@spacenote,
+@privacy,
+@feedfriend,
+@acceptemail,
+@magicgift,
+@blogstartime
+);
+
+
+
+uid
+videophoto
+spacename
+spacedescription
+domain
+addsize
+addfriend
+menunum
+theme
+spacecss
+blockposition
+recentnote
+spacenote
+privacy
+feedfriend
+acceptemail
+magicgift
+blogstartime
+
+
+
+
+
+a:3:{s:10:"parameters";a:3:{s:6:"block1";a:2:{s:5:"title";s:6:"公告栏";s:7:"content";s:10:"";}s:5:"music";a:2:{s:7:"mp3list";a:1:{i:0;a:3:{s:6:"mp3url";s:20:"http://abc.com/1.mp3";s:7:"mp3name";s:6:"曲目名";s:4:"cdbj";s:23:"http://abc.com/封面.mp3";}}s:6:"config";a:6:{s:7:"showmod";s:7:"default";s:7:"autorun";s:4:"true";s:7:"shuffle";s:4:"true";s:12:"crontabcolor";s:7:"#D2FF8C";s:11:"buttoncolor";s:7:"#1F43FF";s:9:"fontcolor";s:7:"#1F43FF";}}s:6:"block2";a:2:{s:5:"title";s:8:"友情链接";s:7:"content";s:10:"=友情链接=";}}s:5:"block";a:1:{s:12:"frame`frame1";a:4:{s:4:"attr";a:4:{s:4:"name";s:6:"frame1";s:8:"moveable";s:5:"false";s:9:"className";s:8:"frame cl";s:6:"titles";s:0:"";}s:18:"column`frame1_left";a:6:{s:4:"attr";a:2:{s:4:"name";s:11:"frame1_left";s:9:"className";s:8:"z column";}s:13:"block`profile";a:1:{s:4:"attr";a:3:{s:4:"name";s:7:"profile";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:8:"个人资料";s:4:"href";s:62:"home.php?mod=space&uid={0}&do=profile&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:12:"block`block1";a:1:{s:4:"attr";a:3:{s:4:"name";s:6:"block1";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:6:"公告栏";s:4:"href";s:0:"";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`doing";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"doing";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"记录";s:4:"href";s:60:"home.php?mod=space&uid={0}&do=doing&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`music";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"music";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:6:"音乐盒";s:4:"href";s:0:"";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:12:"block`block2";a:1:{s:4:"attr";a:3:{s:4:"name";s:6:"block2";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:8:"友情链接";s:4:"href";s:0:"";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}}s:20:"column`frame1_center";a:6:{s:4:"attr";a:2:{s:4:"name";s:13:"frame1_center";s:9:"className";s:8:"z column";}s:10:"block`feed";a:1:{s:4:"attr";a:3:{s:4:"name";s:4:"feed";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"动态";s:4:"href";s:59:"home.php?mod=space&uid={0}&do=feed&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`share";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"share";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"分享";s:4:"href";s:60:"home.php?mod=space&uid={0}&do=share&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:10:"block`blog";a:1:{s:4:"attr";a:3:{s:4:"name";s:4:"blog";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"日志";s:4:"href";s:59:"home.php?mod=space&uid={0}&do=blog&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:12:"block`thread";a:1:{s:4:"attr";a:3:{s:4:"name";s:6:"thread";s:9:"className";s:15:"block move-span";s:6:"titles";s:0:"";}}s:10:"block`wall";a:1:{s:4:"attr";a:3:{s:4:"name";s:4:"wall";s:9:"className";s:15:"block move-span";s:6:"titles";a:4:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:6:"留言板";s:4:"href";s:59:"home.php?mod=space&uid={0}&do=wall&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}i:1;a:8:{s:4:"text";s:4:"全部";s:4:"href";s:51:"home.php?mod=space&uid={0}&do=wall";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:5:"y xw0";s:3:"src";s:0:"";}}}}}s:19:"column`frame1_right";a:6:{s:4:"attr";a:2:{s:4:"name";s:12:"frame1_right";s:9:"className";s:8:"z column";}s:12:"block`friend";a:1:{s:4:"attr";a:3:{s:4:"name";s:6:"friend";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"好友";s:4:"href";s:61:"home.php?mod=space&uid={0}&do=friend&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:13:"block`visitor";a:1:{s:4:"attr";a:3:{s:4:"name";s:7:"visitor";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:8:"最近访客";s:4:"href";s:66:"home.php?mod=space&uid={0}&do=friend&view=visitor";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`group";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"group";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"群组";s:4:"href";s:69:"home.php?mod=space&uid={0}&do=group&view=groupthread";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:11:"block`album";a:1:{s:4:"attr";a:3:{s:4:"name";s:5:"album";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:4:"相册";s:4:"href";s:60:"home.php?mod=space&uid={0}&do=album&view=me";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}s:15:"block`statistic";a:1:{s:4:"attr";a:3:{s:4:"name";s:9:"statistic";s:9:"className";s:15:"block move-span";s:6:"titles";a:3:{s:9:"className";a:1:{i:0;s:16:"blocktitle title";}s:5:"style";s:0:"";i:0;a:8:{s:4:"text";s:8:"统计信息";s:4:"href";s:0:"";s:5:"color";s:0:"";s:5:"float";s:0:"";s:6:"margin";s:0:"";s:9:"font-size";s:0:"";s:9:"className";s:0:"";s:3:"src";s:0:"";}}}}}}}s:13:"currentlayout";s:5:"1:2:1";}
+
+
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])
+Count = 3
+    ["mp3name"]: "曲目名"
+    ["cdbj"]: "http://music.com/封面.jpg"
+    ["mp3url"]: "http://music.com/m.mp3"
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])["mp3name"]
+"曲目名"
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])["mp3name"]="oooooo"
+"oooooo"
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])["cdbj"]="oooooo"
+"oooooo"
+mp3url
+当前上下文中不存在名称“mp3url”
+((Hashtable)((ArrayList)((Hashtable)((Hashtable)al["parameters"])["music"])["mp3list"])[0])["mp3url"]="oooooo"
+"oooooo"
+
+
+((Hashtable)al["parameters"]).Remove("music")
+
+
+
+
+
+((Hashtable)((Hashtable)al["parameters"])["block1"])
+Count = 2
+    ["title"]: "我的自定义模块1"
+    ["content"]: "啊啊啊啊\r\n哦哦哦"
+((Hashtable)((Hashtable)al["parameters"])["block1"])["title"]
+"我的自定义模块1"
+((Hashtable)((Hashtable)al["parameters"])["block1"])["content"]
+"啊啊啊啊\r\n哦哦哦"
+
+
+
+((Hashtable)((Hashtable)((Hashtable)al["block"])["frame`frame1"])["column`frame1_left"]).Remove("block`music")
+已经计算表达式，表达式没有值
+((Hashtable)((Hashtable)((Hashtable)al["block"])["frame`frame1"])["column`frame1_left"]).Remove("block`block1")
+已经计算表达式，表达式没有值
+
+
+
+
+
+INSERT INTO `sns`.`pre_blog_recommendpic` (
+`rpid` ,
+`title` ,
+`picsrc` ,
+`linksrc` ,
+`pictype` ,
+`userid` ,
+`readme`
+)
+VALUES (
+@rpid,
+@title,
+@picsrc,
+@linksrc,
+@pictype,
+@userid,
+@readme
+);
+
+
+
+rpid
+title
+picsrc
+linksrc
+pictype
+userid
+readme
+
+
+INSERT INTO `sns`.`pre_blog_recommendfirst` (
+`rfid` ,
+`blogid` ,
+`title` ,
+`content` ,
+`status` ,
+`recommendtime` ,
+`bloguid` ,
+`relateblog`
+)
+VALUES (
+@rfid,
+@blogid,
+@title,
+@content,
+@status,
+@recommendtime,
+@bloguid,
+@relateblog
+);
+
+
+rfid
+blogid
+title
+content
+status
+recommendtime
+bloguid
+relateblog
+
+
+INSERT INTO `sns`.`pre_blog_subject` (
+`sbid` ,
+`title` ,
+`content` ,
+`sbtype` ,
+`sborder` ,
+`logo` ,
+`updatetime`
+)
+VALUES (
+@sbid,
+@title,
+@content,
+@sbtype,
+@sborder,
+@logo,
+@updatetime
+);
+
+sbid
+title
+content
+sbtype
+sborder
+logo
+updatetime
+
+
+
+<p>材料科学基础ppt</p>  
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096521258737">材料科学与工程1.part01.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200965212539378">材料科学与工程1.part02.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096521265237">材料科学与工程1.part03.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200965212636221">材料科学与工程1.part04.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096521275496">材料科学与工程1.part05.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200965212856159">材料科学与工程1.part06.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200965213024909">材料科学与工程1.part07.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200965213236315">材料科学与工程1.part08.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096521492718">材料科学与工程1.part09.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200965215028253">材料科学与工程1.part10.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096521517800">材料科学与工程1.part11.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200965215733831">材料科学与工程1.part12.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096522248378">材料科学与工程1.part13.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=2009672115503">材料科学与工程1.part14.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967211911190">材料科学与工程1.part15.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967212451753">材料科学与工程1.part16.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096721281862">材料科学与工程1.part17.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096721309800">材料科学与工程1.part18.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967213220471">材料科学与工程1.part19.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967213715862">材料科学与工程1.part20.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096721414596">材料科学与工程1.part21.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096721464346">材料科学与工程1.part22.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967214741346">材料科学与工程1.part23.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967214848628">材料科学与工程1.part24.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967215733159">材料科学与工程1.part26.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096721517440">材料科学与工程1.part25.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967215849112">材料科学与工程1.part27.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096722048362">材料科学与工程1.part28.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096722419565">材料科学与工程1.part29.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096722639831">材料科学与工程1.part30.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967221016378">材料科学与工程1.part31.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967221153425">材料科学与工程1.part32.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096722132596">材料科学与工程1.part33.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967221528331">材料科学与工程1.part34.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967221732690">材料科学与工程1.part35.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967233435565">材料科学与工程1.part36.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096723358221">材料科学与工程1.part37.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967233552971">材料科学与工程1.part38.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967233637143">材料科学与工程1.part39.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967233723737">材料科学与工程1.part40.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=20096723382862">材料科学与工程1.part41.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967233835800">材料科学与工程1.part42.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967234042221">材料科学与工程1.part43.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967234127846">材料科学与工程1.part44.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967234159846">材料科学与工程1.part45.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967234257628">材料科学与工程1.part46.rar</a>&nbsp;(<em>文件大小:2929k</em>)<br /><br />
+<img alt="" src="/images/icon_04.gif" /> &nbsp;<a style="COLOR: blue" target="_Blank" href="/bbs/download.aspx?id=200967234317581">材料科学与工程1.part47.rar</a>&nbsp;(<em>文件大小:740k</em>)<br /><br />
+
+
+pre_ucenter_members pre_ucenter_memberfields pre_common_member pre_common_member_count pre_common_member_field_forum pre_common_member_profile pre_common_member_status pre_common_member_education pre_common_member_field_home

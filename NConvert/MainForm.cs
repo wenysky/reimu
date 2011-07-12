@@ -32,7 +32,7 @@ namespace NConvert
         /// <summary>
         /// 分页大小
         /// </summary>
-        public static int PageSize = 1000;
+        public static int PageSize = 5000;
         /// <summary>
         /// 当前表分页数
         /// </summary>
@@ -59,16 +59,24 @@ namespace NConvert
         /// </summary>
         public static ConvertInfoConfig cic = null;
 
+        public static List<Attachments> extAttachList;
+
+        public static int extAttachAidStartIndex;
+
+        public static Dictionary<string, int> groupidList;
+
+        public static List<BlogPostInfo> trashBlogPostList;
+
         #region 数据库连接信息
         /// <summary>
         /// 源数据库连接字符串
         /// </summary>
         public static string srcDbConn = "Data Source=localhost;Initial Catalog=cvc2;User ID=web;Password=itca;";
-        
+
         //public static string srcDbTyep = "SqlServer";
 
         public static string srcDbTypeNamespace = "System.Data.SqlClient";
-        
+
         //public static string srcDbTableProfix = "CVC_";
         /// <summary>
         /// 源数据库DBH对象
@@ -81,11 +89,11 @@ namespace NConvert
         /// 目标数据库连接字符串
         /// </summary>
         public static string targetDbConn = "Data Source=localhost;Initial Catalog=dnt2_dadach;User ID=web;Password=itca;";
-        
+
         //public static string targetDbTyep = "SqlServer";
 
         public static string targetDbTypeNamespace = "System.Data.SqlClient";
-        
+
         //public static string targetDbTableProfix = "dnt_";
         /// <summary>
         /// 目标数据库DBH对象
@@ -109,11 +117,34 @@ namespace NConvert
         public static bool IsResetTopicLastpostid;//重建主题排序信息
         public static bool IsResetTopicReplies;//重建主题回复数
         public static bool IsUpdatePostsInfo;//更新帖子信息
+        public static bool IsConvertGroups;//转换
+        public static bool IsConvertGroupPosts;//转换
+        public static bool IsConvertBlogPosts;//转换
+        public static bool IsConvertBlogComments;//转换
+        public static bool IsConvertHomeComments;//转换
+        public static bool IsConvertAlbumCategories;//转换
+        public static bool IsConvertAlbums;//转换
+        public static bool IsConvertAlbumPics;//转换
+        public static bool IsConvertGroupBlogTypes;//转换
+        public static bool IsConvertGroupBlogs;//转换
+        public static bool IsConvertBlogFavorites;//转换
+        public static bool IsConvertRateLogs;//转换
+
+        public static bool IsConvertUserBlogClass;//转换
+        public static bool IsConvertFriends;//转换
+        public static bool IsConvertUserRecommands;//转换
+
+        public static bool IsConvertIndexRecomandBlogPicss;//转换
+        public static bool IsConvertIndexRecomandBlogs;//转换
+        public static bool IsConvertBlogSubjects;//转换
+
+
+        public static bool IsResetUserBlogCount;//转换
+        public static bool IsResetUserAlbumCount;//转换
+        public static bool IsConvertAvatars;
+        public static bool IsConvertUserss4Other;
 
         /*
-        public static bool IsConvert;//转换
-        public static bool IsConvert;//转换
-        public static bool IsConvert;//转换
         public static bool IsConvert;//转换
         public static bool IsConvert;//转换
         public static bool IsConvert;//转换
@@ -155,7 +186,7 @@ namespace NConvert
             }
             catch (Exception ex)
             {
-                MessageBox.Show("目标数据库链接失败，"+ ex.Message);
+                MessageBox.Show("目标数据库链接失败，" + ex.Message);
                 return false;
             }
         }
@@ -194,7 +225,21 @@ namespace NConvert
             cic.TargetDbUsername = tbxTargetLoginID.Text.Trim();
             cic.TargetDbUserpassword = tbxTargetPassword.Text.Trim();
             cic.TargetDbTablePrefix = tbxTargetDbTablePrefix.Text.Trim();
-            targetDbConn = string.Format("Data Source={0};Initial Catalog={1};User ID={2};Password={3};pooling=false;", cic.TargetDbAddress, cic.TargetDbName, cic.TargetDbUsername, cic.TargetDbUserpassword);
+
+            if (cic.TargetDbType.ToLower() == "access")
+            {
+                targetDbConn = cic.TargetDbFilePath;
+                targetDbTypeNamespace = "System.Data.OleDb";
+            }
+            else if (cic.TargetDbType.ToLower() == "mysql")
+            {
+                targetDbConn = string.Format(@"Data Source={0};Port=3306;Initial Catalog={1};User ID={2};Password={3};Allow Zero Datetime=true;charset=utf8;", cic.TargetDbAddress, cic.TargetDbName, cic.TargetDbUsername, cic.TargetDbUserpassword);
+                targetDbTypeNamespace = "MySql.Data.MySqlClient";
+            }
+            else
+            {
+                targetDbConn = string.Format("Data Source={0};Initial Catalog={1};User ID={2};Password={3};", cic.TargetDbAddress, cic.TargetDbName, cic.TargetDbUsername, cic.TargetDbUserpassword);
+            }
 
             //初始化全局静态DHB对象
             srcDBH = GetSrcDBH_OldVer();
@@ -214,6 +259,39 @@ namespace NConvert
             IsResetTopicLastpostid = ckbxResetTopicLastpostid.Checked;
             IsResetTopicReplies = ckbxResetTopicReplies.Checked;
             IsUpdatePostsInfo = ckbxUpdatePostsInfo.Checked;
+
+            IsConvertBlogPosts = ckbxIsConvertBlogPosts.Checked;
+            IsConvertGroups = ckbxIsConvertGroups.Checked;
+            IsConvertGroupPosts = ckbxIsConvertGroupPost.Checked;
+            IsConvertBlogComments = ckbxIsConvertBlogComment.Checked;
+            IsConvertHomeComments = ckbxIsConvertUserComment.Checked;
+
+            IsConvertAlbumCategories = ckbxIsConvertAlbumCategory.Checked;
+            IsConvertAlbums = ckbxIsConvertAlbum.Checked;
+            IsConvertAlbumPics = ckbxIsConvertPics.Checked;
+
+
+            IsConvertGroupBlogTypes = ckbxIsConvertGroupBlogType.Checked;//转换
+            IsConvertGroupBlogs = ckbxIsConvertGroupBlog.Checked;//转换
+            IsConvertBlogFavorites = ckbxIsConvertBlogPostFavorite.Checked;//转换
+
+            IsConvertRateLogs = ckbxIsConvertRateLogs.Checked;
+
+
+            IsConvertUserBlogClass = ckbxIsConvertUserBlogClass.Checked;
+            IsConvertFriends = ckbxIsConvertFriend.Checked;
+            IsConvertUserRecommands = ckbxIsConvertUserRecommand.Checked;
+
+            IsConvertIndexRecomandBlogPicss = ckbxIsConvertIndexRecomandBlogPics.Checked;
+            IsConvertIndexRecomandBlogs = ckbxIsConvertIndexRecomandBlogs.Checked;
+            IsConvertBlogSubjects = ckbxIsConvertBlogSubjects.Checked;
+
+            IsResetUserBlogCount = ckbxIsResetUserBlogCount.Checked;
+            IsResetUserAlbumCount = ckbxIsResetUserAlbumCount.Checked;
+
+            IsConvertAvatars = ckbxIsConvertAvatars.Checked;
+
+            IsConvertUserss4Other = ckbxIsConvertUsers4Other.Checked;
 
             #endregion
         }
@@ -343,7 +421,14 @@ namespace NConvert
             }
             else
             {
-                this.pbCurrent.Value++;
+                if (this.pbCurrent.Value < this.pbCurrent.Maximum)
+                {
+                    this.pbCurrent.Value++;
+                }
+                else
+                {
+                    SetMessage("CurrentProgressBarNumAdd ERR");
+                }
                 this.lbCurrentRecord.Text = this.pbCurrent.Value.ToString();
             }
         }
@@ -509,6 +594,7 @@ namespace NConvert
                 {
                     SetMessage("正在终止线程...");
                 }
+                SetButtonStatus(false);
                 SetMessage("已手动停止转换\r\n");
             }
             else

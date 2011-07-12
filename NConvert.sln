@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BABA278D-C530-4D29-84E4-BB673EFCC0C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConvertEntities", "ConvertEntities", "{5A863FD7-EF7A-4A63-A159-21B1AC2252C3}"
@@ -17,7 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Natsume.Tools.TinyData", "N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert.lybbs70_dnt31", "NConvert.lybbs70_dnt31\NConvert.lybbs70_dnt31.csproj", "{09823552-0BE2-42AC-85F0-91CFF9E9B7CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepinSummer", "..\..\DeepinSummer\trunk\DeepinSummer\DeepinSummer.csproj", "{67268E9E-AA3B-4D9E-956A-158922DA6B79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepinSummer", "..\..\..\DeepinSummer\trunk\DeepinSummer\DeepinSummer.csproj", "{67268E9E-AA3B-4D9E-956A-158922DA6B79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConvert.dnt30_dzx15", "NConvert.dnt30_dzx15\NConvert.dnt30_dzx15.csproj", "{57D6317E-ED27-4C09-B921-7390D8328795}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertAvatars", "ConvertAvatars\ConvertAvatars.csproj", "{B4822E28-3E3E-4432-9167-F1EC244E01D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,19 +58,27 @@ Global
 		{5CB1FF30-C7C4-4FAB-B295-6330D2BF988F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5CB1FF30-C7C4-4FAB-B295-6330D2BF988F}.Release|x86.ActiveCfg = Release|Any CPU
 		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA}.Release|x86.ActiveCfg = Release|Any CPU
 		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Debug|x86.ActiveCfg = Debug|x86
-		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Debug|x86.Build.0 = Debug|x86
+		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Release|x86.ActiveCfg = Release|x86
-		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Release|x86.Build.0 = Release|x86
+		{67268E9E-AA3B-4D9E-956A-158922DA6B79}.Release|x86.ActiveCfg = Release|Any CPU
+		{57D6317E-ED27-4C09-B921-7390D8328795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57D6317E-ED27-4C09-B921-7390D8328795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57D6317E-ED27-4C09-B921-7390D8328795}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{57D6317E-ED27-4C09-B921-7390D8328795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57D6317E-ED27-4C09-B921-7390D8328795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57D6317E-ED27-4C09-B921-7390D8328795}.Release|x86.ActiveCfg = Release|Any CPU
+		{B4822E28-3E3E-4432-9167-F1EC244E01D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4822E28-3E3E-4432-9167-F1EC244E01D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4822E28-3E3E-4432-9167-F1EC244E01D4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B4822E28-3E3E-4432-9167-F1EC244E01D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4822E28-3E3E-4432-9167-F1EC244E01D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4822E28-3E3E-4432-9167-F1EC244E01D4}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,5 +87,6 @@ Global
 		{56FFEA62-B784-4BE3-923B-9F12118BDFD3} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
 		{C559D014-62B5-498C-ADAF-8A50F8C3A707} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
 		{09823552-0BE2-42AC-85F0-91CFF9E9B7CA} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
+		{57D6317E-ED27-4C09-B921-7390D8328795} = {5A863FD7-EF7A-4A63-A159-21B1AC2252C3}
 	EndGlobalSection
 EndGlobal

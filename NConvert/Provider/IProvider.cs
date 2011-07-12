@@ -36,7 +36,7 @@ namespace NConvert.Provider
 
         #endregion
         
-        #region 转换用户
+        #region 转换用户组
         /// <summary>
         /// 得到用户组表中记录数.优先读取全局静态变量,如果变量为-1,则从数据库读取.
         /// </summary>
@@ -62,6 +62,23 @@ namespace NConvert.Provider
         /// <param name="CurrentPage">获取第几页</param>
         /// <returns>用户列表</returns>
         List<Users> GetUserList(int CurrentPage);
+
+
+        /// <summary>
+        /// 后来临时补充的主站待审核用户数据
+        /// </summary>
+        /// <returns></returns>
+        int GetUsers4OtherRecordCount();
+        /// <summary>
+        /// 后来临时补充的主站待审核用户数据
+        /// </summary>
+        /// <param name="CurrentPage"></param>
+        /// <returns></returns>
+        List<Users> GetUser4OtherList(int CurrentPage);
+
+
+        int GetUsers4PhoneNumberRecordCount();
+        List<Users> GetUser4PhoneNumberList(int CurrentPage);
         #endregion
 
         #region 转换论坛版块
@@ -139,6 +156,106 @@ namespace NConvert.Provider
         #endregion
 
 
-        
+        //#region 转换群组
+        //List<Attachments> GetGroupList(int pagei);
+        //#endregion
+
+
+        #region 转换日志
+        int GetBlogRecordCount();
+
+        List<BlogPostInfo> GetBlogList(int pagei);
+        #endregion
+
+
+        #region 转换群组
+        int GetGroupRecordCount();
+
+        List<Forums> GetGroupList();
+        #endregion
+
+
+        #region 转换群组主题
+        int GetGroupTopicRecordCount();
+
+        List<TopicsP> GetGroupTopicList(int pagei);
+        #endregion
+
+
+
+        #region 转换群组主题
+        int GetGroupPostRecordCount();
+
+        List<Posts> GetGroupPostList(int pagei);
+        #endregion
+
+        #region 日志评论
+        int GetBlogCommentRecordCount();
+        List<CommentInfo> GetBlogCommentList(int pagei);
+        #endregion
+
+
+        #region 空间留言
+        int GetHomeCommentRecordCount();
+        List<CommentInfo> GetHomeCommentList(int pagei);
+        #endregion
+
+
+
+
+        int GetUIDbyUsername(string username);
+
+        Dictionary<string, int> GetGroupDic();
+
+        int GetHomeClassRecordCount();
+        List<HomeClassInfo> GetHomeClassList();
+
+
+        int GetFriendRecordCount();
+        List<FriendInfo> GetFriendList(int pagei);
+
+        int GetUserRecommandBlogRecordCount();
+        List<UserRecommandBlogInfo> GetUserRecommandBlogList(int pagei);
+
+
+        int GetAlbumCategoryRecordCount();
+        List<AlbumCategoryInfo> GetAlbumCategoryList(int pagei);
+
+
+        int GetAlbumRecordCount();
+        List<AlbumInfo> GetAlbumList(int pagei);
+
+
+        int GetAlbumPicRecordCount();
+        List<AlbumPicInfo> GetAlbumPicList(int pagei);
+
+
+        int GetGroupBlogTypeRecordCount();
+        List<GroupBlogTypeInfo> GetGroupBlogTypeList(int pagei);
+
+
+        int GetGroupShowBlogRecordCount();
+        List<GroupShowBlogInfo> GetGroupShowBlogList(int pagei);
+
+        int GetBlogFavoriteRecordCount();
+        List<FavoriteInfo> GetBlogFavoriteList(int pagei);
+        int GetTopicFavoriteRecordCount();
+        List<FavoriteInfo> GetTopicFavoriteList(int pagei);
+
+
+        int GetRateLogRecordCount();
+        List<RateLogInfo> GetRateLogList(int pagei);
+
+
+        int GetIndexRecomandBlogPicRecordCount();
+        List<IndexRecomandBlogPicInfo> GetIndexRecomandBlogPicList(int pagei);
+
+
+        int GetIndexRecomandBlogRecordCount();
+        List<IndexRecomandBlogInfo> GetIndexRecomandBlogList(int pagei);
+
+
+        int GetBlogSubjectRecordCount();
+        List<BlogSubjectInfo> GetBlogSubjectList(int pagei);
     }
 }
