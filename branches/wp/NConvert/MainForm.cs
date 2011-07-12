@@ -180,7 +180,7 @@ namespace NConvert
 
             try
             {
-                targetDBH.Open();
+                //targetDBH.Open();
                 return true;
             }
             catch (Exception ex)
@@ -331,7 +331,7 @@ namespace NConvert
             }
             else
             {
-                this.tbxMessage.Text += Message;
+                this.tbxMessage.Text += Message + Environment.NewLine;
 
                 this.tbxMessage.Focus();//让文本框获取焦点
                 this.tbxMessage.Select(this.tbxMessage.TextLength, 0);//设置光标的位置到文本尾age.

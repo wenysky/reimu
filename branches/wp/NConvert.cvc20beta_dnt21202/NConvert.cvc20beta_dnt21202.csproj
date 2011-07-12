@@ -58,14 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConvertAttachments.cs" />
-    <Compile Include="ConvertForumLinks.cs" />
-    <Compile Include="ConvertForums.cs" />
-    <Compile Include="ConvertPms.cs" />
-    <Compile Include="ConvertPolls.cs" />
-    <Compile Include="ConvertPosts.cs" />
-    <Compile Include="ConvertTopic.cs" />
-    <Compile Include="ConvertTopicTypes.cs" />
     <Compile Include="ConvertUsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Main.cs" />

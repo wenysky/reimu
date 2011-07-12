@@ -8,18 +8,5 @@ namespace NConvert.dnt30_dzx15
 {
     public partial class Provider : IProvider
     {
-        #region IProvider 成员
-
-        public int GetForumLinksRecordCount()
-        {
-            return 0;
-        }
-
-        public List<ForumLinks> GetForumLinkList()
-        {
-            return new List<ForumLinks>();
-        }
-
-        #endregion
     }
 }
