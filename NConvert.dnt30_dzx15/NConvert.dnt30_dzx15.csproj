@@ -46,39 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConvertAttachments.cs" />
-    <Compile Include="ConvertForums.cs" />
-    <Compile Include="ConvertPms.cs" />
-    <Compile Include="ConvertPollOptions.cs" />
-    <Compile Include="ConvertPollRecords.cs" />
-    <Compile Include="ConvertPolls.cs" />
-    <Compile Include="ConvertPosts.cs" />
-    <Compile Include="ConvertTopic.cs" />
-    <Compile Include="ConvertUserGroups.cs" />
     <Compile Include="ConvertUsers.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Other.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ConvertBlogPosts.cs" />
-    <Compile Include="ConvertGroups.cs" />
-    <Compile Include="ConvertGroupTopics.cs" />
-    <Compile Include="ConvertGroupPosts.cs" />
-    <Compile Include="ConvertBlogComments.cs" />
-    <Compile Include="ConvertHomeComments.cs" />
-    <Compile Include="ConvertHomeClass.cs" />
-    <Compile Include="ConvertFriends.cs" />
-    <Compile Include="ConvertUserRecomandBlogs.cs" />
-    <Compile Include="ConvertTopicTypes.cs" />
-    <Compile Include="ConvertAlbumCategory.cs" />
-    <Compile Include="ConvertAlbums.cs" />
-    <Compile Include="ConvertAlbumPics.cs" />
-    <Compile Include="ConvertGroupBlogTypes.cs" />
-    <Compile Include="ConvertGroupShowBlogs.cs" />
-    <Compile Include="ConvertBlogFavorites.cs" />
-    <Compile Include="ConvertRateLogs.cs" />
-    <Compile Include="ConvertIndexRecomandBlogPics.cs" />
-    <Compile Include="ConvertIndexRecomandBlogs.cs" />
-    <Compile Include="ConvertBlogSubjects.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Natsume.Tools.TinyData\Natsume.Tools.TinyData.csproj">
