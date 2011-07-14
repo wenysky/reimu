@@ -42,10 +42,10 @@ namespace NConvert.dnt30_dzx15
                 objAttachment.aid = Convert.ToInt32(dr["aid"]);
                 objAttachment.tid = Convert.ToInt32(dr["tid"]);
                 objAttachment.pid = Convert.ToInt32(dr["pid"]);
-                objAttachment.width = Convert.ToInt32(dr["width"]);
+                //objAttachment.width = Convert.ToInt32(dr["width"]);
                 objAttachment.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["postdatetime"]));
                 objAttachment.readperm = Convert.ToInt32(dr["readperm"]);
-                objAttachment.price = Convert.ToInt32(dr["attachprice"]);
+                //objAttachment.price = Convert.ToInt32(dr["attachprice"]);
                 objAttachment.filename = dr["attachment"].ToString();
                 objAttachment.filetype = "application/octet-stream";// dr["filetype"].ToString();
                 objAttachment.filesize = Convert.ToInt32(dr["filesize"]);

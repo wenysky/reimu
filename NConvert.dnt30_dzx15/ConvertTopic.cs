@@ -86,18 +86,8 @@ namespace NConvert.dnt30_dzx15
                 }
                 objTopic.digest = Convert.ToInt32(dr["digest"]);
                 objTopic.rate = Convert.ToInt32(dr["rate"]);
-                int specialId = GetConvertedSpecialId(Convert.ToInt32(dr["special"]));
-                if (specialId == -3)
-                {
-                    //已经结贴的悬赏
-                    objTopic.special = -specialId;
-                    objTopic.price = -Convert.ToInt32(dr["price"]);
-                }
-                else
-                {
-                    objTopic.special = specialId;
-                    objTopic.price = Convert.ToInt32(dr["price"]);
-                }
+                objTopic.special = 0;
+                objTopic.price = Convert.ToInt32(dr["price"]);
                 objTopic.attachment = Convert.ToInt32(dr["attachment"]);
                 objTopic.moderated = Convert.ToInt32(dr["moderated"]);
                 objTopic.closed = Convert.ToInt32(dr["closed"]);
@@ -114,20 +104,7 @@ namespace NConvert.dnt30_dzx15
                 objTopic.stamp = -1;
                 objTopic.icon = -1;
                 objTopic.pushedaid = 0;
-                DateTime recommenddate;
-                if (Convert.ToInt32(dr["tuijian"]) > 0 && dr["tuijiantime"] != DBNull.Value
-                    && DateTime.TryParse(
-                          dr["tuijiantime"].ToString().Trim(),
-                          out recommenddate
-                          )
-                    )
-                {
-                    objTopic.recommend = Utils.TypeParse.DateTime2TimeStamp(recommenddate);
-                }
-                else
-                {
-                    objTopic.recommend = 0;
-                }
+                objTopic.recommend = 0;
                 topiclist.Add(objTopic);
             }
             dr.Close();

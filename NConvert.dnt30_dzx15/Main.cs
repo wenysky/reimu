@@ -16,12 +16,12 @@ namespace NConvert.dnt30_dzx15
 
         public string GetDllDisplayName()
         {
-            return "Discuz!NT 3.0(SqlServer)";
+            return "Discuz!NT 1.0(SqlServer)";
         }
 
         public string GetDllDescription()
         {
-            return @"Discuz!NT 3.0(SqlServer)转Discuz!X 1.5(Mysql)
+            return @"Discuz!NT 1.0(SqlServer)转Discuz!X 1.5(Mysql)
 拷贝uploadfaces目录到 /avatars/upload/ 目录下.(头像目录变为 avatars\upload\uploadfaces\xxx.gif)
 
 拷贝uploadfiles目录下面的文件到 /upload/ 目录下(附件目录变为 upload\2008\5\xxx.zip).

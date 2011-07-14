@@ -213,7 +213,7 @@
             this.tbxSrcDBName.Name = "tbxSrcDBName";
             this.tbxSrcDBName.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcDBName.TabIndex = 5;
-            this.tbxSrcDBName.Text = "dnt3";
+            this.tbxSrcDBName.Text = "zisha";
             // 
             // tbxSrcAddress
             // 
@@ -221,7 +221,7 @@
             this.tbxSrcAddress.Name = "tbxSrcAddress";
             this.tbxSrcAddress.Size = new System.Drawing.Size(160, 21);
             this.tbxSrcAddress.TabIndex = 4;
-            this.tbxSrcAddress.Text = "10.0.4.230";
+            this.tbxSrcAddress.Text = "127.0.0.1";
             // 
             // plTargetDBSetting
             // 
@@ -297,7 +297,7 @@
             this.tbxTargetDBName.Name = "tbxTargetDBName";
             this.tbxTargetDBName.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetDBName.TabIndex = 5;
-            this.tbxTargetDBName.Text = "snu";
+            this.tbxTargetDBName.Text = "zisha";
             // 
             // tbxTargetAddress
             // 
@@ -305,7 +305,7 @@
             this.tbxTargetAddress.Name = "tbxTargetAddress";
             this.tbxTargetAddress.Size = new System.Drawing.Size(160, 21);
             this.tbxTargetAddress.TabIndex = 4;
-            this.tbxTargetAddress.Text = "10.0.4.230";
+            this.tbxTargetAddress.Text = "127.0.0.1";
             // 
             // tbxMessage
             // 
