@@ -676,7 +676,7 @@ values
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_field_forum", MainForm.cic.TargetDbTablePrefix));
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_profile", MainForm.cic.TargetDbTablePrefix));
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_status", MainForm.cic.TargetDbTablePrefix));
-                dbhConvertUsers.TruncateTable(string.Format("{0}common_member_education", MainForm.cic.TargetDbTablePrefix));
+                //dbhConvertUsers.TruncateTable(string.Format("{0}common_member_education", MainForm.cic.TargetDbTablePrefix));
                 dbhConvertUsers.TruncateTable(string.Format("{0}common_member_field_home", MainForm.cic.TargetDbTablePrefix));
             }
             else
@@ -745,11 +745,7 @@ VALUES (
 `newpm` ,
 `newprompt` ,
 `accessmasks` ,
-`allowadmincp` ,
-`usertype` ,
-`blogShowStatus` ,
-`organblog` ,
-`userlevel` 
+`allowadmincp` 
 )
 VALUES (
 @uid,
@@ -771,11 +767,7 @@ VALUES (
 @newpm,
 @newprompt,
 @accessmasks,
-@allowadmincp,
-@usertype,
-@blogShowStatus,
-@organblog,
-@userlevel
+@allowadmincp
 )", MainForm.cic.TargetDbTablePrefix);
             string sqlMembercount = string.Format(@"INSERT INTO {0}common_member_count (
 `uid` ,
@@ -890,7 +882,7 @@ VALUES (
 `site` ,
 `bio` ,
 `interest` ,
-`realm` ,
+`field1` ,
 `field2` ,
 `field3` ,
 `field4` ,
@@ -988,7 +980,7 @@ VALUES (
 @sharetimes
 )", MainForm.cic.TargetDbTablePrefix);
 
-            string sqlMemberEducation = string.Format(@"INSERT INTO {0}common_member_education (
+            /*string sqlMemberEducation = string.Format(@"INSERT INTO {0}common_member_education (
 `uid` ,
 `username` ,
 `university` ,
@@ -1008,6 +1000,7 @@ VALUES (
 @educational,
 @grade
 )", MainForm.cic.TargetDbTablePrefix);
+             */ 
 
 
             string sqlFieldHome = string.Format(@"INSERT INTO {0}common_member_field_home (
@@ -1027,8 +1020,7 @@ VALUES (
 `privacy` ,
 `feedfriend` ,
 `acceptemail` ,
-`magicgift` ,
-`blogstartime` 
+`magicgift` 
 )
 VALUES (
 @uid,
@@ -1047,8 +1039,7 @@ VALUES (
 @privacy,
 @feedfriend,
 @acceptemail,
-@magicgift,
-@blogstartime
+@magicgift
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
@@ -1184,16 +1175,16 @@ VALUES (
                         dbhConvertUsers.ParameterAdd("@sharetimes", objUser.sharetimes, DbType.Int32, 4);
 
                         //额外
-                        dbhConvertUsers.ParameterAdd("@university", objUser.university, DbType.String, 255);
-                        dbhConvertUsers.ParameterAdd("@universityid", objUser.universityid, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@laboratory", objUser.laboratory, DbType.String, 255);
-                        dbhConvertUsers.ParameterAdd("@initialstudyear", objUser.initialstudyear, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@educational", objUser.educational, DbType.String, 255);
-                        dbhConvertUsers.ParameterAdd("@grade", objUser.grade, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@usertype", objUser.usertype, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@blogShowStatus", objUser.blogShowStatus, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@organblog", objUser.organblog, DbType.Int32, 4);
-                        dbhConvertUsers.ParameterAdd("@userlevel", objUser.userlevel, DbType.Int32, 4);
+                        //dbhConvertUsers.ParameterAdd("@university", objUser.university, DbType.String, 255);
+                        //dbhConvertUsers.ParameterAdd("@universityid", objUser.universityid, DbType.Int32, 4);
+                        //dbhConvertUsers.ParameterAdd("@laboratory", objUser.laboratory, DbType.String, 255);
+                        //dbhConvertUsers.ParameterAdd("@initialstudyear", objUser.initialstudyear, DbType.Int32, 4);
+                        //dbhConvertUsers.ParameterAdd("@educational", objUser.educational, DbType.String, 255);
+                        //dbhConvertUsers.ParameterAdd("@grade", objUser.grade, DbType.Int32, 4);
+                        //dbhConvertUsers.ParameterAdd("@usertype", objUser.usertype, DbType.Int32, 4);
+                        //dbhConvertUsers.ParameterAdd("@blogShowStatus", objUser.blogShowStatus, DbType.Int32, 4);
+                        //dbhConvertUsers.ParameterAdd("@organblog", objUser.organblog, DbType.Int32, 4);
+                        //dbhConvertUsers.ParameterAdd("@userlevel", objUser.userlevel, DbType.Int32, 4);
 
                         //home field
                         dbhConvertUsers.ParameterAdd("@videophoto", objUser.videophoto, DbType.String, 255);
@@ -1212,7 +1203,7 @@ VALUES (
                         dbhConvertUsers.ParameterAdd("@feedfriend", objUser.feedfriend, DbType.String, 655300000);
                         dbhConvertUsers.ParameterAdd("@acceptemail", objUser.acceptemail, DbType.String, 655300000);
                         dbhConvertUsers.ParameterAdd("@magicgift", objUser.magicgift, DbType.String, 655300000);
-                        dbhConvertUsers.ParameterAdd("@blogstartime", objUser.blogstartime, DbType.Int32, 4);
+                        //dbhConvertUsers.ParameterAdd("@blogstartime", objUser.blogstartime, DbType.Int32, 4);
 
                         #endregion
                         dbhConvertUsers.ExecuteNonQuery(sqlUCUser);
@@ -1224,7 +1215,7 @@ VALUES (
                         dbhConvertUsers.ExecuteNonQuery(sqlMemberstatus);
                         dbhConvertUsers.ExecuteNonQuery(sqlFieldHome);
 
-                        dbhConvertUsers.ExecuteNonQuery(sqlMemberEducation);//插入额外表
+                        //dbhConvertUsers.ExecuteNonQuery(sqlMemberEducation);//插入额外表
                         MainForm.SuccessedRecordCount++;
                     }
                     catch (Exception ex)
@@ -2398,8 +2389,7 @@ VALUES (
 `sharetimes` ,
 `stamp` ,
 `icon` ,
-`pushedaid` ,
-recommend
+`pushedaid` 
 )
 VALUES (
 @tid,
@@ -2436,8 +2426,7 @@ VALUES (
 @sharetimes,
 @stamp,
 @icon,
-@pushedaid,
-@recommend
+@pushedaid
 )", MainForm.cic.TargetDbTablePrefix);
             #endregion
 
@@ -2487,7 +2476,6 @@ VALUES (
                         dbh.ParameterAdd("@stamp", objTopic.stamp, DbType.Int32, 4);
                         dbh.ParameterAdd("@icon", objTopic.icon, DbType.Int32, 4);
                         dbh.ParameterAdd("@pushedaid", objTopic.pushedaid, DbType.Int32, 4);
-                        dbh.ParameterAdd("@recommend", objTopic.recommend, DbType.Int32, 4);
                         #endregion
                         dbh.ExecuteNonQuery(sqlTopic);//插入dnt_topics表
                         MainForm.SuccessedRecordCount++;

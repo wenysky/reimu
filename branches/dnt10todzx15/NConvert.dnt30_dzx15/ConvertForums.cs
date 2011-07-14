@@ -54,8 +54,8 @@ namespace NConvert.dnt30_dzx15
                 objForum.allowimgcode = Convert.ToInt32(drBoard["allowimgcode"]);
                 objForum.allowmediacode = 1;
                 objForum.allowanonymous = 0;
-                objForum.allowpostspecial = Convert.ToInt32(drBoard["allowpostspecial"]);
-                objForum.allowspecialonly = Convert.ToInt32(drBoard["allowspecialonly"]);
+                objForum.allowpostspecial = 1;//Convert.ToInt32(drBoard["allowpostspecial"]);
+                objForum.allowspecialonly = 0; //Convert.ToInt32(drBoard["allowspecialonly"]);
                 objForum.allowappend = 0;
                 objForum.alloweditrules = Convert.ToInt32(drBoard["alloweditrules"]);
                 objForum.allowfeed = 0;
@@ -71,7 +71,7 @@ namespace NConvert.dnt30_dzx15
                 objForum.alloweditpost = 1;
                 objForum.simple = 0;
                 objForum.modworks = 0;
-                objForum.allowtag = Convert.ToInt32(drBoard["allowtag"]);
+                objForum.allowtag = 1;// Convert.ToInt32(drBoard["allowtag"]);
                 objForum.allowglobalstick = 1;
                 objForum.level = 0;
                 objForum.commoncredits = 0;
