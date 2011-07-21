@@ -13,21 +13,21 @@ namespace ConvertAvatars
         static void Main(string[] args)
         {
             DBHelper srcDBH = new DBHelper();
-            DataTable avatars = srcDBH.ExecuteDataSet("SELECT ID,userphoto FROM [user] WHERE userphoto<>'images/upphoto/nophoto.gif' AND userphoto LIKE '%images%.%' ORDER BY ID").Tables[0];
+            DataTable avatars = srcDBH.ExecuteDataSet(@"SELECT uid,avatar FROM [dnt_userfields] WHERE avatar>'' AND avatar NOT LIKE 'avatars\common\%' ORDER BY uid").Tables[0];
 
             int totalCount = avatars.Rows.Count;
             int count = 0;
             System.Console.WriteLine("总共找到了{0}条数据", totalCount);
             foreach (DataRow dr in avatars.Rows)
             {
-                string url = dr["userphoto"].ToString().Trim().Trim('/').Replace('/', Path.DirectorySeparatorChar);
+                string url = dr["avatar"].ToString().Trim().Trim('/').Replace('/', Path.DirectorySeparatorChar);
                 string sourceAvatarPath = Path.Combine(
                     AppDomain.CurrentDomain.BaseDirectory,
                     "source" +
                     Path.DirectorySeparatorChar + url
                     );
                 string targetAvatarPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "target");
-                string uid = dr["id"].ToString().PadLeft(9, '0');
+                string uid = dr["uid"].ToString().PadLeft(9, '0');
 
 #if DEBUG
                 if (!File.Exists(sourceAvatarPath))
@@ -91,7 +91,7 @@ namespace ConvertAvatars
                 else
                 {
                     System.Console.WriteLine("");
-                    System.Console.WriteLine("未找到uid={0}的头像{1}", dr["id"], dr["userphoto"]);
+                    System.Console.WriteLine("未找到uid={0}的头像{1}", dr["uid"], dr["avatar"]);
                 }
             }
             System.Console.WriteLine("");
