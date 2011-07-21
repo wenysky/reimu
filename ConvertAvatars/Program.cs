@@ -85,17 +85,19 @@ namespace ConvertAvatars
                     System.Console.Write(".");
                     if (count % 200 == 0)
                     {
-                        System.Console.WriteLine("进度{1}/{2}", count, totalCount);
+                        System.Console.WriteLine("进度{0}/{1}", count, totalCount);
                     }
                 }
                 else
                 {
                     System.Console.WriteLine("");
                     System.Console.WriteLine("未找到uid={0}的头像{1}", dr["uid"], dr["avatar"]);
+                    System.Console.WriteLine("");
                 }
             }
             System.Console.WriteLine("");
             System.Console.WriteLine("提示:头像转换程序已经成功转换了{0}/{1}个头像.", count, totalCount);
+            System.Console.ReadLine();
         }
     }
 }
