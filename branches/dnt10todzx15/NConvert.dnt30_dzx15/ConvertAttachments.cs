@@ -42,7 +42,7 @@ namespace NConvert.dnt30_dzx15
                 objAttachment.aid = Convert.ToInt32(dr["aid"]);
                 objAttachment.tid = Convert.ToInt32(dr["tid"]);
                 objAttachment.pid = Convert.ToInt32(dr["pid"]);
-                //objAttachment.width = Convert.ToInt32(dr["width"]);
+                objAttachment.width = 500;//Convert.ToInt32(dr["width"]);
                 objAttachment.dateline = Utils.TypeParse.DateTime2TimeStamp(Convert.ToDateTime(dr["postdatetime"]));
                 objAttachment.readperm = Convert.ToInt32(dr["readperm"]);
                 //objAttachment.price = Convert.ToInt32(dr["attachprice"]);
@@ -56,9 +56,10 @@ namespace NConvert.dnt30_dzx15
                 isImage.Add(".gif");
                 isImage.Add(".png");
                 isImage.Add(".jpeg");
-                if (isImage.Contains(System.IO.Path.GetExtension(objAttachment.filename.Trim())))
+                isImage.Add(".bmp");
+                if (isImage.Contains(System.IO.Path.GetExtension(objAttachment.attachment.Trim().ToLower())))
                 {
-                    objAttachment.isimage = -1;
+                    objAttachment.isimage = 1;
                 }
                 else
                 {
